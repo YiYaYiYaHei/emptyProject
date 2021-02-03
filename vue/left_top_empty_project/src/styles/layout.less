@@ -1,0 +1,320 @@
+/* 项目主入口---start--- */
+@menuWidth: 210px; // 菜单宽度
+@menuHeight: 52px; // 菜单项及导航栏高度
+@contentWidth: calc(~"100% - 210px"); // 内容宽
+@contentHeight: calc(~"100% - 52px"); // 内容高
+
+.application-main-container {
+  width: 100%;
+  height: 100%;
+
+  .application--left-top-menu {
+    width: 100%;
+    height: 100%;
+    border-right: 1px solid #ccc;
+    overflow-x: auto;
+  }
+
+  .application-right-container {
+    position: absolute;
+    left: @menuWidth;
+    top: @menuHeight;
+    width: @contentWidth;
+    height: @contentHeight;
+    overflow: hidden;
+    .transition();
+
+    .top-navigation {
+      width: 100%;
+      height: @menuHeight;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .application-container {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+/* 项目主入口---end--- */
+
+/* 左侧+顶部菜单样式---start--- */
+.application--left-top-menu {
+  position: relative;
+
+  /* 左侧菜单样式---start--- */
+  .el-menu-top {
+    width: 100%;
+    height: @menuHeight;
+    padding-right: 210px;
+    padding-left: 210px;
+
+    >li,
+    >li>div {
+      height: @menuHeight !important;
+      line-height: @menuHeight !important;
+    }
+  }
+
+  /* 左侧菜单样式---end--- */
+  /* 顶部菜单样式---start--- */
+  .el-menu-left {
+    float: left;
+    width: @menuWidth;
+    height: @contentHeight;
+    .transition();
+  }
+
+  /* 顶部菜单样式---end--- */
+  .el-menu-item,
+  .el-submenu__title {
+    >i.menu-icon {
+      margin-right: 8px;
+    }
+
+    >i.el-submenu__icon-arrow {
+      font-size: 16px;
+    }
+  }
+
+  /* 用户信息 */
+  .user-info {
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-width: 210px;
+    min-width: 120px;
+    height: @menuHeight;
+    padding: 10px 20px 10px 10px;
+
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .user-img {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+      background: url(../images/common/user.png) center center/ 24px 24px no-repeat;
+    }
+
+    .user-name {
+      display: inline-block;
+      max-width: 120px;
+      padding-right: 8px;
+      color: @white;
+      line-height: 32px;
+      font-size: 14px;
+
+      &:after {
+        position: absolute;
+        top: 24px;
+        right: 10px;
+        content: '';
+        width: 0;
+        height: 0;
+        border: 6px solid @white;
+        border-color: @white transparent transparent transparent;
+      }
+    }
+  }
+
+  .system-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: @menuWidth;
+    height: @menuHeight;
+    border-bottom: 1px solid #ccc;
+    color: @white;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    line-height: @menuHeight;
+    overflow: hidden;
+  }
+}
+
+.logout-popover {
+  padding: 0;
+
+  .logout-container {
+    padding: 12px;
+
+    .logout-img {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin-right: 2px;
+      background: url(../images/common/logout.png) center center/ 20px 20px no-repeat;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      background: @logout-hover-color;
+    }
+  }
+}
+
+.el-menu-item,
+.el-submenu__title {
+  >i.menu-icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 26px;
+    height: 26px;
+    margin-right: 8px;
+    background-image: url(../images/common/tab_icon.png);
+    background-repeat: no-repeat;
+
+    &.work-icon {
+      background-position: -3px -3px;
+    }
+
+    &.countervailing-icon {
+      background-position: -40px -4px;
+    }
+
+    &.account-icon {
+      background-position: -75px -1px;
+    }
+  }
+
+  >i.el-submenu__icon-arrow {
+    font-size: 16px;
+  }
+}
+
+/* 顶部菜单样式---end--- */
+
+/* 登录样式---start--- */
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url(../images/common/login_bg_img.png) center center/100% 100% no-repeat;
+
+  >.box {
+    display: block;
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    height: 696px;
+
+    .title {
+      display: block;
+      width: 100%;
+      height: 96px;
+      text-align: center;
+      background: url(../images/common/login_img.png) center center/324px 96px no-repeat;
+      margin-bottom: 50px;
+    }
+
+    .el-button {
+      width: 100%;
+      margin-top: 20px;
+      color: @menu-bg-color;
+      background: @login-btn-color;
+    }
+
+    .login {
+      width: 450px;
+      padding: 50px;
+      background: @login-box-bg-color;
+      border-radius: 10px;
+      border: solid 1px @border-login-color;
+
+      .el-form {
+        height: 450px;
+        padding: 0 50px;
+        padding-top: 100px;
+        background: @menu-bg-color;
+        border: solid 1px @border-login-color;
+        border-radius: 10px;
+
+        .el-input__prefix,
+        .el-input__inner {
+          color: @border-login-color;
+        }
+
+        .el-input__inner {
+          background: @menu-bg-color;
+          border: none;
+          border-bottom: solid 1px @border-login-color;
+          border-radius: 0;
+          padding-left: 36px;
+        }
+
+        .input-shadow {
+          box-shadow: 0px 0px 6px 0px @login-box-bg-color;
+        }
+
+        .el-input__prefix {
+          font-size: 20px;
+        }
+
+        .el-form-item {
+          margin-bottom: 50px;
+        }
+
+        .fc-red {
+          position: absolute;
+          top: -30px;
+          display: inline-block;
+          width: 100%;
+          text-align: center;
+          color: @login-msg;
+        }
+
+        .user-name {
+          position: relative;
+
+          &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 32px;
+            height: 32px;
+            background-image: url(../images/common/login_account.png);
+            background-repeat: no-repeat;
+            background-position: 4px 0px;
+          }
+
+          &.active::before {
+            content: '';
+            background-position: -25px 0px;
+          }
+        }
+
+        .password {
+          &:before {
+            content: '';
+            background-position: -54px 0px;
+          }
+
+          &.active::before {
+            content: '';
+            background-position: -84px 0px;
+          }
+        }
+
+        .tip {
+          margin-top: -20px;
+          line-height: 24px;
+          text-align: center;
+          color: @active-light;
+          font-size: 14px;
+        }
+      }
+    }
+
+  }
+}
+
+/* 登录样式---end--- */

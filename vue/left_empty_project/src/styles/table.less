@@ -1,0 +1,34 @@
+/* 表格统一样式---start--- */
+/* 表头颜色 */
+.el-table th {
+  background: @table-header;
+}
+
+.el-table {
+  width: 100%;
+  height: 100%;
+
+  &:before {
+    height: 0;
+  }
+
+  .el-table__body-wrapper.is-scrolling-none {
+    height: calc(~"100% - 48px");
+  }
+
+  .el-table__empty-block {
+    background: url(../images/common/no-data.png) center center/110px 88px no-repeat;
+
+    .el-table__empty-text {
+      opacity: 0;
+    }
+  }
+
+  & .cell {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+/* 表格统一样式---end--- */

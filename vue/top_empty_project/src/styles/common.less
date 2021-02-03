@@ -1,0 +1,435 @@
+/* 通用颜色值定义 ---start--- */
+@white: #ffffff;
+@blank: #000;
+@primary: #407dd1;
+
+@state-success: #67C23A;
+@state-warning: #E6A23C;
+@state-danger: #F56C6C;
+@state-info: #909399;
+
+@font-color-dark: #333;
+@font-color: #666;
+@font-color-light: #999;
+
+@table-header: #F6F7FB;
+
+@border-color: #dcdcdc;
+/* 通用颜色值定义 ---end--- */
+
+/* 自定义颜色值定义 ---start--- */
+@login-msg: #fc4260;
+@active-light: #18c7db;
+@menu-bg-color: #141a37;
+@menu-active-bg-color: #020513;
+@menu-active-item-color: rgba(106, 240, 255, 0.26);
+@logout-hover-color: rgba(204, 204, 204, .3);
+@content-bg-color: #ebecef;
+@font-normal: #84959b;
+@border-login-color: #6af0ff;
+@navigation-hover-color: #f5f7fa;
+@login-btn-color: #75ffff;
+@login-box-bg-color: rgba(255, 255, 255, .2);
+/* 自定义颜色值定义 ---end--- */
+
+
+/* border 属性 */
+.border-radius(@size: 4px) {
+  -webkit-border-radius: @size;
+  -moz-border-radius: @size;
+  border-radius: @size;
+}
+
+/* 触摸样式 */
+.pointer {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 去掉触摸样式 */
+.dis-pointer {
+  cursor: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* 文字截断 */
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/*transition动画函数定义*/
+.transition(@type: all; @time: .2s; @status: linear; @delay: 0s) {
+  -webkit-transition: @type @time @status @delay;
+  -o-transition: @type @time @status @delay;
+  transition: @type @time @status @delay;
+}
+
+/* transform */
+.transform(@type) {
+  -webkit-transform: @type;
+  -moz-transform: @type;
+  -ms-transform: @type;
+  -o-transform: @type;
+  transform: @type;
+}
+
+/*boxshadow样式函数*/
+.shadow(@size1: 0; @size2: 0; @size3: 20px; @color: rgba(51, 51, 51, .4)) {
+  -webkit-box-shadow: @size1 @size2 @size3 @color;
+  -moz-box-shadow: @size1 @size2 @size3 @color;
+  box-shadow: @size1 @size2 @size3 @color;
+}
+
+/*通用块boxshadow样式*/
+.block-shadow() {
+  -webkit-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2);
+  -moz-box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2);
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2);
+}
+
+/* 默认盒子阴影 */
+.default-shadow() {
+  -webkit-box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5);
+  -moz-box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5);
+  box-shadow: 0 0 8px 0 rgba(232, 237, 250, .6), 0 2px 4px 0 rgba(232, 237, 250, .5);
+}
+
+/* 激活盒子阴影 */
+.active-shadow() {
+  -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+  -moz-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+}
+
+/* 取消盒子阴影 */
+.dis-shadow {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+/*透明度函数*/
+.opacity (@size: 0.5; ) {
+  -moz-opacity: @size;
+  -khtml-opacity: @size;
+  -webkit-opacity: @size;
+  opacity: @size;
+}
+
+/*字体库设置*/
+.iconfont(@size: 16px, @color: @primary) {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  font-size: @size;
+  color: @color;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* dashboard 本墨字体 */
+.benmo-font(@size: .9rem, @color: @font-color-dark) {
+  font-family: "benmo" !important;
+  font-style: normal;
+  font-size: @size;
+  color: @color;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/*清浮动*/
+.cls-float {
+  zoom: 1;
+
+  &:after {
+    content: '';
+    display: block;
+    width: 0;
+    clear: both;
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+  }
+}
+
+.dnone {
+  display: none;
+}
+
+.dblock {
+  display: block;
+}
+
+.dinlineb {
+  display: inline-block;
+}
+
+.full {
+  width: 100%;
+  height: 100%;
+}
+
+.fullw {
+  width: 100%;
+}
+
+.fullh {
+  height: 100%;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+/* 边距---start--- */
+.mg8 {
+  margin: 8px;
+}
+
+.mgb8 {
+  margin-bottom: 8px;
+}
+
+.mgt8 {
+  margin-top: 8px;
+}
+
+.mgl8 {
+  margin-left: 8px;
+}
+
+.mgr8 {
+  margin-right: 8px;
+}
+
+.mg10 {
+  margin: 10px;
+}
+
+.mgb10 {
+  margin-bottom: 10px;
+}
+
+.mgt10 {
+  margin-top: 10px;
+}
+
+.mgl10 {
+  margin-left: 10px;
+}
+
+.mgr10 {
+  margin-right: 10px;
+}
+
+.mg12 {
+  margin: 12px;
+}
+
+.mgb12 {
+  margin-bottom: 12px;
+}
+
+.mgt12 {
+  margin-top: 12px;
+}
+
+.mgl12 {
+  margin-left: 12px;
+}
+
+.mgr12 {
+  margin-right: 12px;
+}
+
+.mg16 {
+  margin: 16px;
+}
+
+.mgb16 {
+  margin-bottom: 16px;
+}
+
+.mgt16 {
+  margin-top: 16px;
+}
+
+.mgl16 {
+  margin-left: 16px;
+}
+
+.mgr16 {
+  margin-right: 16px;
+}
+
+.pd8 {
+  padding: 8px;
+}
+
+.pdb8 {
+  padding-bottom: 8px;
+}
+
+.pdt8 {
+  padding-top: 8px;
+}
+
+.pdl8 {
+  padding-left: 8px;
+}
+
+.pdr8 {
+  padding-right: 8px;
+}
+
+.pd10 {
+  padding: 10px;
+}
+
+.pdb10 {
+  padding-bottom: 10px;
+}
+
+.pdt10 {
+  padding-top: 10px;
+}
+
+.pdl10 {
+  padding-left: 10px;
+}
+
+.pdr10 {
+  padding-right: 10px;
+}
+
+.pd12 {
+  padding: 12px;
+}
+
+.pdb12 {
+  padding-bottom: 12px;
+}
+
+.pdt12 {
+  padding-top: 12px;
+}
+
+.pdl12 {
+  padding-left: 12px;
+}
+
+.pdr12 {
+  padding-right: 12px;
+}
+
+.pd16 {
+  padding: 16px;
+}
+
+.pdb16 {
+  padding-bottom: 16px;
+}
+
+.pdt16 {
+  padding-top: 16px;
+}
+
+.pdl16 {
+  padding-left: 16px;
+}
+
+.pdr16 {
+  padding-right: 16px;
+}
+
+/* 边距---end--- */
+
+/* 字体样式---start--- */
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-justify {
+  text-align-last: justify;
+}
+
+.fs12 {
+  font-size: 12px;
+}
+
+.fs13 {
+  font-size: 13px;
+}
+
+.fs14 {
+  font-size: 14px;
+}
+
+.fs15 {
+  font-size: 15px;
+}
+
+.fs16 {
+  font-size: 16px;
+}
+
+.fs18 {
+  font-size: 18px;
+}
+
+.fc-white {
+  color: #fff;
+}
+
+/* 字体样式---end--- */
+
+/* 背景样式---start--- */
+.bg-white {
+  background: #fff;
+}
+
+/* 背景样式---end--- */
+
+/* 弹性盒---start--- */
+.dflex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex {
+  -webkit-box-flex: 1 !important;
+  -ms-flex: 1 !important;
+  -webkit-flex: 1 !important;
+  flex: 1 !important;
+}
+
+/* 弹性盒---end--- */
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.vertical-align-m {
+  vertical-align: middle;
+}

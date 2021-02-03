@@ -1,0 +1,10 @@
+/* projectName: emptyProject */
+@font-face {
+  font-family: 'iconfont';  /* project id 1930426 */
+  src: url('//at.alicdn.com/t/font_1930426_flprlvi32ln.eot');
+  src: url('//at.alicdn.com/t/font_1930426_flprlvi32ln.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1930426_flprlvi32ln.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1930426_flprlvi32ln.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1930426_flprlvi32ln.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1930426_flprlvi32ln.svg#iconfont') format('svg');
+}
