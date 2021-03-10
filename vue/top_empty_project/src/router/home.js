@@ -2,7 +2,7 @@
  * Vue directive & filter register file
  * Created by shuhui-meng on 2020/07/09
  *********************************************************************/
-import {MENU_LIST} from "./config.js";
+import { MENU_LIST } from "./config.js";
 
 const Login = () => {
   return import( /* webpackChunkName: "Login" */ '@/components/common/Login.vue');
@@ -22,6 +22,7 @@ const routes = [{
       layout: 'blank-layout'
     }
   },
+
   ...createRoute(MENU_LIST)
 ];
 
@@ -32,8 +33,8 @@ function createRoute(menuList) {
     let _component = !!item.file ? resolve => require([`@/pages/${item.file}`], resolve) : RouterViewPage,
       _children = !!item.children && !!item.children.length ? createRoute(item.children) : [];
     routeList.push({
-      path: item.path,
-      name: item.label,
+      path: item.path || '',
+      name: item.label || '',
       meta: item.meta || {},
       component: _component,
       children: _children,

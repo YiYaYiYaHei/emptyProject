@@ -5,11 +5,13 @@
 <template>
   <div class="application-main-container cls-float">
     <!-- 菜单 -->
-    <menu-layout :menuExpand="menuExpand" @changeMenuExpand="menuExpandEvt"></menu-layout>
+    <menu-layout :menuExpand="menuExpand"></menu-layout>
 
-    <div class="application-right-container" :style="{'margin-left': menuExpand ? '210px' : '40px'}">
+    <div class="application-right-container"
+         :style="{'margin-left': menuExpand ? '210px' : '40px'}">
       <!-- 顶部导航 -->
-      <navigation :menuExpand="menuExpand" @menuExpandEvt="menuExpandEvt"></navigation>
+      <navigation :menuExpand="menuExpand"
+                  @menuExpandEvt="menuExpandEvt"></navigation>
 
       <div class="application-container">
         <router-view />
@@ -34,7 +36,7 @@ export default {
   },
   methods: {
     menuExpandEvt(data) {
-      this.menuExpand = data ? data : !this.menuExpand
+      this.menuExpand = data ? data : !this.menuExpand;
     }
   }
 }

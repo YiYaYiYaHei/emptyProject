@@ -40,33 +40,97 @@
 /* 项目主入口---end--- */
 
 /* 左侧+顶部菜单样式---start--- */
+.menu-bg(@bgColor) {
+  background-color: @bgColor  !important;
+}
+
+.menu-color(@color) {
+  color: @color  !important;
+}
+
+/* 菜单激活样式start */
+.menu-hover(@bgColor, @color, @bgHoverColor) {
+
+  .el-menu-item,
+  .el-submenu__title {
+    background: @bgColor;
+    color: @color;
+
+    &:focus,
+    &:hover {
+      .menu-bg(@bgHoverColor);
+      .menu-color(@color);
+    }
+  }
+}
+
+.menu-active(@bgActiveColor, @activeColor, @bgHoverColor) {
+
+  .el-submenu.is-active>.el-submenu__title,
+  .el-menu-item.is-active {
+    .menu-color(@activeColor);
+  }
+
+  .el-submenu.is-opened {
+
+    .el-menu-item {
+      .menu-bg(@bgActiveColor);
+    }
+  }
+
+  .el-menu-item.menu-three {
+    &:hover {
+      .menu-bg(@bgHoverColor);
+    }
+  }
+}
+
+/* 菜单激活样式end */
 .application--left-top-menu {
   position: relative;
 
-  /* 左侧菜单样式---start--- */
+  /* 顶部菜单样式start*/
   .el-menu-top {
     width: 100%;
     height: @menuHeight;
     padding-right: 210px;
     padding-left: 210px;
+    .menu-bg(@menu-top-bgColor);
 
     >li,
     >li>div {
-      height: @menuHeight !important;
-      line-height: @menuHeight !important;
+      height: @menuHeight  !important;
+      line-height: @menuHeight  !important;
+    }
+
+    .menu-hover(@menu-top-bgColor, @white, @menu-hover-top-bgColor);
+    .menu-active(@menu-active-top-bgColor, @menu-active-top-textColor, @menu-hover-top-bgColor);
+
+    .el-menu-item.is-active {
+      border-bottom: 2px solid @menu-active-top-textColor;
     }
   }
 
-  /* 左侧菜单样式---end--- */
-  /* 顶部菜单样式---start--- */
+  /* 顶部菜单样式end */
+
+  /* 左侧菜单样式start */
   .el-menu-left {
     float: left;
-    width: @menuWidth;
+    width: 100%;
     height: @contentHeight;
+    .menu-bg(@menu-left-bgColor);
     .transition();
+
+    .menu-hover(@menu-left-bgColor, @white, @menu-hover-left-bgColor);
+    .menu-active(@menu-active-left-bgColor, @menu-active-left-textColor, @menu-hover-left-bgColor);
   }
 
-  /* 顶部菜单样式---end--- */
+  .el-menu.el-menu--horizontal {
+    border-bottom: none !important;
+  }
+
+  /* 左侧菜单样式end */
+
   .el-menu-item,
   .el-submenu__title {
     >i.menu-icon {
@@ -78,7 +142,25 @@
     }
   }
 
-  /* 用户信息 */
+  /* 左上角系统名称start */
+  .system-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: @menuWidth;
+    height: @menuHeight;
+    box-sizing: border-box;
+    color: @white;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    line-height: @menuHeight;
+    overflow: hidden;
+  }
+  /* 左上角系统名称end */
+
+  /* 用户信息start */
   .user-info {
     position: absolute;
     top: 0;
@@ -121,21 +203,7 @@
     }
   }
 
-  .system-title {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: @menuWidth;
-    height: @menuHeight;
-    border-bottom: 1px solid #ccc;
-    color: @white;
-    font-size: 22px;
-    font-weight: 700;
-    text-align: center;
-    line-height: @menuHeight;
-    overflow: hidden;
-  }
+  /* 用户信息end */
 }
 
 .logout-popover {
@@ -154,7 +222,7 @@
     }
 
     &:hover {
-      background: @logout-hover-color;
+      background: @logout-hover-bgColor;
     }
   }
 }
@@ -164,22 +232,26 @@
   >i.menu-icon {
     display: inline-block;
     vertical-align: middle;
-    width: 26px;
-    height: 26px;
+    width: 20px;
+    height: 20px;
     margin-right: 8px;
-    background-image: url(../images/common/tab_icon.png);
+    background-image: url(../images/common/tab_bar_icon.png);
     background-repeat: no-repeat;
 
-    &.work-icon {
-      background-position: -3px -3px;
+    &.home-icon {
+      background-position: 0px 0px;
     }
 
-    &.countervailing-icon {
-      background-position: -40px -4px;
+    &.evidence-icon {
+      background-position: -22px 0px;
     }
 
-    &.account-icon {
-      background-position: -75px -1px;
+    &.verification-icon {
+      background-position: -40px 0px;
+    }
+
+    &.user-icon {
+      background-position: -60px 0px;
     }
   }
 
@@ -218,14 +290,14 @@
     .el-button {
       width: 100%;
       margin-top: 20px;
-      color: @menu-bg-color;
-      background: @login-btn-color;
+      color: @login-color;
+      background: @login-btn-bgColor;
     }
 
     .login {
       width: 450px;
       padding: 50px;
-      background: @login-box-bg-color;
+      background: @login-box-bgColor;
       border-radius: 10px;
       border: solid 1px @border-login-color;
 
@@ -233,7 +305,7 @@
         height: 450px;
         padding: 0 50px;
         padding-top: 100px;
-        background: @menu-bg-color;
+        background: @login-color;
         border: solid 1px @border-login-color;
         border-radius: 10px;
 
@@ -243,7 +315,7 @@
         }
 
         .el-input__inner {
-          background: @menu-bg-color;
+          background: @login-color;
           border: none;
           border-bottom: solid 1px @border-login-color;
           border-radius: 0;
@@ -251,7 +323,7 @@
         }
 
         .input-shadow {
-          box-shadow: 0px 0px 6px 0px @login-box-bg-color;
+          box-shadow: 0px 0px 6px 0px @login-btn-bgColor;
         }
 
         .el-input__prefix {
@@ -313,7 +385,6 @@
         }
       }
     }
-
   }
 }
 

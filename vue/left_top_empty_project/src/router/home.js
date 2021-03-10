@@ -22,6 +22,7 @@ const routes = [{
       layout: 'blank-layout'
     }
   },
+
   ...createRoute(MENU_LIST)
 ];
 
@@ -32,8 +33,8 @@ function createRoute(menuList) {
     let _component = !!item.file ? resolve => require([`@/pages/${item.file}`], resolve) : RouterViewPage,
       _children = !!item.children && !!item.children.length ? createRoute(item.children) : [];
     routeList.push({
-      path: item.path,
-      name: item.label,
+      path: item.path || '',
+      name: item.label || '',
       meta: item.meta || {},
       component: _component,
       children: _children,

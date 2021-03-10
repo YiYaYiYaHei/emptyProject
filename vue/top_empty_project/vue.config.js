@@ -1,48 +1,63 @@
 const path = require("path"),
-  TerserPlugin = require('terser-webpack-plugin'),
-  env = process.env.NODE_ENV.trim(),
-  isPRD = env === "production",
-  outputDir = 'topEmptyProject',
-  title = "顶部菜单";
+    TerserPlugin = require('terser-webpack-plugin'),
+    env = process.env.NODE_ENV.trim(),
+    isPRD = env === "production",
+    publicPath = '/',
+    outputDir = 'dist',
+    title = "顶侧菜单";
 
 const config = {
-  publicPath: "/",
+  publicPath,
   outputDir,
   assetsDir: './',
   lintOnSave: false,
   chainWebpack: () => {},
   pages: {
     index: {
-      entry: "src/main.js",
-      template: "public/index.html",
-      filename: "index.html",
-      title
+        entry: "src/main.js",
+        template: "public/index.html",
+        filename: "index.html",
+        title
     }
   },
   configureWebpack: config => {
     config.mode = isPRD ? "production" : "development";
     Object.assign(config, {
-      resolve: {
-        extensions: [".js", ".vue", ".json"],
-        alias: {
-          "@": path.resolve(__dirname, "./src")
-        }
-      }
+        resolve: {
+            extensions: [".js", ".vue", ".json"],
+            alias: {
+                "@": path.resolve(__dirname, "./src")
+            }
+        },
+        // 设置打包文件名
+        output: {
+          path: path.resolve(__dirname, outputDir),
+          filename: `js/[name].${+new Date()}.js`,
+          publicPath,
+          chunkFilename: `js/[name].${+new Date()}.js`
+        },
     });
     // 去除打包的console.log
     config.optimization = {
-      minimizer: [new TerserPlugin({
-        terserOptions: {
-          compress: {
-            drop_console: true
-          }
-        }
-      })]
+        minimizer: [
+          new TerserPlugin({ 
+            extractComments: false,  // 去除js打包后的LICENSE.txt文件
+            terserOptions: { 
+              compress: { 
+                drop_console: true 
+              } 
+            } 
+          })
+        ]
     }
   },
   productionSourceMap: !isPRD,
   css: {
-    extract: true,
+    extract: {
+      // 修改打包后的css文件名
+      filename: `css/[name].${+new Date()}.css`,
+      chunkFilename: `css/[name].${+new Date()}.css`
+    },
     sourceMap: false,
     requireModuleExtension: true,
     loaderOptions: {}
@@ -54,13 +69,11 @@ const config = {
     https: false,
     hotOnly: false,
     proxy: {
-      "/apis": {
-        target: "http://localhost:9091",
-        pathRewrite: {
-          "^/apis": ""
-        },
-        secure: false
-      }
+        "/apis": {
+            target: "http://localhost:9091",
+            pathRewrite: {"^/apis": ""},
+            secure: false
+        }
     }
   },
   pluginOptions: {

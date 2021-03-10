@@ -40,7 +40,7 @@ export default {
     /* 退出 */
     async logoutEvt() {
       let result = await this.$api.getDataRequest('USER_LOGOUT', {})
-      if (!!result && result.status) {
+      if (!!result && result.status === 200) {
         this.logout()
       }
     }

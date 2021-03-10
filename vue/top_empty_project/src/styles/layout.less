@@ -35,23 +35,37 @@
 /* 项目主入口---end--- */
 
 /* 顶部菜单样式---start--- */
+.menu-bg(@bgColor) {
+  background-color: @bgColor  !important;
+}
+
+.menu-color(@color) {
+  color: @color  !important;
+}
+
 .application-top-menu {
   position: relative;
 
-  .el-menu-top {
+  .el-menu {
     width: 100%;
     height: @menuHeight;
     padding-right: 300px;
     padding-left: 210px;
+    border-bottom: none;
 
     >li,
     >li>div {
-      height: @menuHeight !important;
-      line-height: @menuHeight !important;
+      height: @menuHeight  !important;
+      line-height: @menuHeight  !important;
+    }
+
+    .el-menu-item.is-active,
+    .el-submenu.is-active .el-submenu__title {
+      border-bottom: 2px solid @menu-active-text-color  !important;
     }
   }
 
-  /* 用户信息 */
+  /* 用户信息start */
   .user-info {
     position: absolute;
     top: 0;
@@ -94,6 +108,8 @@
     }
   }
 
+  /* 用户信息end */
+
   .system-title {
     position: absolute;
     top: 0;
@@ -111,36 +127,15 @@
   }
 }
 
-.logout-popover {
-  padding: 0;
-
-  .logout-container {
-    padding: 12px;
-
-    .logout-img {
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin-right: 2px;
-      background: url(../images/common/logout.png) center center/ 20px 20px no-repeat;
-      vertical-align: middle;
-    }
-
-    &:hover {
-      background: @logout-hover-color;
-    }
-  }
-}
-
 .el-menu-item,
 .el-submenu__title {
   >i.menu-icon {
     display: inline-block;
     vertical-align: middle;
-    width: 26px;
-    height: 26px;
+    width: 20px;
+    height: 20px;
     margin-right: 8px;
-    background-image: url(../images/common/tab_icon.png);
+    background-image: url(../images/common/tab_bar_icon.png);
     background-repeat: no-repeat;
 
     &.work-icon {
@@ -160,6 +155,69 @@
     font-size: 16px;
   }
 }
+
+/* 菜单激活start */
+.el-menu {
+  .menu-bg(@menu-bg-color);
+}
+.el-menu--horizontal .el-menu .el-menu-item,
+.el-menu--horizontal .el-menu .el-submenu__title .el-menu-item,
+.el-menu--horizontal .el-menu .el-submenu__title {
+  background: @menu-bg-color;
+}
+.el-menu--horizontal>.el-menu-item,
+.el-menu--horizontal .el-menu .el-menu-item,
+.el-menu--horizontal .el-menu .el-submenu__title {
+  color: @white;
+}
+.el-menu-item,
+.el-submenu__title {
+  background: @menu-bg-color;
+  color: @white  !important;
+
+  &:focus,
+  &:hover {
+    .menu-bg(@menu-hover-bg-color);
+    .menu-color(@white);
+  }
+}
+
+.el-submenu.is-active>.el-submenu__title,
+.el-menu-item.is-active {
+  .menu-color(@menu-active-text-color);
+}
+
+.el-submenu.is-opened {
+
+  .el-menu-item {
+    .menu-bg(@menu-active-bg-color);
+  }
+}
+
+/* 菜单激活end */
+
+.logout-popover {
+  padding: 0;
+
+  .logout-container {
+    padding: 12px;
+
+    .logout-img {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin-right: 2px;
+      background: url(../images/common/logout.png) center center/ 20px 20px no-repeat;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      background: @logout-hover-bgColor;
+    }
+  }
+}
+
+
 
 /* 顶部菜单样式---end--- */
 
@@ -192,13 +250,13 @@
       width: 100%;
       margin-top: 20px;
       color: @menu-bg-color;
-      background: @login-btn-color;
+      background: @login-btn-bgColor;
     }
 
     .login {
       width: 450px;
       padding: 50px;
-      background: @login-box-bg-color;
+      background: @login-box-bgColor;
       border-radius: 10px;
       border: solid 1px @border-login-color;
 
@@ -224,7 +282,7 @@
         }
 
         .input-shadow {
-          box-shadow: 0px 0px 6px 0px @login-box-bg-color;
+          box-shadow: 0px 0px 6px 0px @login-btn-bgColor;
         }
 
         .el-input__prefix {

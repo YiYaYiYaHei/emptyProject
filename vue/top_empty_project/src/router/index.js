@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
     return;
   }
   if (!!token && to.fullPath === '/login') {
-    next('/home')
+    next('/home');
   } else {
     next();
   }

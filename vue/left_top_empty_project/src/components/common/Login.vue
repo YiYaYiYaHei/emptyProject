@@ -10,10 +10,25 @@
       <div class="login">
         <el-form :model="loginData" label-width="0">
           <el-form-item>
-            <el-input maxlength=20 placeholder="用 户 名" v-model="loginData.userName" @keyup.enter.native="loginEvt" clearable @focus="focusInput('userName')" class="user-name" :class="{'active': !!loginData.userName, 'input-shadow': focusType === 'userName'}"></el-input>
+            <el-input maxlength=20
+                      placeholder="用 户 名"
+                      v-model="loginData.userName"
+                      @keyup.enter.native="loginEvt"
+                      clearable
+                      @focus="focusInput('userName')"
+                      class="user-name"
+                      :class="{'active': !!loginData.userName, 'input-shadow': focusType === 'userName'}"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-input maxlength=20 type="password" placeholder="密 码" v-model="loginData.userPwd" @keyup.enter.native="loginEvt" clearable @focus="focusInput('userPwd')" class="user-name password" :class="{'active': !!loginData.userPwd, 'input-shadow': focusType === 'userPwd'}"></el-input>
+            <el-input maxlength=20
+                      type="password"
+                      placeholder="密 码"
+                      v-model="loginData.userPwd"
+                      @keyup.enter.native="loginEvt"
+                      clearable
+                      @focus="focusInput('userPwd')"
+                      class="user-name password"
+                      :class="{'active': !!loginData.userPwd, 'input-shadow': focusType === 'userPwd'}"></el-input>
           </el-form-item>
           <el-form-item>
             <span class="fc-red">{{msg}}</span>
@@ -51,104 +66,99 @@ export default {
     async loginEvt() {
       // 用户名或密码为空时
       if (!this.loginData.userName || !this.loginData.userPwd) {
-        this.msg = '请输入用户名或密码'
-        return false
+        this.msg = '请输入用户名或密码';
+        return false;
       }
 
-      this.loading = true
+      this.loading = true;
       let result = await this.$api.getDataRequest('USER_LOGIN', {
         userName: this.loginData.userName,
         userPwd: SHA256.hmac(this.loginData.userName, this.loginData.userPwd)
       })
       setTimeout(() => {
-        this.loading = false
+        this.loading = false;
         if (!result || result.status !== 200) {
-          this.$message.error(result.message)
+          this.$message.error(result.message);
         } else {
-          sessionStorage.setItem('current_login_user_token', result.data.token)
-          this.$store.dispatch('setUserInfo', {
-            data: result.data.userInfo || {}
-          })
-          this.$router.push('/home')
+          sessionStorage.setItem('current_login_user_token', result.data.token);
+          this.$store.dispatch('setUserInfo', { data: result.data.userInfo || {} });
+          this.$router.push('/home');
         }
       }, 1000)
     },
     // 获取浏览器版本号
     getVersion(browser) {
-      let arr = navigator.userAgent.split(' ')
-      let chromeVersion = ''
+      let arr = navigator.userAgent.split(' ');
+      let chromeVersion = '';
       for (let i = 0; i < arr.length; i++) {
         if (new RegExp(browser, 'i').test(arr[i])) {
-          chromeVersion = arr[i]
+          chromeVersion = arr[i];
         }
       }
       if (chromeVersion) {
-        return chromeVersion.split('/')[1]
+        return chromeVersion.split('/')[1];
       }
-      return false
+      return false;
     },
     // 检查是否低于规定版本 谷歌.2987.133  火狐.2
     isLessThan(browser, version) {
-      let minChromeVersion = '57.0'
-      let minFirefoxVersion = '59.0'
-      let minVersionArr =
-        browser === 'chrome'
-          ? minChromeVersion.split('.')
-          : minFirefoxVersion.split('.')
-      let versionArr = version.split('.')
+      let minChromeVersion = '57.0';
+      let minFirefoxVersion = '59.0';
+      let minVersionArr = browser === 'chrome' ? minChromeVersion.split('.') : minFirefoxVersion.split('.');
+      let versionArr = version.split('.');
       for (let i = 0; i < versionArr.length; i++) {
         if (Number(versionArr[i]) < Number(minVersionArr[i])) {
-          return true
+          return true;
         }
       }
     },
     // 浏览器版本过低提示
     checkVersion() {
-      let chromeVersion = this.getVersion('chrome')
-      let firefoxVersion = this.getVersion('Firefox')
+      let chromeVersion = this.getVersion('chrome');
+      let firefoxVersion = this.getVersion('Firefox');
       if (chromeVersion) {
-        this.visibleVersion = this.isLessThan('chrome', chromeVersion)
+        this.visibleVersion = this.isLessThan('chrome', chromeVersion);
       } else if (firefoxVersion) {
-        this.visibleVersion = this.isLessThan('Firefox', firefoxVersion)
+        this.visibleVersion = this.isLessThan('Firefox', firefoxVersion);
       } else {
-        this.visibleVersion = false
-        this.visibleRmd = true
+        this.visibleVersion = false;
+        this.visibleRmd = true;
       }
     },
     // 分辨率提示
     checkViewPort() {
-      let minWidth = 1366
-      let minHeight = 768
-      let pageWidth = window.innerWidth
-      let pageHeight = window.innerHeight
+      let minWidth = 1366;
+      let minHeight = 768;
+      let pageWidth = window.innerWidth;
+      let pageHeight = window.innerHeight;
       if (typeof pageWidth !== 'number') {
         if (document.compactMode === 'CSS1Compat') {
-          pageWidth = document.documentElement.clientWidth
-          pageHeight = document.documentElement.clientHeight
+          pageWidth = document.documentElement.clientWidth;
+          pageHeight = document.documentElement.clientHeight;
         } else {
-          pageWidth = document.body.clientWidth
-          pageHeight = document.body.clientHeight
+          pageWidth = document.body.clientWidth;
+          pageHeight = document.body.clientHeight;
         }
       }
       if (pageWidth < minWidth || pageHeight < minHeight) {
-        this.visibleviewPort = true
+        this.visibleviewPort = true;
       } else {
-        this.visibleviewPort = false
+        this.visibleviewPort = false;
       }
     },
     focusInput(type) {
-      this.msg = ''
-      this.focusType = type
+      this.msg = '';
+      this.focusType = type;
     }
   },
   created() {
-    this.checkViewPort()
-    this.checkVersion()
+    this.checkViewPort();
+    this.checkVersion();
 
-    window.addEventListener('resize', this.checkViewPort)
+    window.addEventListener('resize', this.checkViewPort);
   },
   destroyed() {
-    window.onresize = null
+    window.onresize = null;
   }
 }
 </script>

@@ -10,13 +10,10 @@ const Login = () => {
 const RouterViewPage = () => {
   return import( /* webpackChunkName: "RouterViewPage" */ '@/components/common/RouterViewPage.vue');
 }
-const D3 = () => {
-  return import( /* webpackChunkName: "D3" */ '@/pages/d3/Index.vue');
-}
 
 const routes = [{
     path: '/',
-    redirect: '/d3'
+    redirect: '/login'
   },
   {
     path: '/login',
@@ -25,13 +22,7 @@ const routes = [{
       layout: 'blank-layout'
     }
   },
-  {
-    path: '/d3',
-    component: D3,
-    meta: {
-      layout: 'blank-layout'
-    }
-  },
+
   ...createRoute(MENU_LIST)
 ];
 
@@ -42,8 +33,8 @@ function createRoute(menuList) {
     let _component = !!item.file ? resolve => require([`@/pages/${item.file}`], resolve) : RouterViewPage,
       _children = !!item.children && !!item.children.length ? createRoute(item.children) : [];
     routeList.push({
-      path: item.path,
-      name: item.label,
+      path: item.path || '',
+      name: item.label || '',
       meta: item.meta || {},
       component: _component,
       children: _children,

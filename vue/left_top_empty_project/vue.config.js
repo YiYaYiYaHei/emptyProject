@@ -2,11 +2,12 @@ const path = require("path"),
     TerserPlugin = require('terser-webpack-plugin'),
     env = process.env.NODE_ENV.trim(),
     isPRD = env === "production",
-    outputDir = 'leftTopEmptyProject',
-    title = "左+顶菜单";
+    publicPath = '/',
+    outputDir = 'dist',
+    title = "左+顶侧菜单";
 
 const config = {
-  publicPath: "/",
+  publicPath,
   outputDir,
   assetsDir: './',
   lintOnSave: false,
@@ -27,16 +28,36 @@ const config = {
             alias: {
                 "@": path.resolve(__dirname, "./src")
             }
-        }
+        },
+        // 设置打包文件名
+        output: {
+          path: path.resolve(__dirname, outputDir),
+          filename: `js/[name].${+new Date()}.js`,
+          publicPath,
+          chunkFilename: `js/[name].${+new Date()}.js`
+        },
     });
     // 去除打包的console.log
     config.optimization = {
-        minimizer: [new TerserPlugin({ terserOptions: { compress: { drop_console: true } } })]
+        minimizer: [
+          new TerserPlugin({ 
+            extractComments: false,  // 去除js打包后的LICENSE.txt文件
+            terserOptions: { 
+              compress: { 
+                drop_console: true 
+              } 
+            } 
+          })
+        ]
     }
   },
   productionSourceMap: !isPRD,
   css: {
-    extract: true,
+    extract: {
+      // 修改打包后的css文件名
+      filename: `css/[name].${+new Date()}.css`,
+      chunkFilename: `css/[name].${+new Date()}.css`
+    },
     sourceMap: false,
     requireModuleExtension: true,
     loaderOptions: {}
@@ -44,12 +65,12 @@ const config = {
   parallel: require("os").cpus().length > 1,
   devServer: {
     host: "0.0.0.0",
-    port: 9090,
+    port: 9093,
     https: false,
     hotOnly: false,
     proxy: {
         "/apis": {
-            target: "http://localhost:9090",
+            target: "http://localhost:9093",
             pathRewrite: {"^/apis": ""},
             secure: false
         }

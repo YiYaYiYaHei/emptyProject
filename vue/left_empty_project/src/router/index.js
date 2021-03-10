@@ -53,7 +53,6 @@ let loopPath = (path, item) => {
 /* 路由守卫 */
 router.beforeEach((to, from, next) => {
   let token = sessionStorage.getItem('current_login_user_token') || '';
-  token = 'sad'
   if (!token && to.fullPath !== '/login') {
     next('/login');
     return;

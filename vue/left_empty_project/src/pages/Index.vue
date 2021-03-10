@@ -13,7 +13,7 @@ export default {
     BlankLayout
   },
   render(createElement) {
-    return createElement(this.currentComp)
+    return createElement(this.currentComp);
   },
   data() {
     return {
@@ -22,14 +22,14 @@ export default {
   },
   watch: {
     '$route.path': function(val) {
-      this.currentComp = this.$route.meta.layout || 'main-layout'
+      this.currentComp = this.$route.meta.layout || 'main-layout';
     }
   },
   created() {
-    this.currentComp = this.layout
+    this.currentComp = this.layout;
   },
   beforeDestroy() {
-    this.$store.dispatch('resetStore')
+    this.$store.dispatch('resetStore');
   }
 }
 </script>

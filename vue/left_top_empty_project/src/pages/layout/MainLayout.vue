@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     menuExpandEvt(data) {
-      this.menuExpand = data ? data : false
+      this.menuExpand = data ? data : false;
     }
   }
 }

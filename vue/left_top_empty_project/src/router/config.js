@@ -1,39 +1,39 @@
 /**
- * @param label       菜单项名称
- * @param icon        菜单项图标className
- * @param path        菜单项路由
- * @param children    菜单项子菜单
- * @param file        菜单项文件路径
- * @param hidden      是否影藏
- * @param redirect    路由重定向
+ * @param label         菜单项名称
+ * @param [icon]        菜单项图标className
+ * @param [path]        菜单项路由
+ * @param [children]    菜单项子菜单
+ * @param [file]        菜单项文件路径
+ * @param [hidden]      是否展示  true-不展示，false: 展示
+ * @param [redirect]    路由重定向
  */
 const MENU_LIST = [{
   label: '首页',
   icon: 'home-icon',
   path: "/home",
+  file: 'home/Index.vue',
   children: [],
-  file: 'home/Index.vue'
 }, {
   label: '威胁中心',
   icon: 'evidence-icon',
-  path: "",
-  file: 'threaten/Index.vue',
+  path: '',
+  file: '',
   children: [{
     label: '威胁总览',
     path: '/threaten/list',
     icon: '&#xe6f9;',
-    file: 'threaten/tpl/ThreatenList.vue'
+    file: 'threaten/ThreatenList.vue'
   }, {
     label: '威胁事件',
     path: '/threaten/event',
     icon: '&#xe6f9;',
-    file: 'threaten/tpl/ThreatenEvent.vue'
+    file: 'threaten/ThreatenEvent.vue'
   }]
 }, {
   label: '风险追朔',
   icon: 'evidence-icon',
-  path: "",
-  file: 'risk/Index.vue',
+  path: '',
+  file: '',
   children: [{
     label: '风险追朔1',
     icon: '',
@@ -43,7 +43,7 @@ const MENU_LIST = [{
       label: '风险追朔1-1',
       icon: '',
       path: '/risk/a/a',
-      file: 'risk/tpl/List1',
+      file: 'risk/List1',
       children: []
     }]
   }, {
@@ -55,17 +55,18 @@ const MENU_LIST = [{
       label: '风险追朔2-1',
       icon: '',
       path: '/risk/b/a',
-      file: 'risk/tpl/List2'
+      file: 'risk/List2'
     }]
   }]
 }, {
   label: '资产管理',
   icon: 'evidence-icon',
-  path: "",
+  path: '',
   file: 'resource/Index.vue',
   children: [{
     label: '资产',
-    path: "",
+    path: '',
+    icon: 'evidence-icon',
     children: [{
       label: '资产列表',
       path: "/resource/a/list",
@@ -79,10 +80,12 @@ const MENU_LIST = [{
   }, {
     label: '资产设置',
     path: "/resource/config",
+    icon: 'evidence-icon',
     file: 'resource/tpl/ResourceConfig.vue'
   }, {
     label: '资产组',
-    path: "",
+    path: '',
+    icon: 'evidence-icon',
     children: [{
       label: '资产组详情',
       path: "/resource/b/gdetail",

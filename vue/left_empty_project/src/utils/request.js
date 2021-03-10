@@ -92,7 +92,7 @@ const buildRequestData = (data) => {
  * @param flag    标识符，用来判断是否为线路故障诊断
  */
 const sendRequest = async(request, urlPrefix) => {
-  let url = getUrl(request.url, request.urlParam, urlPrefix),
+  let url = request.url.startsWith('http') ? request.url : getUrl(request.url, request.urlParam, urlPrefix),
     requestData = buildRequestData(request);
 
   /* 针对IE浏览器，避免code304读取缓存 */
