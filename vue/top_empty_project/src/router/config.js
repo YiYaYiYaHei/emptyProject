@@ -1,11 +1,12 @@
 /**
- * @param label         菜单项名称
- * @param [icon]        菜单项图标className
- * @param [path]        菜单项路由
- * @param [children]    菜单项子菜单
- * @param [file]        菜单项文件路径
- * @param [hidden]      是否展示  true-不展示，false: 展示
- * @param [redirect]    路由重定向
+ * @param label                    菜单项名称
+ * @param icon                     菜单项图标className
+ * @param path                     菜单项路由
+ * @param children                 菜单项子菜单
+ * @param file                     菜单项文件路径
+ * @param hidden                   是否影藏
+ * @param redirect                 路由重定向
+ * @param assembleChildren         是否需要手动组装children：true-不需要
  */
 const MENU_LIST = [{
   label: '首页',

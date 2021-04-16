@@ -3,8 +3,8 @@
  * Created by shuhui-meng on 2020/07/09
  *********************************************************************/
 <script>
-import MainLayout from './layout/MainLayout.vue'
-import BlankLayout from './layout/BlankLayout.vue'
+import MainLayout from './layout/MainLayout.vue';
+import BlankLayout from './layout/BlankLayout.vue';
 
 export default {
   props: ['layout'],
@@ -27,9 +27,6 @@ export default {
   },
   created() {
     this.currentComp = this.layout;
-  },
-  beforeDestroy() {
-    this.$store.dispatch('resetStore');
   }
 }
 </script>

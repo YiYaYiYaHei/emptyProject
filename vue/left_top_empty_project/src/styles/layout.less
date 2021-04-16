@@ -94,7 +94,7 @@
     width: 100%;
     height: @menuHeight;
     padding-right: 210px;
-    padding-left: 210px;
+    padding-left: @menuWidth;
     .menu-bg(@menu-top-bgColor);
 
     >li,
@@ -107,7 +107,7 @@
     .menu-active(@menu-active-top-bgColor, @menu-active-top-textColor, @menu-hover-top-bgColor);
 
     .el-menu-item.is-active {
-      border-bottom: 2px solid @menu-active-top-textColor;
+      border-bottom: 4px solid @menu-active-top-textColor;
     }
   }
 
@@ -340,7 +340,7 @@
           display: inline-block;
           width: 100%;
           text-align: center;
-          color: @login-msg;
+          color: @state-danger;
         }
 
         .user-name {

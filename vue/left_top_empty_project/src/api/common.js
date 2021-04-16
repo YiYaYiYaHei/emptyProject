@@ -9,7 +9,7 @@ import UrlConfig from "../config/url.config";
  * @param      urlPrefix           接口前缀:类似BASE_URL
  * @return     {Promise<*>}        返回promise对象
  */
-let getDataRequest = (key, params, urlPrefix, method = 'GET') => {
+let getDataRequest = (key, params, method = 'GET', urlPrefix) => {
   return Ajax({
     method: method,
     url: UrlConfig[key],
@@ -25,7 +25,7 @@ let getDataRequest = (key, params, urlPrefix, method = 'GET') => {
  * @param      urlPrefix           接口前缀:类似BASE_URL
  * @return     {Promise<*>}        返回promise对象
  */
-let postDataRequest = (key, data, urlPrefix, method = 'POST') => {
+let postDataRequest = (key, data, method = 'POST', urlPrefix) => {
   return Ajax({
     method: method,
     url: UrlConfig[key],
@@ -36,12 +36,12 @@ let postDataRequest = (key, data, urlPrefix, method = 'POST') => {
 /**
  *  /user/delete/{id}格式
  * @param      key                 请求定义静态地址
- * @param      params                请求参数
+ * @param      params              请求参数
  * @param      urlPrefix           接口前缀:类似BASE_URL
  * @param      method              请求方法
  * @return     {Promise<*>}        返回promise对象
  */
-let delDataRequest = (key, params, method, urlPrefix) => {
+let delDataRequest = (key, params, method = 'GET', urlPrefix) => {
   return Ajax({
     method: method,
     url: `${UrlConfig[key]}/${params}`
@@ -57,9 +57,9 @@ let delDataRequest = (key, params, method, urlPrefix) => {
  * @param      urlPrefix           接口前缀:类似BASE_URL
  * @return     {Promise<*>}        返回promise对象
  */
-let postFileRequest = (key, data, onUploadProgress, urlPrefix) => {
+let postFileRequest = (key, data, onUploadProgress, urlPrefix, method = 'POST') => {
   return Ajax({
-    method: 'POST',
+    method: method,
     url: UrlConfig[key],
     data,
     onUploadProgress

@@ -1,0 +1,66 @@
+.el-message {
+  height: 48px;
+}
+
+.message(@bgColor, @bdColor) {
+  top: 80px !important;
+  background-color: @bgColor;
+  border-color: @bdColor;
+  border-radius: 5px;
+}
+
+.el-message__icon,
+.el-message__content {
+  color: @white  !important;
+}
+
+.el-message--success {
+  .message(@state-success, @background-color);
+}
+
+.el-message--error {
+  .message(@state-danger, @background-color);
+}
+
+.el-message--warning {
+  .message(@state-warning, @background-color);
+}
+
+
+.el-tooltip__popper.is-dark {
+  max-width: 200px !important;
+  background: @font-color;
+  border: solid 1px @white;
+}
+
+.el-tooltip__popper .popper__arrow,
+.el-tooltip__popper .popper__arrow:after {
+  border-top-width: 0!important;
+}
+.el-tooltip__popper .popper__arrow:after {
+  top: -5px!important;
+  border-top: 6px @font-color solid!important;
+}
+
+.el-dropdown-menu.el-popper {
+  margin: 0px 0px 0px 3px!important;
+  .popper__arrow {
+    display: none;
+  }
+}
+.el-dropdown-menu__item {
+  line-height: 24px;
+}
+
+.el-loading-spinner .circular {
+  display: none;
+}
+.el-loading-spinner {
+  background: url("../images/common/loading.gif") no-repeat;
+  background-size: 24px 24px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 50%;
+  left: 50%;
+}

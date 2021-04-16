@@ -6,6 +6,7 @@ vue-router history模式下的ngnix代理
 server {
         listen       9600;
         server_name  localhost;
+        client_max_body_size 2G;   # 配置文件上传大小
 		location / {
 			root  D:/webBC/anZhou/left_empty_project/leftEmptyProject;
             index  index.html index.htm;
@@ -17,6 +18,12 @@ server {
             #方式2： 
             try_files $uri $uri/ /index.html;  
         }
+    }
+    location /apis/ {
+      proxy_pass http://localhost:8090/;
+
+      proxy_set_header Upgrade websocket;  # 配置允许创建websocket
+      proxy_set_header Connection Upgrade; # 配置允许创建websocket
     }
 ```
 # Vue前端构架-结构目录及使用说明

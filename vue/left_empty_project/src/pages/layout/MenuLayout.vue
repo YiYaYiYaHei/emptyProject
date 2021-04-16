@@ -10,7 +10,7 @@
               :default-active="activeIndex" 
               :collapse="!menuExpand">
         <template v-for="(item, i) in menuList">
-          <template v-if="item.children && item.children.length && !item.hidden">
+          <template v-if="item.hasChildren && !item.hidden">
             <!-- 一级菜单 -->
             <el-submenu :key="`menu_${i}`" :index="item.label" class="menu-one">
               <template slot="title">
@@ -18,7 +18,7 @@
                 <span class="fs16">{{item.label}}</span>
               </template>
               <template v-for="(child, j) in item.children" v-if="!child.hidden">
-                <template v-if="child.children && child.children.length">
+                <template v-if="child.hasChildren">
                   <el-submenu :key="`menu_${i}_${j}`" :index="child.label" class="menu-two">
                     <!-- 二级菜单 -->
                     <template slot="title">
@@ -68,8 +68,20 @@ export default {
   methods: {
     getInitPage() {
       this.menuList = JSON.parse(JSON.stringify(MENU_LIST));
+      this.assembleMenuList();
       this.activeIndex = this.$route.name || '首页';
     },
+    assembleMenuList(list) {
+      let _list = list || this.menuList;
+      let length = _list.length;
+      for (let i = 0; i < length; i++) {
+        let item = _list[i];
+        item.hasChildren = (item.children || []).filter(it => !it.hidden).length;
+        if (item.children&&item.children.length) {
+          this.assembleMenuList(item.children)
+        }
+      }
+    }
   },
   created() {
     this.getInitPage()

@@ -51,10 +51,28 @@ let numberWithCommas = (val, unit) => {
   return Tool.numberWithCommas(val, unit);
 }
 
+// 转换空字符串
+let transformNull = (value, defaultString) => {
+  defaultString = (defaultString || defaultString === 0) ? defaultString : '-';
+  return value || value === 0 ? value : defaultString;
+}
+
+// 数组转字符串
+let transArrayToString = (value, split = '') => {
+  return (value || []).join(split);
+}
+
+// 字符串转数组
+let transStringToArray = (value, split = '') => {
+  return (value || '').split(split);
+}
 
 export {
   fixNumber,
   dateFormat,
   filterSpeed,
-  numberWithCommas
+  numberWithCommas,
+  transformNull,
+  transArrayToString,
+  transStringToArray
 };

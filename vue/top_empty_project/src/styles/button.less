@@ -1,0 +1,64 @@
+.el-button {
+  height: 36px;
+  border-radius: 4px;
+  padding: 10px 16px;
+}
+
+.button(@color, @bgColor, @bdColor) {
+  color: @color;
+  background-color: @bgColor;
+  border-color: @bdColor;
+}
+
+.el-button--primary {
+  .button(@white, @table-header, @table-header);
+
+  &:focus,
+  &:hover {
+    .button(@white, @table-header-hover, @table-header-hover);
+  }
+}
+
+.el-button--info {
+  .button(@white, @state-info, @state-info);
+
+  &:focus,
+  &:hover {
+    .button(@white, @state-info-hover, @state-info-hover);
+  }
+}
+
+.el-button--success {
+  .button(@white, @state-success, @state-success);
+
+  &:focus,
+  &:hover {
+    .button(@white, @state-success-hover, @state-success-hover);
+  }
+}
+
+.el-button--warning {
+  .button(@white, @state-warning, @state-warning);
+
+  &:focus,
+  &:hover {
+    .button(@white, @state-warning-hover, @state-warning-hover);
+  }
+}
+
+.el-button--danger {
+  .button(@white, @state-danger, @state-danger);
+
+  &:focus,
+  &:hover {
+    .button(@white, @state-danger-hover, @state-danger-hover);
+  }
+}
+
+.el-button--primary.is-disabled,
+.el-button--primary.is-disabled:active,
+.el-button--primary.is-disabled:focus,
+.el-button--primary.is-disabled:hover {
+  background-color: @state-info;
+  border-color: @state-info;
+}

@@ -25,6 +25,7 @@ const actions = {
   setMenuExpand({commit}, {data}) {
     commit('mutationMenuExpand', {data});
   },
+
   resetStore({commit}) {
     commit('mutationResetStore');
   }

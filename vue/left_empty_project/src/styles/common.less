@@ -1,27 +1,28 @@
 /* 通用颜色值定义 ---start--- */
 @white: #ffffff;
 @blank: #000;
-@primary: #407dd1;
 
-@state-success: #67C23A;
-@state-warning: #E6A23C;
-@state-danger: #F56C6C;
+@state-success: #3dbb4d;
+@state-success-hover: #008711;
+@state-warning: #FF964F;
+@state-warning-hover: #FF6600;
+@state-danger: #ff4040;
+@state-danger-hover: #D20000;
 @state-info: #909399;
+@state-info-hover: #B6B9BE;
 
-@font-color-dark: #333;
-@font-color: #666;
-@font-color-light: #999;
+@font-color: #141a37;
 
-@table-header: #F6F7FB;
+@table-header: #141a37;
+@table-header-hover: #4F5675;
 
-@border-color: #dcdcdc;
+@background-color: #fbfbfb;
 /* 通用颜色值定义 ---end--- */
 
 /* 自定义颜色值定义 ---start--- */
-@login-msg: #fc4260;
 @active-light: #18c7db;
 @menu-bg-color: #141a37;
-@menu-hover-bg-color: #111524;  
+@menu-hover-bg-color: #111524;
 @menu-active-bg-color: rgb(16, 21, 44);
 @menu-active-text-color: #ffd04b;
 @logout-hover-bgColor: rgba(204, 204, 204, .3);
@@ -29,6 +30,7 @@
 @border-login-color: #6af0ff;
 @login-btn-bgColor: #75ffff;
 @login-box-bgColor: rgba(255, 255, 255, .2);
+@dialog-header-bgColor: #141a37;
 /* 自定义颜色值定义 ---end--- */
 
 
@@ -134,7 +136,7 @@
 }
 
 /* dashboard 本墨字体 */
-.benmo-font(@size: .9rem, @color: @font-color-dark) {
+.benmo-font(@size: .9rem, @color: @font-color) {
   font-family: "benmo" !important;
   font-style: normal;
   font-size: @size;
@@ -158,15 +160,15 @@
   }
 }
 
-.dnone {
+.dis-none {
   display: none;
 }
 
-.dblock {
+.dis-block {
   display: block;
 }
 
-.dinlineb {
+.dis-inlineb {
   display: inline-block;
 }
 
@@ -175,11 +177,15 @@
   height: 100%;
 }
 
-.fullw {
+.wfull {
   width: 100%;
 }
 
-.fullh {
+.w50 {
+  width: 50%;
+}
+
+.hfull {
   height: 100%;
 }
 
@@ -272,6 +278,47 @@
   margin-right: 16px;
 }
 
+.mg20 {
+  margin: 20px;
+}
+
+.mgb20 {
+  margin-bottom: 20px;
+}
+
+.mgt20 {
+  margin-top: 20px;
+}
+
+.mgl20 {
+  margin-left: 20px !important;
+}
+
+.mgr20 {
+  margin-right: 20px;
+}
+
+.mg40 {
+  margin: 40px;
+}
+
+.mgb40 {
+  margin-bottom: 40px;
+}
+
+.mgt40 {
+  margin-top: 40px;
+}
+
+.mgl40 {
+  margin-left: 40px;
+}
+
+.mgr40 {
+  margin-right: 40px;
+}
+
+
 .pd8 {
   padding: 8px;
 }
@@ -286,10 +333,6 @@
 
 .pdl8 {
   padding-left: 8px;
-}
-
-.pl48 {
-  padding-left: 48px !important;
 }
 
 .pdr8 {
@@ -356,6 +399,26 @@
   padding-right: 16px;
 }
 
+.pd20 {
+  padding: 20px;
+}
+
+.pdt20 {
+  padding-top: 20px;
+}
+
+.pdb20 {
+  padding-bottom: 20px;
+}
+
+.pdr20 {
+  padding-right: 20px;
+}
+
+.pdl20 {
+  padding-left: 20px;
+}
+
 /* 边距---end--- */
 
 /* 字体样式---start--- */
@@ -392,7 +455,7 @@
 }
 
 .fs16 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 .fs18 {
@@ -435,4 +498,12 @@
 
 .vertical-align-m {
   vertical-align: middle;
+}
+
+.not-allow {
+  cursor: not-allowed;
+}
+
+.box-sizing {
+  box-sizing: border-box;
 }

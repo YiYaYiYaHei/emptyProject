@@ -15,7 +15,7 @@ const state = {
  */
 const getters = {
   getUserInfo: state => state.userInfo,
-  getMenuExpand: state => state.menuExpand,
+  getMenuExpand: state => state.menuExpand
 };
 
 const actions = {
@@ -25,6 +25,7 @@ const actions = {
   setMenuExpand({commit}, {data}) {
     commit('mutationMenuExpand', {data});
   },
+
   resetStore({commit}) {
     commit('mutationResetStore');
   }

@@ -24,7 +24,7 @@
              router>
       <template v-for="(item, i) in leftMenuList">
         <!-- 二级菜单 -->
-        <template v-if="item.children && item.children.length && !item.hidden">
+        <template v-if="item.hasChildren && !item.hidden">
           <el-submenu :key="`menu_left_${i}`" :index="item.label" class="fs15">
             <template slot="title">
               <i class="menu-icon" v-if="!!item.icon" :class="item.icon"></i>
@@ -65,7 +65,7 @@
         <div slot="reference"
              class="pointer">
           <span class="user-img"></span>
-          <span class="user-name text-overflow-ellipsis">{{userInfo.userName || 'admin'}}</span>
+          <span class="user-name ellipsis">{{userInfo.userName || 'admin'}}</span>
         </div>
       </el-popover>
     </div>
@@ -103,6 +103,7 @@ export default {
   methods: {
     getInitPage() {
       this.menuList = JSON.parse(JSON.stringify(MENU_LIST));
+      this.assembleMenuList();
       let _menu = this.menuList.find(it => it.path === this.$route.path);
       if (!!_menu) {
         /* 顶部菜单查找 */
@@ -115,6 +116,17 @@ export default {
         let _leftMenu = this.menuList.find(it => it.label === this.activeIndex);
         this.leftActiveIndex = this.$route.name;
         this.topMenuClick(_leftMenu);
+      }
+    },
+    assembleMenuList(list) {
+      let _list = list || this.menuList;
+      let length = _list.length;
+      for (let i = 0; i < length; i++) {
+        let item = _list[i];
+        item.hasChildren = (item.children || []).filter(it => !it.hidden).length;
+        if (item.children&&item.children.length) {
+          this.assembleMenuList(item.children)
+        }
       }
     },
     /* 查找父级菜单 */

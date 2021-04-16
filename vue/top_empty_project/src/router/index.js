@@ -52,7 +52,7 @@ let loopPath = (path, item) => {
 
 /* 路由守卫 */
 router.beforeEach((to, from, next) => {
-  let token = sessionStorage.getItem('current_login_user_token') || '';
+  let token = localStorage.getItem('current_login_user_token') || '';
   if (!token && to.fullPath !== '/login') {
     next('/login');
     return;
@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
     return;
   }
   if (!!token && to.fullPath === '/login') {
-    next('/home');
+    next('/home')
   } else {
     next();
   }

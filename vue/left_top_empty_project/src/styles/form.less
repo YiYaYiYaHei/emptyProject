@@ -1,0 +1,170 @@
+.el-form-item__error {
+  color: @state-danger;
+  line-height: 20px;
+}
+
+.login-container .el-input {
+  caret-color: @active-light; // 修改光标闪烁的颜色
+}
+
+.el-input {
+  height: 36px;
+}
+
+.el-input__inner {
+  height: 36px;
+  line-height: 36px;
+  color: @table-header;
+
+  &:focus,
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    border-color: @table-header  !important;
+  }
+}
+
+.el-form-item__label,
+.el-textarea__inner {
+  color: @table-header;
+}
+
+.el-select .el-input.is-focus .el-input__inner,
+.el-textarea__inner {
+
+  &:focus,
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    border-color: @table-header;
+  }
+}
+
+.el-select-dropdown__item.selected {
+  color: @state-warning;
+  background: #f5f7fa;
+}
+
+.el-select .el-input__inner:focus,
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: @table-header;
+}
+
+.el-select-dropdown__item {
+  color: #606266;
+}
+
+.el-form-item__content,
+.el-input__icon {
+  line-height: 36px;
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: @state-warning;
+  border-color: @state-warning;
+}
+
+.el-checkbox__input .el-checkbox__inner {
+  border-color: #dcdfe6;
+
+  &:focus,
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    border-color: @state-warning;
+  }
+}
+
+.el-radio__input.is-checked+.el-radio__label,
+.el-radio__input+.el-radio__label,
+.el-checkbox__input.is-checked+.el-checkbox__label,
+.el-checkbox__input+.el-checkbox__label {
+  color: @menu-top-bgColor;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: @state-warning;
+  background: @state-warning;
+}
+
+.el-radio__input .el-radio__inner {
+  border-color: #dcdfe6;
+
+  &:focus,
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    border-color: @state-warning;
+  }
+}
+
+.el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label-wrap>.el-form-item__label:before,
+.el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+  position: absolute;
+  margin-top: 2px;
+  left: 14px;
+  color: @state-danger;
+  font-size: 20px;
+  font-weight: bold;
+  content: "*";
+}
+
+.el-date-editor .el-range-separator {
+  width: 30px;
+}
+
+.el-range-editor--small .el-range-separator {
+  line-height: 30px;
+}
+
+.el-range-editor--small.el-input__inner {
+  height: 36px;
+}
+
+.el-date-table td.current:not(.disabled) span,
+.el-date-table td.end-date span,
+.el-date-table td.start-date span {
+  background-color: @state-warning;
+}
+
+
+.el-picker-panel__icon-btn:hover,
+.el-button.el-picker-panel__link-btn.el-button--text.el-button--mini,
+.el-time-panel__btn.confirm,
+.el-date-table td.available:hover,
+.el-date-table td.today span,
+.el-date-picker__header-label:hover,
+.el-year-table td .cell:hover,
+.el-year-table td.current:not(.disabled) .cell,
+.el-year-table td.today .cell,
+.el-year-table td.today .cell:hover,
+.el-month-table td.current:not(.disabled) .cell,
+.el-month-table td.current:not(.disabled) .cell:hover,
+.el-month-table td .cell:hover,
+.el-month-table td.today .cell,
+.el-month-table td.today .cell:hover {
+  color: @state-warning;
+}
+
+.el-range-editor.is-active,
+.el-range-editor.is-active:hover {
+  border-color: @state-warning;
+}
+.el-button.el-picker-panel__link-btn.el-button--default.el-button--mini.is-plain:hover {
+  border-color: @state-warning;
+  color: @state-warning;
+}
+
+.el-input [readonly]:not([placeholder*="选择"]),
+.el-input.is-disabled .el-input__inner {
+  background-color: #F5F7FA;
+  color: #C0C4CC;
+  cursor: default;
+  border-width: 0;
+  // border-color: #E4E7ED;
+}

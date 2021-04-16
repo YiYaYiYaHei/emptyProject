@@ -9,7 +9,7 @@
              mode="horizontal"
              router>
       <template v-for="(item, i) in menuList">
-        <template v-if="item.children&&item.children.length&&!item.hidden">
+        <template v-if="item.hasChildren && !item.hidden">
           <!-- 一级菜单 -->
           <el-submenu :key="`menu_${i}`" :index="item.label">
             <template slot="title">
@@ -18,7 +18,7 @@
             </template>
             <template v-for="(child, j) in item.children"
                       v-if="!child.hidden">
-              <template v-if="child.children && child.children.length">
+              <template v-if="child.hasChildren">
                 <el-submenu :key="`menu_${i}_${j}`" :index="child.label">
                   <!-- 二级菜单 -->
                   <template slot="title">
@@ -68,7 +68,7 @@
         </div>
         <div slot="reference" class="pointer">
           <span class="user-img"></span>
-          <span class="user-name text-overflow-ellipsis">{{userInfo.userName || 'admin'}}</span>
+          <span class="user-name ellipsis">{{userInfo.userName || 'admin'}}</span>
         </div>
       </el-popover>
     </div>
@@ -96,7 +96,19 @@ export default {
   methods: {
     getInitPage() {
       this.menuList = JSON.parse(JSON.stringify(MENU_LIST));
+      this.assembleMenuList();
       this.activeIndex = this.$route.name || '首页';
+    },
+    assembleMenuList(list) {
+      let _list = list || this.menuList;
+      let length = _list.length;
+      for (let i = 0; i < length; i++) {
+        let item = _list[i];
+        item.hasChildren = (item.children || []).filter(it => !it.hidden).length;
+        if (item.children&&item.children.length) {
+          this.assembleMenuList(item.children)
+        }
+      }
     },
     /* 退出 */
     async logoutEvt() {

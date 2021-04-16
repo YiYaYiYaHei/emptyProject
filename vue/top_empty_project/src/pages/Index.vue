@@ -27,9 +27,6 @@ export default {
   },
   created() {
     this.currentComp = this.layout;
-  },
-  beforeDestroy() {
-    this.$store.dispatch('resetStore');
   }
 }
 </script>

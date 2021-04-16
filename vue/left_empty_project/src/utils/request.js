@@ -2,7 +2,7 @@ import axios from "axios";
 import UrlConfig from "../config/url.config";
 import Tool from "./tool.js";
 
-const TIMEOUT_TIME = 60 * 1000;
+const TIMEOUT_TIME = 60 * 60 * 1000;
 
 /**
  * 获取请求地址
@@ -33,9 +33,8 @@ const buildRequestData = (data) => {
   }
 
   /* 设置全局请求的token */
-  let token = sessionStorage.getItem('current_login_user_token') || '';
-
-  if (result.method === "POST") {
+  let token = localStorage.getItem('current_login_user_token') || '';
+  if (result.method === "POST" || result.method === "PUT") {
 
     /* 设置请求头文档类型 */
     result.headers = {
@@ -60,7 +59,7 @@ const buildRequestData = (data) => {
           if (requestData.hasOwnProperty(key)) {
             let files = requestData[key];
             /* 判断是否是文件流 */
-            if (files.constructor === FileList) {
+            if (!!files && files.constructor === FileList) {
               for (let i = 0; i < files.length; i++) {
                 form.append(key, files[i]);
               }
@@ -92,7 +91,7 @@ const buildRequestData = (data) => {
  * @param flag    标识符，用来判断是否为线路故障诊断
  */
 const sendRequest = async(request, urlPrefix) => {
-  let url = request.url.startsWith('http') ? request.url : getUrl(request.url, request.urlParam, urlPrefix),
+  let url = /^(http|https):/g.test(request.url) ? request.url : getUrl(request.url, request.urlParam, urlPrefix),
     requestData = buildRequestData(request);
 
   /* 针对IE浏览器，避免code304读取缓存 */
@@ -101,11 +100,26 @@ const sendRequest = async(request, urlPrefix) => {
 
   /* axios 发起请求 */
   let result = await axios(requestData).catch(e => {
-    return e.response ? e.response.data : e.response;
+    return {
+	    data: {
+		    message: e.response.data || '',
+		    status: e.response.status || 500,
+		    statusText: e.response.statusText || ''
+	    }
+    };
   });
   if (!!result) {
-    result.data.message = Tool.isEnglish(result.data.message) ? result.data.message : '失败';
-    return result.data;
+    result.data.message = Tool.isEnglish(result.data.message) ? result.data.message : '哎哟,出问题啦,刷新界面试试！';
+	  if (result.data.status >= 500) {
+		  result.data.message = '哎哟,出问题啦,刷新界面试试！';
+	  }
+	  if (result.data.status === 401) {
+		  location.pathname !== '/login' && (result.data.message = '凭证失效，请重新登录');
+		  localStorage.clear();
+		  store.commit('mutationResetStore');
+		  router.push('/login');
+	  }
+	  return result.data;
   }
 };
 

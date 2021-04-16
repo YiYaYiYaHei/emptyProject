@@ -1,5 +1,8 @@
 import Vue from 'vue';
 
+/* 引入状态管理器 */
+import store from './store/index.js';
+
 /* 加载路由模块 */
 import Router from 'vue-router';
 import router from './router';
@@ -14,9 +17,6 @@ Vue.use(ElementUI);
 import GlobalComponent from "./components/index.js";
 Vue.use(GlobalComponent);
 
-/* 引入状态管理器 */
-import store from './store/index.js';
-
 /* 引入样式 */
 import './styles/index.less';
 
@@ -30,6 +30,9 @@ new Vue({
   el: '#app',
   router,
   store,
+  data: {
+    eventBus: new Vue()
+  },
   render(creatElement) {
     if (this.$route.path === '/') {
       /* 此判断防止请求'/'路由报404 */

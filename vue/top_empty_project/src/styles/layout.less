@@ -50,7 +50,7 @@
     width: 100%;
     height: @menuHeight;
     padding-right: 300px;
-    padding-left: 210px;
+    padding-left: @menuWidth;
     border-bottom: none;
 
     >li,
@@ -61,7 +61,7 @@
 
     .el-menu-item.is-active,
     .el-submenu.is-active .el-submenu__title {
-      border-bottom: 2px solid @menu-active-text-color  !important;
+      border-bottom: 4px solid @menu-active-text-color  !important;
     }
   }
 
@@ -299,7 +299,7 @@
           display: inline-block;
           width: 100%;
           text-align: center;
-          color: @login-msg;
+          color: @state-danger;
         }
 
         .user-name {

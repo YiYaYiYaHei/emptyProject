@@ -17,14 +17,7 @@ let dateFormat = (type, val) => {
   let mm = $m > 9 ? $m + '' : '0' + $m;
   let s = date.getSeconds();
   let ss = s > 9 ? s + '' : '0' + s;
-  let obj = {
-    YYYY,
-    MM,
-    DD,
-    hh,
-    mm,
-    ss
-  };
+  let obj = {YYYY, MM, DD, hh, mm, ss};
 
   return type.replace(/(YYYY)|(MM)|(DD)|(hh)|(mm)|(ss)/g, (key) => obj[key]);
 };
@@ -99,7 +92,7 @@ let openTabByUrl = (url, flag) => {
  * isMultiple是否多文件上传
  * acceptType 上传文件类型
  */
-let fileUploadNode = (key, cb, isMultiple, acceptType) => {
+let fileUploadNode = (key, cb, isMultiple = false, acceptType) => {
 
   let box = document.createElement('div');
   document.body.appendChild(box);
@@ -110,6 +103,7 @@ let fileUploadNode = (key, cb, isMultiple, acceptType) => {
   input.setAttribute('type', 'file');
   if (isMultiple) input.setAttribute('multiple', 'multiple');
   if (acceptType) input.setAttribute('accept', acceptType);
+
   box.appendChild(input);
 
   input.addEventListener('change', function () {
@@ -320,7 +314,7 @@ let isValidPwd = function (pwd, setting) {
   let pwdLength = setting.minLength || 4;
   let isHasSpecialChart = (setting.complexity || 'WNS').length === 3;
   let finallyCount = isHasSpecialChart ? 5 : 4;
-
+  
   let count = 0;
   // 判断密码长度
   if (pwd.length >= pwdLength) ++count;
