@@ -78,6 +78,10 @@ const config = {
   },
   pluginOptions: {
     // TODO something here
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [path.resolve(__dirname, './src/styles/common.less')] // less所在文件路径
+    }
   }
 };
 

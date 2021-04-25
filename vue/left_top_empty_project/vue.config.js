@@ -41,7 +41,7 @@ const config = {
     config.optimization = {
         minimizer: [
           new TerserPlugin({ 
-            extractComments: false,  // 去除js打包后的LICENSE.txt文件
+            extractComments: false, // 去除js打包后的LICENSE.txt文件
             terserOptions: { 
               compress: { 
                 drop_console: true 
@@ -78,6 +78,10 @@ const config = {
   },
   pluginOptions: {
     // TODO something here
+    'style-resources-loader': {
+      preProcessor: 'less',
+      patterns: [path.resolve(__dirname, './src/styles/common.less')] // less所在文件路径
+    }
   }
 };
 

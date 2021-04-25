@@ -24,6 +24,7 @@ server {
 
       proxy_set_header Upgrade websocket;  # 配置允许创建websocket
       proxy_set_header Connection Upgrade; # 配置允许创建websocket
+      proxy_read_timeout 600s;             # 配置websocket自动断开时间(默认1分钟没有数据交互，就断开)
     }
 ```
 # Vue前端构架-结构目录及使用说明
@@ -39,6 +40,8 @@ server {
 4. 所有公共组件、指令、过滤器、原型都定义在components文件夹；
 5. 针对不同模块的接口地址，以 (模块名.url.config.js) 命名并放在(config)文件夹下
 6. 接口请求方法均在(api/common.js)中
+7. 已将common.less配置为全局样式，变量在scope less中也能使用(依赖包: style-resources-loader+vue-cli-plugin-style-resources-loader)
+8. 已处理vuex刷新消失问题(依赖包vuex-persistedstate)
 
 
 ## 项目环境安装与运行
