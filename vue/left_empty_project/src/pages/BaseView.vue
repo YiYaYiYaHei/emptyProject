@@ -93,7 +93,7 @@ export default {
       }
     },
 
-    /** 前端分页调用 
+    /** 前端分页调用
      * @param [tableObj]   表格对象
      * @param [pageData]    分页对象
     */
@@ -108,50 +108,67 @@ export default {
       })
     },
 
-    /** 下载--带header
-     * @param requestUrl        接口地址
-     * @param data              下载参数，get格式为：?id=123&&name="文件下载"
-     * @param method            请求方法get/post
-     * @param [configObj]       下载数据配置
+    /**
+     * 下载--带header
+     * @param url                    接口地址
+     * @param data                   下载参数，get格式为：?id=123&&name="文件下载"
+     * @param method                 请求方法get/post(不区分大小写)
+     * @param [obj]
+     * @param [obj.downloadName]     下载文件名(必填，若为空，下载下来都是txt格式)
+     * @param [obj.isDownload]       是否下载
+     * @param [obj.async]            请求是否异步-true异步、false同步
      */
-    downLoadAxiosEvt(requestUrl, data, method = 'get', configObj) {
-      let contentType = configObj.contentType || 'application/json',   // 请求头的Content-Type
-          downloadName = configObj.downloadName || '下载文件名必填',    // 下载文件名(必填，若为空，下载下来都是txt格式)
-          isDownload = configObj.isDownload || true,                   // .pdf若不设置download属性，可直接在浏览器上打开             
-          urlPrefix = configObj.urlPrefix || undefined;                // 获取接口地址的前缀，一般默认BASE_URL
-      
-      let ajax = new XMLHttpRequest();
-      let url = this.$api.getFullUrl(requestUrl, false, urlPrefix);
-      if (method === 'get') {
-        url = data ? `${url}${data}` : url;
-      }
-      ajax.open(method, url);
-      let token = localStorage.getItem('current_login_user_token') || '';
+    downLoadAxiosEvt(url, data, method = 'GET', obj = {}) {
+      const contentType = obj.contentType || 'application/json';
+      const downloadName = obj.downloadName || '下载文件名必填';
+      // 默认异步(true)
+      const async = obj.async || true;
+
+      const ajax = new XMLHttpRequest();
+      let _url = this.$tool.getFullUrl(url);
+      const _method = method.toUpperCase();
+      _url = _method === 'GET' && data ? `${_url}${data}` : _url;
+      ajax.open(_method, _url, async);
+      const token = this.token || '';
       ajax.setRequestHeader('Authorization', token);
       ajax.setRequestHeader('Content-Type', contentType);
+      // responseType若不设置，会导致下载的文件可能打不开
       ajax.responseType = 'blob';
       ajax.onload = function () {
         if (this.status === 200) {
-          let fileName = (this.getResponseHeader('content-disposition') || ';filename="未知文件"').split(';')[1].slice(9);
-          let blob = this.response;
-          let file = new Blob([blob]);
-          let el = document.createElement('a');
-          if (isDownload) el.download = fileName || downloadName;
-          el.setAttribute('target', '_blank');
-          el.href = URL.createObjectURL(file);
-          document.body.appendChild(el);
-          el.click();
-          document.body.removeChild(el);
+          // 通过FileReader去判断接口返回是json还是文件流
+          const fileReader = new FileReader();
+          fileReader.onloadend = () => {
+            if (this.getResponseHeader('content-type').indexOf('application/json') > -1) {
+              const result = JSON.parse(fileReader.result || '{}');
+              this.$message.error(result.message);
+            } else {
+              // 两种解码方式，区别自行百度:decodeURIComponent/decodeURI
+              const fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].slice(10));
+              const blob = this.response;
+              const file = new Blob([blob]);
+              const el = document.createElement('a');
+              el.download = fileName || downloadName;
+              el.setAttribute('target', '_blank');
+              el.href = URL.createObjectURL(file);
+              document.body.appendChild(el);
+              el.click();
+              document.body.removeChild(el);
+            }
+          };
+          fileReader.readAsText(this.response);
+        } else {
+          this.$message.error('服务器问题');
         }
-      }
-      if (method === 'get') {
+      };
+      if (_method === 'GET') {
         ajax.send();
       } else {
         if (contentType === 'application/json') ajax.send(JSON.stringify(data));
         if (contentType === 'application/x-www-form-urlencoded;charset=UTF-8') {
           let str = '';
-          for (let key in data) {
-            str += `${key}=${data[key]}&`
+          for (const key in data) {
+            str += `${key}=${data[key]}&`;
           }
           ajax.send(str);
         }
@@ -251,7 +268,7 @@ export default {
       )
     },
 
-    /** 表单验证提交 
+    /** 表单验证提交
      * @param formName  表单名
      * @param success   回调函数
      */
