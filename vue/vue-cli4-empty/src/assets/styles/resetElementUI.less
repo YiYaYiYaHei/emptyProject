@@ -1,0 +1,36 @@
+/* 重置element-ui的部分样式 */
+// el-menu
+.el-menu {
+  .el-submenu.is-active {
+    >.el-submenu__title {
+      color: @primary;
+    }
+  }
+  .el-menu-item.is-active,
+  .el-menu-item:hover,
+  .el-submenu__title:hover {
+    background: @bg-lighter;
+    .menu-icon {
+      color: @primary;
+    }
+  }
+  .el-submenu.is-active>.el-submenu__title {
+    .menu-icon {
+      color: @primary;
+    }
+  }
+}
+// 隐藏文字--由于el-menu-item拆成了组件，使el-menu下的直接子元素为div，从而导致el-menu  collapse时，文字无法隐藏
+.el-menu--collapse  .el-submenu__title span{
+  display: none;
+}
+// 隐藏 >
+.el-menu--collapse  .el-submenu__title .el-submenu__icon-arrow{
+  display: none;
+}
+.menu-left-container {
+  .el-menu {
+    background-color: @bg-base;
+    border-right: 0;
+  }
+}

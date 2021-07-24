@@ -1,0 +1,274 @@
+@menuLeftWidth: 240px;
+@menuLeftForkWidth: 60px;
+@menuTopHeight: 60px;
+
+@primary: #41b2ff;
+@success: #06AE1C;
+@warning: #FF8800;
+@danger: #EC2F4F;
+@info: #7E84A3;
+
+@bg-base: #10101d;
+@bg-lighter: #1e1f2b;
+@bg-darker: #0b0b0c;
+@bg-light: #121220;
+@bg-expand: #040921;
+@bg-base-opacity: rgba(16, 16, 29, .8);
+
+@text-base: #fbfbfb;
+@text-regular: #c9d2ff;
+@text-placeholder: #7E84A3;
+
+// 状态设置
+.textColor(@color) {
+  color: @color !important;
+}
+.statusBox(@bgColor) {
+  display: inline-block;
+  background-color: @bgColor !important;
+  color: white !important;
+}
+[data-status-text="info"] {
+  .textColor(@info);
+}
+[data-status-box="准备开始"] {
+  .statusBox(@primary);
+}
+
+// 宽、高设置
+.w(@width) when not(ispercentage(@width)){
+  //当不是百分比时（less中用的是not来表示非）
+  width: @width;
+}
+.w(@width) when (ispercentage(@width)){
+  //当是百分比时
+  width: @width;
+}
+.h(@height) when not(ispercentage(@height)){
+  //当不是百分比时（less中用的是not来表示非）
+  height: @height;
+}
+.h(@height) when (ispercentage(@height)){
+  //当是百分比时
+  height: @height;
+}
+.wfull {
+  .w(100%);
+}
+.hfull {
+  .h(100%);
+}
+.full {
+  .wfull;
+  .hfull;
+}
+
+// 布局
+.cls-float {
+  zoom: 1;
+
+  &:after {
+    content: '';
+    display: block;
+    width: 0;
+    clear: both;
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+  }
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.dnone {
+  display: none;
+}
+.dblock {
+  display: block;
+}
+.dinline {
+  display: inline;
+}
+.dinlineb {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+// 弹性盒
+.dflex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.mdflex(@direction: row, @justify: space-between, @align: center, @flex-wrap: wrap) {
+  .dflex();
+  flex-direction: @direction;
+  justify-content: @justify;
+  align-items: @align;
+  flex-wrap: @flex-wrap;
+}
+.fjc {
+  justify-content: space-between;
+}
+.fai {
+  align-items: center;
+}
+.fw {
+  flex-wrap: wrap;
+}
+.flex {
+  -webkit-box-flex: 1 !important;
+  -ms-flex: 1 !important;
+  -webkit-flex: 1 !important;
+  flex: 1 !important;
+}
+
+// 文本相关
+.fs(@size) {
+  font-size: ~'@{size}px';
+}
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+.tl {
+  text-align: left !important;
+}
+.tr {
+  text-align: right !important;
+}
+.tc {
+  text-align: center !important;
+}
+.tj {
+  text-align: justify;
+  text-align-last: justify;
+}
+.fs18 {
+  .fs(18);
+}
+.fs16 {
+  .fs(16);
+}
+.fs14 {
+  .fs(14);
+}
+.fs12 {
+  .fs(12);
+}
+.wb {
+  word-break: break-all;
+  .el-form-item__content,
+  .el-form-item__label {
+    line-height: 25px !important;
+  }
+}
+.line-height(@height) {
+	height: @height;
+	line-height: @height;
+}
+
+// 模糊效果
+.blur {
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -ms-filter: blur(2px);
+  -o-filter: blur(2px);
+  filter: blur(2px);
+}
+
+// 边距
+.mg(@top: 0, @right: 0, @bottom: 0, @left: 0) {
+  margin: ~'@{top}px'  ~'@{right}px' ~'@{bottom}px' ~'@{left}px';
+}
+.pd(@top: 0, @right: 0, @bottom: 0, @left: 0) {
+  padding: ~'@{top}px'  ~'@{right}px' ~'@{bottom}px' ~'@{left}px';
+}
+.mg20 {
+  .mg(20, 20, 20, 20);
+}
+.pd20 {
+  .pd(20, 20, 20, 20);
+}
+
+// 字体库设置
+.iconfont(@size: 16px, @color: @primary) {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  font-size: @size;
+  color: @color;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 画三角形
+// 上三角
+.triangle-t(@width: 10px, @color: @primary) {
+  border: @width solid transparent;
+  border-bottom-color: @width solid @color;
+}
+// 下三角
+.triangle-b(@width: 10px, @color: @primary) {
+  border: @width solid transparent;
+  border-top-color: @width solid @color;
+}
+// 左三角
+.triangle-l(@width: 10px, @color: @primary) {
+  border: @width solid transparent;
+  border-right-color: @width solid @color;
+}
+// 右三角
+.triangle-r(@width: 10px, @color: @primary) {
+  border: @width solid transparent;
+  border-left-color: @width solid @color;
+}
+
+// 圆形盒子
+.circle(@size, @bgColor: white) {
+  border-radius: 50%;
+	width: @size;
+	height: @size;
+	line-height: @size;
+	text-align: center;
+	background: @bgColor;
+}
+
+// placeholder
+.placeholder(@color: #bbb) {
+	// Firefox
+	&::-moz-placeholder {
+		color: @color;
+		opacity: 1;
+	}
+	// Internet Explorer 10+
+	&:-ms-input-placeholder {
+		color: @color;
+	}
+	// Safari and Chrome
+	&::-webkit-input-placeholder {
+		color: @color;
+	}
+
+	&:placeholder-shown {
+		text-overflow: ellipsis;
+	}
+}
+
+.cursor(@style: pointer) {
+  cursor: @style;
+}
+.pointer {
+  .cursor(pointer);
+}
+.transition {
+  -webkit-transition: all .2s linear 0s;
+  -o-transition: all .2s linear 0s;
+  transition: all .2s linear 0s;
+}
