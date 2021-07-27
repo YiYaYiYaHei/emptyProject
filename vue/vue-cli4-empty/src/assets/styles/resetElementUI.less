@@ -1,6 +1,10 @@
 /* 重置element-ui的部分样式 */
 // el-menu
 .el-menu {
+  border-right: 0;
+  &.el-menu--horizontal {
+    border-bottom: 0;
+  }
   .el-submenu.is-active {
     >.el-submenu__title {
       color: @primary;
@@ -10,7 +14,8 @@
   .el-menu-item:hover,
   .el-submenu__title:hover {
     background: @bg-lighter;
-    .menu-icon {
+    .menu-icon,
+    >span {
       color: @primary;
     }
   }
@@ -30,7 +35,59 @@
 }
 .menu-left-container {
   .el-menu {
-    background-color: @bg-base;
-    border-right: 0;
+    background-color: @bg-base!important;
+  }
+}
+.menu-top-box {
+  .el-menu {
+    .el-submenu__title {
+      .pd(0, 30, 0, 20);
+    }
+    .menu-item-color(@bgColor, @color) {
+      background: @bgColor;
+      .el-submenu__title,
+      .el-submenu__title i,
+      span,
+      .menu-icon {
+        color: @color!important;
+      }
+    }
+    .el-menu-item:hover,
+    .el-submenu:hover,
+    .el-submenu.is-opened {
+      .menu-item-color(@primary-opacity, white);
+      .el-submenu__title {
+        background: @primary-opacity!important;
+      }
+    }
+
+    .el-menu-item.is-active,
+    .el-submenu.is-active {
+      .menu-item-color(@primary, white);
+    }
+  }
+}
+.el-menu--horizontal {
+  .el-submenu.is-active > .el-submenu__title span{
+    color: @primary;
+  }
+}
+
+// el-popover
+.user-operator-popover {
+  left: auto!important;
+  right: 20px;
+  padding: 0!important;
+  .content-container {
+    >div {
+      .wfull();
+      .line-height(44px);
+      .tc();
+      padding: 0 12px;
+      &:hover {
+        background: @bg-lighter;
+        color: @primary;
+      }
+    }
   }
 }

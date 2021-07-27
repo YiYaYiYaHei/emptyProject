@@ -1,7 +1,7 @@
 <template>
-  <div class="menu-left-container" :style="{'width': menuIsFork ? '60px' : '240px'}">
+  <div class="menu-left-container fl" :style="{'width': menuIsFork ? '60px' : '240px'}">
     <el-menu router
-            :default-active="activeIndex"
+            :default-active="leftActiveIndex"
             :collapse="menuIsFork"
             class="full"
             unique-opened>
@@ -16,27 +16,25 @@ export default {
   name: 'MenuLeft',
   components: {MenuItem},
   props: {
+    // 导航是否可折叠
     menuIsFork: {
       type: Boolean,
       default: false
     },
+    // 左侧导航列表
     leftMenuList: {
       type: Array,
       default: () => ([])
+    },
+    // 高亮菜单fullPath
+    leftActiveIndex: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      activeIndex: ''
     };
-  },
-  watch: {
-    $route: {
-      deep: true,
-      handler: function(newVal) {
-        this.activeIndex = newVal.fullPath;
-      }
-    }
   }
 };
 </script>
@@ -44,7 +42,7 @@ export default {
 <style lang="less" scoped>
 .menu-left-container {
   .w(@menuLeftWidth);
-  height : calc(~"100% - " @menuTopHeight);
+  .h(calc(~"100% - " @menuTopHeight));
 }
 // 解决el-menu collapse 卡顿问题
 .el-menu:not(.el-menu--collapse) {

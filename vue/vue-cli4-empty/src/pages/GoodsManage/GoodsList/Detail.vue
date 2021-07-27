@@ -1,5 +1,5 @@
 <template>
-  <div>订单详情</div>
+  <div>商品详情</div>
 </template>
 
 <script>

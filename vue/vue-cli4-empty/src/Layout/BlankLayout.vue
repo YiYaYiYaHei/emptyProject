@@ -1,9 +1,11 @@
 <template>
-  <div class="application-main-container full">BlankLayout.vue</div>
+  <div class="application-blank-container full">
+    <router-view />
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'blankLayout'
+  name: 'BlankLayout'
 };
 </script>

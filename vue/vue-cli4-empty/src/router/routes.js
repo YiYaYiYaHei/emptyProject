@@ -34,6 +34,8 @@ function createRoute(level, name, path, filePath, meta = {}, children = []) {
     for (let item of children) {
       // 设置子页面全路径：参数对应数组下标，path 参数对应下标2，
       !item[2].startsWith('/') && (item[2] = path + `/${item[2]}`);
+      // 保证父菜单无权限时，子菜单也无权限，meta 参数对应下标4
+      routeConfig.meta.authority.length <= (item[4].authority || PAGE_USER_All.authority).length && (item[4].authority = routeConfig.meta.authority);
       routeConfig.children.push(createRoute(...item));
     }
   }
@@ -48,7 +50,7 @@ function createRoute(level, name, path, filePath, meta = {}, children = []) {
  * 方法体中两种引用组件的写法都可以，核心就是require引入，import引入必须是字面量
  */
 function getComponent(filePath) {
-  if (typeof filePath !== 'string') return;
+  if (typeof filePath !== 'string') return filePath;
   if (filePath === EMPTY_PATH) {
     return () => Promise.resolve(require(`@/Layout/${filePath}`).default);
   }

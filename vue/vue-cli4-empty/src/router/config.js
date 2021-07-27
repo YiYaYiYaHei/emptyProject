@@ -1,10 +1,13 @@
+const NoRightOrPermission = () => {
+  return import( /* webpackChunkName: "NoRightOrPermission" */ '@/Layout/NoRightOrPermission.vue');
+}
 const Login = () => {
   return import( /* webpackChunkName: "Login" */ '@/Layout/Login.vue');
 }
 
 // 菜单配置
 const MENU_CONFIG = {
-  type: 'left',
+  type: 'leftTop',
   isFork: true
 };
 
@@ -24,6 +27,8 @@ const EMPTY_PATH = 'RouterViewPage.vue';
  * [菜单级别, 名称, 路由地址, 组件, {layout: '布局方式', iconCls: 'icon类名', redirect: '重定向路由地址', isHidden: '是否隐藏(true隐藏)', authority: '权限'}]
  */
 const ROUTES_LIST = [
+  [0, '无权限页面', '/nopermission', NoRightOrPermission, {layout: 'blank-layout'}],
+  [0, '页面不存在', '/noright', NoRightOrPermission, {layout: 'blank-layout'}],
   [0, '登录', '/login', Login, {layout: 'blank-layout'}],
   // 导航配置
   [1, '首页', '/home', 'Home/Index.vue', {iconCls: 'el-icon-s-home'}],
@@ -38,7 +43,7 @@ const ROUTES_LIST = [
     [2, '订单创建', 'create', 'OrderManage/OrderCreate.vue', {...pageUserAdmin, iconCls: 'el-icon-s-open'}],
     [2, '订单列表', 'list', 'OrderManage/OrderList.vue', {iconCls: 'el-icon-tickets'}],
   ]],
-  [1, '物流管理', '/logistics', 'LogisticsManage/Index', {iconCls: 'el-icon-takeaway-box', redirect: '/logisticsManage/order/Overview'}, [
+  [1, '物流管理', '/logistics', 'LogisticsManage/Index', {iconCls: 'el-icon-takeaway-box', redirect: '/logistics/overview'}, [
     [2, '物流概览', 'overview', 'LogisticsManage/Overview.vue', {...pageUserAdmin, iconCls: 'el-icon-data-line'}],
     [2, '物流配置', 'setting', EMPTY_PATH, {iconCls: 'el-icon-setting'}, [
       [3, '物流公司', 'company', 'LogisticsManage/LogisticsSetting/Company.vue', {}],

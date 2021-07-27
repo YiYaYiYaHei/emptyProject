@@ -24,6 +24,10 @@ new Vue({
     eventBus: new Vue()
   },
   render(creatElement) {
+    if (this.$route.path === '/') {
+      /* 此判断防止请求'/'路由报404 -- 防止刷新时，先进入/在进入当前路由*/
+      return creatElement('div');
+    }
     let layout = this.$route.meta.layout || 'main-layout';
     return creatElement(Index, {
       props: {

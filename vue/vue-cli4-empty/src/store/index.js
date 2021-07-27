@@ -7,15 +7,34 @@ import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 
-const state = {};
-const mutations = {};
-const actions = {};
+const state = {
+  menuFork: false // 菜单展开收起
+};
+
+const getters = {
+  getMenuFork: state => state.menuFork
+};
+
+const actions = {
+  setMenuFork({commit}, data) {
+    commit('mutationMenuFork', data);
+  }
+};
+
+const mutations = {
+  mutationMenuFork(state, data) {
+    console.log(data);
+    /* 扭转数据状态 */
+    state.menuFork = data;
+  }
+};
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state,
-  mutations,
+  getters,
   actions,
+  mutations,
   modules: {
     userInfo
   }

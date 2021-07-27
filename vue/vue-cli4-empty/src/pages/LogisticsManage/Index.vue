@@ -1,5 +1,8 @@
 <template>
-  <div>物流管理</div>
+  <div>
+    物流管理
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
