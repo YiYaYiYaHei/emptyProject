@@ -18,11 +18,12 @@
 <script>
 import MenuTop from './MenuLayout/MenuTop';
 import MenuLeft from './MenuLayout/MenuLeft';
+import user from '@m/user.js';
 import {MENU_CONFIG} from '@/router/config.js';
-import {mapState} from 'vuex';
 
 export default {
   name: 'MainLayout',
+  mixins: [user],
   components: {
     MenuTop, MenuLeft
   },
@@ -36,11 +37,6 @@ export default {
       leftActiveIndex: '',
       topActiveIndex: ''
     };
-  },
-  computed: {
-    ...mapState({
-      userRole: state => state.userInfo.userInfo.role
-    })
   },
   watch: {
     $route: {

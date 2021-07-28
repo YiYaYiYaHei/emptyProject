@@ -15,6 +15,10 @@ import Router from 'vue-router';
 import router from './router';
 Vue.use(Router);
 
+// 全局组件、过滤器、指令、原型注册
+import GlobalOperation from './common/index.js';
+Vue.use(GlobalOperation);
+
 Vue.config.productionTip = false;
 
 new Vue({

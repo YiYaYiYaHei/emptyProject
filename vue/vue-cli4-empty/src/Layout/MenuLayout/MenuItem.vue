@@ -29,10 +29,11 @@
  * 1、手动对文字、箭头进行隐藏，并且设置.el-menu:not(.el-menu--collapse)的宽度
  * 2、安装vue-fragment--可以减少无用dom或者想在template中一次返回多个节点
  */
-import {mapState} from 'vuex';
+import user from '@m/user.js';
 export default {
   // 使用name属性可以实现组件自己调用自己
   name: 'MenuItem',
+  mixins: [user],
   props: {
     menuList: {
       type: Array,
@@ -40,9 +41,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      userRole: state => state.userInfo.userInfo.role
-    }),
     // 获取有权限的列表
     menuListShow: function() {
       return this.menuList.filter(it => it.meta.authority.includes(this.userRole));

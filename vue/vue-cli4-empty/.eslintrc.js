@@ -56,8 +56,8 @@ module.exports = {
     'no-else-return': 2,
     // 禁止出现空函数
     'no-empty-function': 2,
-    // 强制对多行注释使用特定风格
-    'multiline-comment-style': 2,
+    // 不强制对多行注释使用特定风格
+    'multiline-comment-style': 0,
     // 不禁止注释和代码出现在同一行
     'no-inline-comments': 0,
     // 禁止 if 语句作为唯一语句出现在 else 语句块中 类似if(){} else {if(){}}
@@ -69,6 +69,8 @@ module.exports = {
     // 不允许花括号中有空格，类似[ 1 ]
     'standard/array-bracket-even-spacing': [2, 'never'],
     // 不允许花括号中有空格，类似{ a:1 }
-    'object-curly-spacing': [2, 'never']
+    'object-curly-spacing': [2, 'never'],
+    // 允许出现多个空格
+    'no-multi-spaces': [0, { "ignoreEOLComments": true }]
   }
 };

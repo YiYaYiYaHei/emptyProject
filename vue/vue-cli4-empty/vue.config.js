@@ -1,5 +1,5 @@
 const path = require('path'),
-  TerserPlugin = require('terser-webpack-plugin')
+  TerserPlugin = require('terser-webpack-plugin'),
   isPRD = process.env.NODE_ENV === 'production',
   publicPath = '/',
   outputDir = 'dist',
@@ -39,7 +39,8 @@ module.exports = {
       alias: {
         '@': path.resolve(__dirname, './src'),
         '@a': path.resolve(__dirname, './src/assets'),
-        '@p': path.resolve(__dirname, './src/pages')
+        '@p': path.resolve(__dirname, './src/pages'),
+        '@m': path.resolve(__dirname, './src/mixins')
       }
     },
     output: {
@@ -78,10 +79,11 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:13666',
+      '/apis': {
+        target: 'http://api.ifbes.com/mock/137',
+        // target: 'http://127.0.0.1:13666',
         pathRewrite: {
-          '^/api': ''
+          '^/apis': ''
         },
         // 如果是https接口，需要配置这个参数
         secure: false,

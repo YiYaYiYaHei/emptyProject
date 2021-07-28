@@ -44,11 +44,12 @@
 
 <script>
 import MenuItem from './MenuItem';
-import {mapGetters} from 'vuex';
+import user from '@m/user.js';
 import {MENU_CONFIG} from '@/router/config.js';
 
 export default {
   name: 'MenuTop',
+  mixins: [user],
   components: {MenuItem},
   props: {
     // 顶部导航列表
@@ -61,11 +62,6 @@ export default {
       type: String,
       default: ''
     }
-  },
-  computed: {
-    ...mapGetters({
-      userInfo: 'getUserInfo'
-    })
   },
   data() {
     return {
@@ -81,6 +77,9 @@ export default {
     menuForkEvt() {
       this.menuIsFork = !this.menuIsFork;
       this.$store.dispatch('setMenuFork', this.menuIsFork);
+      setTimeout(() => {
+        this.$store.dispatch('resetStore', this.menuIsFork);
+      }, 5000);
       this.$emit('menuIsForkEvt', this.menuIsFork);
     }
   }
