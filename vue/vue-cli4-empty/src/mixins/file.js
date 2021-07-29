@@ -49,7 +49,7 @@ export default {
         successCb: null,            // 成功的回调
         paramsFileKey: 'file',      // 上传参数-文件key
         urlPrefix: 'BASE_URL',      // 地址前缀（防止多台服务器时，请求前缀不同）
-        hasNotify: true             // 是否有notify提示
+        hasProgress: true             // 是否有notify提示
       }, config);
       this.fileUploadNode(async (files) => {
         // 检测文件大小
@@ -73,7 +73,7 @@ export default {
           [_config.paramsFileKey]: _config.isMultiple ? files : files[0]
         }, params);
 
-        const notify = _config.hasNotify ? this.createNotify(this.uploadFileMsg) : false;
+        const notify = _config.hasProgress ? this.createNotify(this.uploadFileMsg) : false;
         const requestConfig = {
           // 获取上传文件进度
           onUploadProgress: progress => {
@@ -84,7 +84,7 @@ export default {
           },
           urlPrefix: _config.urlPrefix
         };
-        // ajax请求
+        // axios请求
         const result = await urlFunc(_params, requestConfig);
         notify && notify.close();
         if (result.status === 200) {
