@@ -44,7 +44,7 @@ export default {
         isMultiple: true,           // 是否多文件上传
         acceptType: '',             // 文件类型[String] eg: image/*  、'.zip,.rar'
         acceptTypeErrMsg: '',       // 文件类型错误提示语
-        limitSize: 0,               // 文件限制大小(单位字节)
+        limitSize: 0,               // 文件限制大小(单位字节) 1KB=1024B
         successMsg: '文件上传成功',  // 文件上传成功提示语
         successCb: null,            // 成功的回调
         paramsFileKey: 'file',      // 上传参数-文件key
@@ -56,7 +56,7 @@ export default {
         let limitSizeFlag = true;
         _config.limitSize && (limitSizeFlag = this.$tools.checkFileSize(files, _config.limitSize));
         if (!limitSizeFlag) {
-          this.$message.warning('只能上传2M的文件');
+          this.$message.warning(`只能上传${this.$tools.formatByteSize(_config.limitSize)}的文件`);
           return;
         }
 
