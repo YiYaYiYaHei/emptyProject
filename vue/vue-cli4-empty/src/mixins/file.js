@@ -6,6 +6,21 @@ export default {
     };
   },
   methods: {
+    // 检测文件类型
+    checkFileType(files, acceptType) {
+      const length = files.length;
+      for (let i = 0; i < length; i++) {
+        if (!this.$tools.isSpecifyFileType(files[i].name, acceptType, files[i].type)) return false;
+      }
+      return true;
+    },
+    // 检测文件大小
+    checkFileSize(files, size) {
+      for (const item of files) {
+        if (item.size > size) return false;
+      }
+      return true;
+    },
     /**
      * 使用input标签属性上传文件
      * @param {Function} cb - 回调函数
@@ -54,7 +69,7 @@ export default {
       this.fileUploadNode(async (files) => {
         // 检测文件大小
         let limitSizeFlag = true;
-        _config.limitSize && (limitSizeFlag = this.$tools.checkFileSize(files, _config.limitSize));
+        _config.limitSize && (limitSizeFlag = this.checkFileSize(files, _config.limitSize));
         if (!limitSizeFlag) {
           this.$message.warning(`只能上传${this.$tools.formatByteSize(_config.limitSize)}的文件`);
           return;
@@ -62,7 +77,7 @@ export default {
 
         // 检测文件类型
         let acceptTypeFlag = true;
-        _config.acceptType && (acceptTypeFlag = this.$tools.checkFileType(files, _config.acceptType));
+        _config.acceptType && (acceptTypeFlag = this.checkFileType(files, _config.acceptType));
         if (!acceptTypeFlag) {
           _config.acceptTypeErrMsg && this.$message.error(_config.acceptTypeErrMsg);
           return;

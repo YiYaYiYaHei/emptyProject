@@ -31,44 +31,6 @@ const getModules = (name) => {
   }, {});
 };
 
-// 判断文件名是否是指定类型
-const isSpecifyFileType = (fileName, acceptType) => {
-  const accept = acceptType.split(',');
-  const pointIndex = fileName.lastIndexOf('.');
-  const fileType = fileName.slice(pointIndex);
-  return accept.includes(fileType);
-};
-
-/**
- * 检测文件类型
- * @param {fileList} files - 上传的文件流列表
- * @param {String} acceptType - 文件类型, eg: image/*(支持所有图片格式)  、'.zip,.rar'
- * @return {Boolean} 是否满足文件类型
- */
-const checkFileType = (files, acceptType) => {
-  const length = files.length;
-  for (let i = 0; i < length; i++) {
-    if (acceptType === 'image/*' && !files[i].type.startsWith('image/')) return false;
-    if (acceptType !== 'image/*') {
-      if (!isSpecifyFileType(files[i].name, acceptType)) return false;
-    }
-  }
-  return true;
-};
-
-/**
- * 检测文件大小
- * @param {fileList} files - 上传的文件流列表
- * @param {number} size - 文件最大尺寸
- * @return {Boolean} 上传的文件是否小于最大尺寸
- */
-const checkFileSize = (files, size) => {
-  for (const item of files) {
-    if (item.size > size) return false;
-  }
-  return true;
-};
-
 /**
  * 获取完整的（接口）请求地址
  * @param {string} url - 接口地址，以'/'开头的接口地址
@@ -594,14 +556,28 @@ const isEnglish = (str) => {
   return /[\u4e00-\u9fa5]/g.test(str);
 };
 
+/**
+ * 判断文件名是否是指定类型
+ * @param {String} fileName - 文件名
+ * @param {String} acceptType - 接受的文件类型 '.zip,.rar,.doc'
+ * @param {String} [type] - 文件类型 acceptType="image/*"时，需要此参数
+ */
+const isSpecifyFileType = (fileName, acceptType, type) => {
+  const pointIndex = fileName.lastIndexOf('.');
+  const fileType = fileName.slice(pointIndex);
+  if (acceptType === 'image/*') return type.startsWith('image/');
+  if (acceptType !== 'image/*') {
+    const accept = acceptType.split(',');
+    return accept.includes(fileType);
+  }
+};
+
 export {
   getModules
 };
 
 export default {
   isSpecifyFileType,
-  checkFileType,
-  checkFileSize,
   getFullUrl,
   transformRequestData,
   formatDate,
