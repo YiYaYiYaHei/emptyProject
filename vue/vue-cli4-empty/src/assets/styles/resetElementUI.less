@@ -97,7 +97,25 @@
   .el-icon-loading {
     color: white;
   }
+  .el-notification__group.is-with-icon {
+    .wfull();
+  }
   .el-notification__content {
+    .wfull();
     margin: 0;
+    .file-notify-percentage {
+      .wfull();
+      .line-height(6px);
+      .fs(0);
+      background: @text-placeholder;
+      border-radius: 5px;
+      margin-top: 4px;
+      >i {
+        .dinlineb();
+        .hfull();
+        background: @success;
+        border-radius: 5px;
+      }
+    }
   }
 }

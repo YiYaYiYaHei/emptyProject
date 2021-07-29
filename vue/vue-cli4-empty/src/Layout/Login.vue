@@ -1,6 +1,8 @@
 <template>
   <div class="login-container full">
-    <el-button @click="uploadFile('fileUpload', {userName: 'addd'})">登录</el-button>
+    <el-button @click="uploadFile($apis.login.fileUpload, {userName: 'addd'}, {acceptType: '.zip,.rar', acceptTypeErrMsg: '限.zip,.rar', limitSize: 30000 * 1024})">登录</el-button>
+    <el-button @click="downLoadEvt(`${$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, 'FILE_DOWN')">下载</el-button>
+    <el-button @click="downLoadAjaxEvt(`${$apis.login.fileDownload}`, {name: '检测异常邮件.zip'}, 'get', {urlPrefix: 'FILE_DOWN'})">下载ajax</el-button>
   </div>
 </template>
 <script>
