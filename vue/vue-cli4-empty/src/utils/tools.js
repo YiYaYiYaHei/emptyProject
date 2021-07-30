@@ -30,6 +30,11 @@ const getModules = (name) => {
   }, {});
 };
 
+// 根据权限跳转首页
+const jumpHome = (userRole) => {
+  return userRole === '管理员' ? '/system/user' : '/home';
+};
+
 /**
  * 获取完整的（接口）请求地址
  * @param {string} url - 接口地址，以'/'开头的接口地址
@@ -574,7 +579,8 @@ const isSpecifyFileType = (fileName, acceptType, type) => {
 };
 
 export {
-  getModules
+  getModules,
+  jumpHome
 };
 
 export default {

@@ -69,13 +69,12 @@ const sendRequest = async (requestConfig) => {
       status: 500
     };
   }
-  console.log(store);
   // token失效
   if (result.status === 401) {
     result.message = MESSAGE.PERMISSION_DENIED;
     Message.error(result.message);
     localStorage.clear();
-    store.commit('mutationResetStore');
+    store.dispatch('resetStore');
     location.replace('/login');
   }
   if (result.status >= 500 && result.status !== 502) result.message = result.message || MESSAGE.NETWORK_ERR;

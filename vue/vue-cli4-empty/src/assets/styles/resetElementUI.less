@@ -68,7 +68,7 @@
   }
 }
 .el-menu--horizontal {
-  .el-submenu.is-active > .el-submenu__title span{
+  .el-submenu.is-active > .el-submenu__title span {
     color: @primary;
   }
 }
@@ -118,4 +118,18 @@
       }
     }
   }
+}
+
+// Button
+.el-button {
+  color: white !important;
+}
+.el-button--small {
+  padding: 6px 10px !important;
+}
+.el-button.is-disabled,
+.el-button.is-disabled:focus,
+.el-button.is-disabled:hover {
+  background-color: @text-placeholder !important;
+  border-color: @text-placeholder !important;
 }

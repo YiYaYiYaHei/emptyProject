@@ -41,7 +41,8 @@ module.exports = {
         '@': path.resolve(__dirname, './src'),
         '@a': path.resolve(__dirname, './src/assets'),
         '@p': path.resolve(__dirname, './src/pages'),
-        '@m': path.resolve(__dirname, './src/mixins')
+        '@m': path.resolve(__dirname, './src/mixins'),
+        '@u': path.resolve(__dirname, './src/utils')
       }
     },
     output: {
@@ -81,7 +82,8 @@ module.exports = {
     },
     proxy: {
       '/apis': {
-        target: 'http://api.ifbes.com/mock/137',
+        // yApi: mengshuhui  mengshuhui961117
+        target: 'https://yapi.142vip.cn/mock/857',
         // target: 'http://127.0.0.1:13666',
         pathRewrite: {
           '^/apis': ''
