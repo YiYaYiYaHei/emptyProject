@@ -1,7 +1,7 @@
 export default {
   methods: {
     /**
-     * 多/单表单验证
+     * 多/单 表单验证
      * @param {String|Array} formNames - 表单名
      * @param {Function} cb - 回调函数
      */
