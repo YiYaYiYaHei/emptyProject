@@ -1,4 +1,3 @@
-import * as UrlConfig from '@/apis/url.config.js';
 /**
  * 拿到指定路径下面的模块，减少index.js文件 require.context - dir reg 不能用变量（注意：export default 才可以被引入）
  * @param {string} name
@@ -35,10 +34,12 @@ const getModules = (name) => {
  * 获取完整的（接口）请求地址
  * @param {string} url - 接口地址，以'/'开头的接口地址
  * @param {string} urlPrefix - 接口前缀: 类似BASE_URL
+ * @param {Boolean} isAxios - 是否是ajax请求前缀
  * @return {string}
  */
-const getFullUrl = (url, urlPrefix = 'BASE_URL') => {
-  return /^(http|https):/g.test(url) ? url : (UrlConfig[urlPrefix] + url);
+const getFullUrl = (url, urlPrefix = 'BASE_URL', isAxios = true) => {
+  urlPrefix = isAxios ? `VUE_APP_AXIOS_${urlPrefix}` : false;
+  return /^(http|https):/g.test(url) ? url : (process.env[urlPrefix] + url);
 };
 
 // 根据header里的contenteType转换请求参数
@@ -116,7 +117,7 @@ const formatByteSize = (bytes) => {
  * @param {string} nation - 输入的国家中文名
  * @param {string} [basePath='/'] - 图片基础路径
  * @return {string}
- * @example getNationalFlagSrc('中国')
+ * @example <img :src="$tools.getNationalFlagSrc('中国')" />
  */
 const getNationalFlagSrc = (nation, basePath = process.env.BASE_URL + 'nationalFlag/') => {
   nation = nation || '';

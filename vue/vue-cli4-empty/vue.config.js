@@ -1,9 +1,10 @@
+// webpack: https://cli.vuejs.org/zh/config/#%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE
 const path = require('path'),
   TerserPlugin = require('terser-webpack-plugin'),
   isPRD = process.env.NODE_ENV === 'production',
   publicPath = '/',
   outputDir = 'dist',
-  title = 'vue-cli4(vue2.x)框架';
+  title = process.env.VUE_APP_SYSTEM_NAME;
 
 module.exports = {
   publicPath,

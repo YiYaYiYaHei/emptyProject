@@ -19,7 +19,7 @@ export default {
       // 前端控制超时自动退出
       operatorData: {
         timer: null,               // 定时器id
-        timeout: 10 * 60 * 1000,   // 10分钟
+        timeout: process.env.VUE_APP_TIMEOUT_INTERVAL * 60 * 1000,   // 10分钟
         actions: ['mousemove', 'keyup', 'click']
       }
     };

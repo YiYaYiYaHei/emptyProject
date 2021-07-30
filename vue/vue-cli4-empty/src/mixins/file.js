@@ -64,7 +64,7 @@ export default {
         successCb: null,            // 成功的回调
         paramsFileKey: 'file',      // 上传参数-文件key
         urlPrefix: 'BASE_URL',      // 地址前缀（防止多台服务器时，请求前缀不同）
-        hasProgress: true             // 是否有notify提示
+        hasProgress: true           // 是否有notify提示
       }, config);
       this.fileUploadNode(async (files) => {
         // 检测文件大小
@@ -166,7 +166,7 @@ export default {
       const _method = method.toUpperCase();
       const _config = Object.assign({
         contentType: _method === 'GET' ? 'application/x-www-form-urlencoded' : 'application/json',  // 请求头类型
-        downloadName: '未知文件',                                   // 下载文件名
+        downloadName: '未知文件',                                   // 下载文件名(必填，若为空，下载下来都是txt格式)
         async: true,                                               // 请求是否异步-true异步、false同步
         token: localStorage.getItem('current_user_token') || '',   // 用户token
         urlPrefix: 'BASE_URL',                                     // 接口前缀: 类似BASE_URL
@@ -197,7 +197,7 @@ export default {
               const result = JSON.parse(fileReader.result || '{message: 服务器出现问题，请联系管理员}');
               _this.$message.error(result.message);
             } else {
-              // 两种解码方式，区别自行百度:decodeURIComponent/decodeURI
+              // 两种解码方式，区别自行百度: decodeURIComponent/decodeURI
               const fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].slice(10));
               const file = new Blob([this.response]);
               const blobUrl = URL.createObjectURL(file);
