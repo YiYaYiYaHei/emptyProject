@@ -16,7 +16,7 @@ const getModules = (name) => {
       modulesFiles = require.context('@/mixins/', true, /^.+(?<!index)\.(js|vue)$/);
       break;
     case 'apis':
-      modulesFiles = require.context('@/apis/', true, /^.+(?<!url.config)\.js$/);
+      modulesFiles = require.context('@/apis/', true, /^.+(?<!index)\.js$/);
       break;
     case 'prototype':
       modulesFiles = require.context('@/utils/', true, /^.+(?<!request)\.(js|vue)$/);
