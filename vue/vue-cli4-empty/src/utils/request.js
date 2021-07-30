@@ -46,7 +46,7 @@ const buildRequestConfig = (requestConfig) => {
   config[/get|delete/.test(config.method) ? 'params' : 'data'] = Tool.transformRequestData(requestConfig.contentType, requestConfig.params);
   config.timeout = TIME_OUT;
 
-  // 文件上传进度
+  // 文件上传进度，也可以设置文件下载进度，但是我就想用原生ajax的进度
   requestConfig.onUploadProgress && (config.onUploadProgress = requestConfig.onUploadProgress);
 
   return config;
