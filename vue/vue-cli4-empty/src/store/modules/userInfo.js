@@ -1,6 +1,6 @@
 // 用户信息缓存
 const defaultState = {
-  userInfo: {role: '普通用户', userName: 'admin', userId: 1, token: ''} // 用户信息
+  userInfo: {role: '普通用户', userName: 'user', userId: 1, token: ''} // 用户信息
 };
 const state = {
   ...defaultState

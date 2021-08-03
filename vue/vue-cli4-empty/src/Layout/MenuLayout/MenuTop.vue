@@ -34,22 +34,42 @@
           <i class="user-name-arrow dinlineb el-icon-caret-bottom" :data-arrow-type="popoverVisiable"></i>
         </div>
         <div class="content-container pointer">
-          <div>修改密码</div>
-          <div>退出登录</div>
+          <div @click="editPwdData.nodeId = +new Date()">修改密码</div>
+          <div @click="logoutEvt">退出登录</div>
         </div>
       </el-popover>
     </div>
+
+    <!--修改密码弹框-->
+    <base-dialog ref="dialog"
+                 title="修改密码"
+                 :dialogId="editPwdData.nodeId"
+                 @dialogConfirm="submitForm('editPwdForm', editPwdConfirm)">
+      <el-form :model="editPwdData.formData" :rules="editPwdData.formRules" ref="editPwdForm" label-width="80px">
+        <el-form-item label="原始密码" prop="oldPwd">
+          <el-input maxlength=20 type="password" placeholder="请输入原始密码" v-model.trim="editPwdData.formData.oldPwd" clearable onpaste="return false"/>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPwd">
+          <el-input maxlength=20 type="password" placeholder="请输入新密码" v-model.trim="editPwdData.formData.newPwd" clearable onpaste="return false"/>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="newPwdRepeat">
+          <el-input maxlength=20 type="password" placeholder="请再次输入新密码" v-model.trim="editPwdData.formData.newPwdRepeat" clearable onpaste="return false"/>
+        </el-form-item>
+      </el-form>
+    </base-dialog>
   </div>
 </template>
 
 <script>
 import MenuItem from './MenuItem';
 import user from '@m/user.js';
+import form from '@m/form.js';
 import {MENU_CONFIG} from '@/router/config.js';
+import SHA256 from 'js-sha256';
 
 export default {
   name: 'MenuTop',
-  mixins: [user],
+  mixins: [user, form],
   components: {MenuItem},
   props: {
     // 顶部导航列表
@@ -69,7 +89,36 @@ export default {
       menuHasFork: MENU_CONFIG.isFork,
       menuType: MENU_CONFIG.type,
       menuIsFork: this.$store.state.menuFork,
-      popoverVisiable: false
+      popoverVisiable: false,
+      editPwdData: {
+        nodeId: null,
+        formData: {
+          oldPwd: '',
+          newPwd: '',
+          newPwdRepeat: ''
+        },
+        formRules: {
+          oldPwd: [{
+            required: true,
+            trigger: 'blur',
+            fieldType: '原始密码',
+            encryValue: () => {
+              return SHA256.hmac(this.userInfo.userName, this.editPwdData.formData.oldPwd);
+            },
+            validator: this.$validates.oldPwd
+          }],
+          newPwd: [{required: true, trigger: 'blur', fieldType: '新密码', validator: this.$validates.password}],
+          newPwdRepeat: [{
+            required: true,
+            trigger: 'blur',
+            fieldType: '确认密码',
+            validator: (rule, value, callback) => {
+              rule.newPwdRepeat = this.editPwdData.formData.newPwd;
+              this.$validates.password(rule, value, callback);
+            }
+          }]
+        }
+      }
     };
   },
   methods: {
@@ -81,6 +130,28 @@ export default {
         this.$store.dispatch('resetStore', this.menuIsFork);
       }, 5000);
       this.$emit('menuIsForkEvt', this.menuIsFork);
+    },
+    // 退出操作
+    async logoutEvt() {
+      const result = await this.$apis.login.logout();
+      if (result.status === 200) {
+        this.logout();
+      } else {
+        this.$message.error(result.message);
+      }
+    },
+    // 修改密码-提交
+    async editPwdConfirm() {
+      this.$refs.dialog.openLoading();
+      const result = await this.$apis.login.editUserPwd({
+        newPassward: SHA256.hmac(this.userInfo.userName, this.editPwdData.formData.newPwd)
+      });
+      this.$refs.dialog.closeLoading();
+      if (result.status === 200) {
+        this.logout('密码修改成功，请重新登录');
+      } else {
+        this.$message.error(result.message);
+      }
     }
   }
 };
@@ -93,7 +164,7 @@ export default {
   .pdr20();
   .fork-icon {
     color: white;
-    .fs(24px);
+    .fs(24);
     .transition();
     &[data-fork-status="true"] {
       transform: rotate(180deg);

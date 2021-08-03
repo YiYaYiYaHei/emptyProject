@@ -51,7 +51,6 @@ export default {
           res = index > 0 ? `-${res}` : res;
           return res;
         });
-
         /* 注册组件 */
         Vue.component(key, Components[name]);
       }
