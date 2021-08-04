@@ -9,7 +9,7 @@
                :leftMenuList="leftMenuList"
                :leftActiveIndex="leftActiveIndex"></menu-left>
 
-    <div class="application-content-container" :class="[menuType]" :data-fork-status="menuIsFork">
+    <div class="application-content-container" :class="[menuType, {'has-left-menu': leftMenuList.length}]" :data-menu-fork="menuIsFork">
       <router-view />
     </div>
   </div>
@@ -160,9 +160,24 @@ export default {
   &.left {
     .w(calc(~"100% - "@menuLeftWidth));
     .fl();
+    &[data-menu-fork="true"] {
+      .w(calc(~"100% - "@menuLeftForkWidth));
+    }
   }
-  &[data-fork-status="true"] {
-    .w(calc(~"100% - "@menuLeftForkWidth));
+  &.leftTop {
+    .wfull();
+    .fl();
+    &.has-left-menu {
+      .w(calc(~"100% - "@menuLeftWidth));
+      &[data-menu-fork="true"] {
+        .w(calc(~"100% - "@menuLeftForkWidth));
+      }
+    }
+  }
+  &.top {
+    &[data-menu-fork="true"] {
+      .wfull();
+    }
   }
 }
 </style>
