@@ -4,14 +4,15 @@
       <el-button @click="deleteEvt('many')" type="primary" size="medium">批量删除</el-button>
     </header>
     <div class="table-container">
-      <base-table v-loading="tableData.isLoading"
+      <base-table ref="table"
+                  v-loading="tableData.isLoading"
                   :tableData="tableData"
                   :pagingData="pagingData"
                   @sizeChange="pagingEvent"
                   @currentChange="pagingEvent"
-                  @sortChange="sortChange"
-                  @selectionChange="selectionChange"
-                  ref="table">
+                  @sortChange="sortChangeEvt"
+                  @selectionChange="selectionChangeEvt"
+                  @expandChange="expandChangeEvt">
         <template #columnType>
           <el-table-column type="selection" width="46"></el-table-column>
           <el-table-column type="index" :index="rowIndex" width="60" label="序号" align="center"></el-table-column>
@@ -23,9 +24,22 @@
                 @click="$message.info(data.row[data.column.prop]+'')"></span>
         </template>
         <template #otherColumns>
-          <el-table-column label="操作" :min-width="100" align="center" fixed="right">
+          <el-table-column label="操作" :min-width="200" align="center" fixed="right">
             <template #default="scope">
-              <el-button @click="deleteEvt(scope.row)" type="primary" size="small">删除</el-button>
+              <el-button @click="deleteEvt('row', scope.row)" type="primary" size="small">删除</el-button>
+              <el-button @click="toggleRowExpansion(scope.row)" type="primary" size="small">展开</el-button>
+            </template>
+          </el-table-column>
+
+          <!-- 展开 -->
+          <el-table-column type="expand" width="1">
+            <template #default="{row}">
+              <div v-loading="row.expandRowDetail.isLoading" class="full" :class="Object.keys(row.expandRowDetail.data).length ? '' : 'box--empty'">
+                <p v-for="(value, key) in row.expandRowDetail.data" :key="key">
+                  <span class="expanded-item-label">{{key}}：</span>
+                  <span>{{value}}</span>
+                </p>
+              </div>
             </template>
           </el-table-column>
         </template>
@@ -45,11 +59,21 @@ export default {
     };
   },
   methods: {
-    async getTableData() {
+    getTableData() {
       this.requestTableData(this.$apis.login.getTableList);
     },
-    deleteEvt(row) {
-      console.log(row);
+    getExpandRowDetail(row) {
+      this.requestExpandRowDetail(row, this.$apis.login.getTableDetail, {id: row.id});
+    },
+    deleteEvt(type, row) {
+      if (type === 'many' && !this.isTableSelect()) {
+        this.$message.error('暂无勾选数据');
+        return;
+      }
+      const params = type === 'row' ? row : this.getSelectData('userName');
+      console.log('删除参数:', params);
+      this.$message.success('删除成功');
+      this.refreshTableData();
     }
   },
   created() {
@@ -73,5 +97,11 @@ export default {
 <style lang="less" scoped>
 .table-container {
   .h(calc(~"100% - 56px"));
+}
+.expanded-item-label {
+  .dinlineb;
+  width: 120px;
+  margin-right: 5px;
+  .tr;
 }
 </style>

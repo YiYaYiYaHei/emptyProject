@@ -1,13 +1,17 @@
 <template>
   <div class="base-table-container full">
     <template v-if="tableData.columns.length">
-      <el-table :data="tableData.data"
+      <!-- 固定列不随表格内容滚动：el-table设置height属性 -->
+      <el-table ref="baseTable"
+                :data="tableData.data"
                 :height="hasPagination ? `calc(100% - 68px)` : '100%'"
                 style="width: 100%;"
                 :default-sort="tableData.defaultSort"
                 @sort-change="$emit('sortChange', $event)"
                 @selection-change="$emit('selectionChange', $event)"
-                ref="baseTable">
+                :row-key="tableData.rowKey"
+                :expand-row-keys="tableData.expandedRows"
+                @expand-change="(row, expandedRows) => $emit('expandChange', row, expandedRows)">
         <!-- 列类型 -->
         <slot name="columnType"></slot>
         <template v-for="(item, i) in tableData.columns">
@@ -28,7 +32,7 @@
             </template>
           </el-table-column>
         </template>
-        <!-- 其他列 -->
+        <!-- 其他列(展开行、操作列等) -->
         <slot name="otherColumns"></slot>
       </el-table>
     </template>
@@ -51,6 +55,19 @@
 </template>
 
 <script>
+/**
+ * tableData.columns属性如下：
+ * isHidden: 是否隐藏
+ * label: 表格列标签label
+ * prop: 列属性prop
+ * align: 列对齐方式，默认left
+ * className: 列样式class
+ * sortable: 列是否可排序（后端排序）
+ * filter: 过滤器名称：默认transformNull
+ * filterParam: 数组-过滤器参数
+ * width: 列最小宽度，默认120
+ * slotName: 插槽名
+ */
 export default {
   props: {
     tableData: {

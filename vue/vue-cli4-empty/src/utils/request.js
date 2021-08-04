@@ -2,7 +2,7 @@
 import axios from 'axios';
 import {Message} from 'element-ui';
 import store from '@/store';
-import Tool from '@/utils/tools.js';
+import Tools from '@/utils/tools.js';
 
 const TIME_OUT = 60 * 1000;
 const MESSAGE = {
@@ -41,9 +41,9 @@ const buildRequestConfig = (requestConfig) => {
   const config = {};
   // axios.transformRequest对于 'PUT', 'POST' 和 'PATCH' 方法，ContentType会自动设置为'application/x-www-form-urlencoded'或者'multipart/form-data'
   config.header = buildRequestHeader(requestConfig);
-  config.url = Tool.getFullUrl(requestConfig.url, requestConfig.urlPrefix);
+  config.url = Tools.getFullUrl(requestConfig.url, requestConfig.urlPrefix);
   config.method = requestConfig.method;
-  config[/get|delete/.test(config.method) ? 'params' : 'data'] = Tool.transformRequestData(requestConfig.contentType, requestConfig.params);
+  config[/get|delete/.test(config.method) ? 'params' : 'data'] = Tools.transformRequestData(requestConfig.contentType, requestConfig.params);
   config.timeout = TIME_OUT;
 
   // 文件上传进度，也可以设置文件下载进度，但是我就想用原生ajax的进度

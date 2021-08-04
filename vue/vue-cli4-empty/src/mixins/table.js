@@ -9,17 +9,18 @@ export default {
         total: 0
       },
       tableData: {
-        isLoading: false,
-        columns: [],
-        data: [],
-        orderField: '',
-        orderBy: 'DESC',
-        selection: [],
-        defaultSort: {prop: 'createTime', order: 'descending'},
-        rowClassName: null,
-        expandRowKeys: null,
-        expands: [],
-        configColumnList: []
+        isLoading: false,                                            // 加载框
+        columns: [],                                                 // 表格列
+        data: [],                                                    // 表格数据
+        orderField: '',                                              // 表格排序字段
+        orderBy: 'DESC',                                             // 表格排序类型：DESC-降序  ASC-升序
+        selection: [],                                               // 表格勾选数据
+        defaultSort: {prop: 'createTime', order: 'descending'},      // 表格默认排序，elment-ui14+不再支持默认查询
+        rowClassName: null,                                          // 表格行class
+        isSingleExpand: true,                                        // 表格是否始终允许之展开一行数据
+        rowKey: row => row.id,                                       // 表格rowKey,供展开时使用
+        expandedRows: [],                                            // 表格展开的rowKey列表
+        configColumnList: []                                         // 表格设置列
       }
     };
   },
@@ -27,6 +28,12 @@ export default {
     // 获取表格数据
     async getTableData() {
       console.log('base view method...');
+    },
+    // 搜索、新增、删除 表格数据时调用
+    refreshTableData() {
+      this.pagingData.current = 1;
+      this.getTableData();
+      this.scrollToTop();
     },
     // 请求表格数据
     async requestTableData(requestApi, params = {}, type = ['page', 'sort']) {
@@ -74,14 +81,14 @@ export default {
       this.tableData.orderBy = order === 'descending' ? 'DESC' : 'ASC';
     },
     // 表格排序事件
-    sortChange({column, prop, order}) {
+    sortChangeEvt({column, prop, order}) {
       this.setTableSortData({prop, order});
       this.pagingData.current = 1;
       this.getTableData();
       this.scrollToTop();
     },
     // 表格勾选事件
-    selectionChange(selection) {
+    selectionChangeEvt(selection) {
       this.tableData.selection = selection;
     },
     // 判断是否勾选
@@ -113,6 +120,53 @@ export default {
     // 获取表格序号
     rowIndex(index) {
       return (this.hasPagination ? (this.pagingData.current - 1) * this.pagingData.size : 0) + index + 1;
+    },
+    // 查找base-table组件，也可以用$refs一层层找
+    findBaseTableComp(parentComponent = this, refName = 'baseTable') {
+      let component = parentComponent.$refs[refName];
+      if (component) return component;
+      for (const childComponent of parentComponent.$children) {
+        component = this.findBaseTableComp(childComponent, refName);
+        if (component) return component;
+      }
+    },
+    // 拿到行展开信息：key、是否已展开、在expandRowKeys中的下标
+    getExpandRowInfo(row) {
+      const rowKey = this.tableData.rowKey(row);
+      const index = this.tableData.expandedRows.indexOf(rowKey);
+      const isExpanded = index !== -1;
+      return {rowKey, isExpanded, index};
+    },
+    // 展开/收起触发事件--expandedRows需与rowKey对应
+    expandChangeEvt(row, expandedRows) {
+      this.tableData.expandedRows = expandedRows.map(row => this.tableData.rowKey(row));
+    },
+    // 只展开一行
+    singleExpand(row, index) {
+      this.tableData.expandedRows = this.tableData.expandedRows.splice(index, 1);
+    },
+    // 行展开/收起状态切换
+    toggleRowExpansion(row) {
+      // 切换当前行的状态
+      this.findBaseTableComp().toggleRowExpansion(row);
+      const {isExpanded: isNeedExpand, index} = this.getExpandRowInfo(row);
+      if (isNeedExpand) {
+        // 是否只展开一行
+        this.tableData.isSingleExpand && this.singleExpand(row, index);
+        if (!row.expandRowDetail) this.$set(row, 'expandRowDetail', {isLoading: true, data: {}});
+        this.getExpandRowDetail(row);
+      }
+    },
+    // 获取展开行数据
+    async requestExpandRowDetail(row, requestApi, params = {}) {
+      row.expandRowDetail.isLoading = true;
+      const result = await requestApi(params);
+      row.expandRowDetail.isLoading = false;
+      if (result.status === 200) {
+        row.expandRowDetail.data = result.data;
+      } else {
+        this.$message.error(result.message);
+      }
     }
   }
 };

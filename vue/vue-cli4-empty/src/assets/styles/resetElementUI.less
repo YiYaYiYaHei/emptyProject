@@ -138,7 +138,7 @@
 @table-row-height: 40px;
 .el-table td,
 .el-table th.is-leaf {
-  height: @table-row-height !important;
+  height: @table-row-height;
   box-sizing: border-box !important;
   padding: 0;
 }
@@ -152,11 +152,19 @@
     display: none;
   }
 }
+// 展开行样式
+tr .el-table__expanded-cell {
+  height: 200px;
+  .pd20 !important;
+  background-color: @bg-expand;
+  font-size: 13px;
+  line-height: 25px;
+}
 // 解决表格勾选框对不齐
 .el-table-column--selection .cell {
   padding-left: 10px;
 }
-// 解决表格固定列遮挡横向滚动条问题
+// 解决表格固定列遮挡横向滚动条问题--若出现滚动至底部，固定列错位：webkit-scrollbar的width、height设为一致
 .el-table__fixed-right {
   height: auto!important;
   bottom: 10px;
