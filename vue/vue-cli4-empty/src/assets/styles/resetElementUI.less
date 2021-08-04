@@ -133,3 +133,31 @@
   background-color: @text-placeholder !important;
   border-color: @text-placeholder !important;
 }
+
+//el-table
+@table-row-height: 40px;
+.el-table td,
+.el-table th.is-leaf {
+  height: @table-row-height !important;
+  box-sizing: border-box !important;
+  padding: 0;
+}
+.el-table__body-wrapper {
+  .wfull();
+  .h(calc(~"100% - 40px"))!important;
+}
+.el-table__empty-block {
+  background: url(../images/common/empty.png) center center no-repeat;
+  .el-table__empty-text {
+    display: none;
+  }
+}
+// 解决表格勾选框对不齐
+.el-table-column--selection .cell {
+  padding-left: 10px;
+}
+// 解决表格固定列遮挡横向滚动条问题
+.el-table__fixed-right {
+  height: auto!important;
+  bottom: 10px;
+}

@@ -82,11 +82,11 @@ const transformRequestData = (contentType, requestData) => {
 /**
  * 日期格式化  YYYY-MM-DD hh:mm:ss ww qq (年-月-日 时:分:秒 星期 季度)
  * @param {string} [type='YYYY-MM-DD hh:mm:ss'] - 日期格式
- * @param {number} [granularity=1] 分粒度 默认为1，若为10可能显示为 10:10 10:20等
  * @param {Date|number|string} [val] - Date或者是时间戳
+ * @param {number} [granularity=1] 分粒度 默认为1，若为10可能显示为 10:10 10:20等
  * @return {string} 格式化后的时间
  */
-const formatDate = (type = 'YYYY-MM-DD hh:mm:ss', granularity = 1, val) => {
+const formatDate = (type = 'YYYY-MM-DD hh:mm:ss', val, granularity = 1) => {
   const date = val instanceof Date ? val : new Date(/^[0-9]*$/g.test(val) ? val * 1 : Date.now());
   const YYYY = date.getFullYear() + '';
   const m = date.getMonth() + 1;

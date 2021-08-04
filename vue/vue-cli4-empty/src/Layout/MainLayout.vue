@@ -157,6 +157,7 @@ export default {
 .application-content-container {
   .wfull();
   .h(calc(~"100% - "@menuTopHeight));
+  background: #1a1a2e;
   &.left {
     .w(calc(~"100% - "@menuLeftWidth));
     .fl();

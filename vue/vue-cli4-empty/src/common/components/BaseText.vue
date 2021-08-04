@@ -1,5 +1,5 @@
 <template>
-  <el-tooltip class="ellipsis" :disabled="!isShowTooltip" :content="content" placement="top">
+  <el-tooltip class="ellipsis" :disabled="disabled || !isShowTooltip" :content="content" placement="top">
     <p @click="$emit('click')"
        @mouseenter.stop="$emit('mouseenter', isShowTooltip)"
        @mouseleave="$emit('mouseleave', false)">
@@ -11,7 +11,16 @@
 <script>
 export default {
   name: 'BaseText',
-  props: ['content'],
+  props: {
+    content: {
+      type: String,
+      default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       isShowTooltip: true
