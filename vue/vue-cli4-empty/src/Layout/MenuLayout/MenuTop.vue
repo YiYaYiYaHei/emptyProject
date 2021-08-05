@@ -16,7 +16,7 @@
                mode="horizontal"
                :default-active="topActiveIndex"
                class="full"
-               background-color="#10101d"
+               background-color="#1a1a2e"
                text-color="#fff"
                active-text-color="#ffd04b"
                @select="(index) => $emit('menuTopSelect', index)">
@@ -45,7 +45,7 @@
 
     <!--修改密码弹框-->
     <base-dialog ref="dialog"
-                 title="修改密码"
+                 title="修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码"
                  :dialogId="editPwdData.nodeId"
                  @dialogConfirm="submitForm('editPwdForm', editPwdConfirm)">
       <el-form :model="editPwdData.formData" :rules="editPwdData.formRules" ref="editPwdForm" label-width="80px">
@@ -163,7 +163,7 @@ export default {
 <style lang="less" scoped>
 .menu-top-container {
   height: @menuTopHeight;
-  background: @bg-base;
+  background: @bg-nav;
   .pdr20();
   .fork-icon {
     color: white;
@@ -184,7 +184,6 @@ export default {
   flex-shrink: 0;
   width: @menuLeftWidth;
   .hfull();
-  background: @bg-base;
   overflow: hidden;
 }
 .menu-top-box {

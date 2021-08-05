@@ -5,7 +5,7 @@
             :collapse="menuIsFork"
             class="full"
             unique-opened
-            background-color="#10101d"
+            background-color="#1a1a2e"
             text-color="#fff"
             active-text-color="#ffd04b">
       <menu-item :menuList="leftMenuList"></menu-item>
