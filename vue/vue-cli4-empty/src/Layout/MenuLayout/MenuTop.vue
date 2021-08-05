@@ -16,6 +16,9 @@
                mode="horizontal"
                :default-active="topActiveIndex"
                class="full"
+               background-color="#10101d"
+               text-color="#fff"
+               active-text-color="#ffd04b"
                @select="(index) => $emit('menuTopSelect', index)">
         <menu-item :menuList="topMenuList"></menu-item>
       </el-menu>

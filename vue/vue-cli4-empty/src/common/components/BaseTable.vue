@@ -133,7 +133,7 @@ export default {
   right: 0;
   z-index: 4;
   .fs(18);
-  background: #1a1a2e;
+  background: @bg-nav;
   padding: 0 8px;
 }
 </style>

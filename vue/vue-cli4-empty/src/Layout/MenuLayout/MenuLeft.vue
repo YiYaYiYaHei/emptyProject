@@ -4,7 +4,10 @@
             :default-active="leftActiveIndex"
             :collapse="menuIsFork"
             class="full"
-            unique-opened>
+            unique-opened
+            background-color="#10101d"
+            text-color="#fff"
+            active-text-color="#ffd04b">
       <menu-item :menuList="leftMenuList"></menu-item>
     </el-menu>
   </div>

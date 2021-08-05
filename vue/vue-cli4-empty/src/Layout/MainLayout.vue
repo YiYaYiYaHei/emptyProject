@@ -50,7 +50,7 @@ export default {
     // 获取导航激活项的地址：通过循环matched，防止访问隐藏的子菜单时，导航对应菜单没有高亮（比如访问/goods/list/detail/:id时，/goods/list未高亮）
     getActivePath() {
       const length = this.$route.matched.length - 1;
-      for (let i = length; i > 0; i--) {
+      for (let i = length; i >= 0; i--) {
         const item = this.$route.matched[i];
         if (!item.meta.isHidden) return item.path;
       }
@@ -157,7 +157,7 @@ export default {
 .application-content-container {
   .wfull();
   .h(calc(~"100% - "@menuTopHeight));
-  background: #1a1a2e;
+  background: @bg-nav;
   &.left {
     .w(calc(~"100% - "@menuLeftWidth));
     .fl();
