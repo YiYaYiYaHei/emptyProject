@@ -6,7 +6,7 @@ export default {
   checkUserName: params => ajax.post('/checkUserName', params),
   editUserPwd: params => ajax.post('/editUserPwd', params),
   fileUpload: (params, requestConfig) => ajax.post('/file/upload', params, requestConfig),
-  fileDownload: '/download',
+  fileDownload: '',
   getTableList: params => ajax.post('/table/list', params),
   getTableDetail: params => ajax.post('/table/detail', params)
 };

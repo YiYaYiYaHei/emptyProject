@@ -139,7 +139,7 @@ export default {
       el.setAttribute('target', '_blank');
       downloadName && el.setAttribute('download', downloadName);
       const queryParams = params ? this.$tools.transformRequestData('application/x-www-form-urlencoded', params) : '';
-      el.href = url.startsWith('blob') ? url : this.$tools.getFullUrl(`${url}?${queryParams}`, urlPrefix);
+      el.href = url.startsWith('blob') ? url : this.$tools.getFullUrl(`${url}${queryParams ? '?' + queryParams : ''}`, urlPrefix);
       console.log(el.href);
       document.body.appendChild(el);
       el.click();
@@ -174,7 +174,7 @@ export default {
       }, config);
 
       const queryParams = this.$tools.transformRequestData(_config.contentType, params);
-      const _url = this.$tools.getFullUrl(`${url}${_method === 'GET' ? '?' + queryParams : ''}`, _config.urlPrefix);
+      const _url = this.$tools.getFullUrl(`${url}${_method === 'GET' && queryParams ? '?' + queryParams : ''}`, _config.urlPrefix);
 
       const ajax = new XMLHttpRequest();
       ajax.open(_method, _url, _config.async);

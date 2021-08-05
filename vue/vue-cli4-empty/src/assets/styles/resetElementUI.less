@@ -134,6 +134,14 @@
   border-color: @text-placeholder !important;
 }
 
+// el-checkout
+.el-checkbox__input.is-disabled {
+  .el-checkbox__inner {
+    background-color: @text-placeholder !important;
+    border-color: @text-placeholder !important;
+  }
+}
+
 //el-table
 @table-row-height: 40px;
 .el-table td,
@@ -159,6 +167,9 @@ tr .el-table__expanded-cell {
   background-color: @bg-expand;
   font-size: 13px;
   line-height: 25px;
+  &:hover {
+    background-color: @bg-expand!important;
+  }
 }
 // 解决表格勾选框对不齐
 .el-table-column--selection .cell {
@@ -166,6 +177,31 @@ tr .el-table__expanded-cell {
 }
 // 解决表格固定列遮挡横向滚动条问题--若出现滚动至底部，固定列错位：webkit-scrollbar的width、height设为一致
 .el-table__fixed-right {
-  height: auto!important;
-  bottom: 10px;
+  // height: auto!important;
+  // bottom: 10px;
+}
+
+// el-loading
+.el-loading-mask {
+  background-color: @bg-base-opacity;
+}
+// 修改加载框icon
+.el-loading-spinner{
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .full();
+  background: url(../images/common/loading.gif) center center /42px 42px no-repeat;
+  .circular {
+    .dnone();
+  }
+}
+
+// el-dropdown
+.table-columns-config-dropdown {
+  .dflex();
+  .fjc();
+  width: 246px;
+  padding: 10px;
 }

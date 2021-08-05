@@ -14,7 +14,7 @@
                   @selectionChange="selectionChangeEvt"
                   @expandChange="expandChangeEvt">
         <template #columnType>
-          <el-table-column type="selection" width="46"></el-table-column>
+          <el-table-column type="selection" width="46" :selectable="(row, index) => row.orderTotal === 100"></el-table-column>
           <el-table-column type="index" :index="rowIndex" width="60" label="序号" align="center"></el-table-column>
         </template>
         <template #totalName="{data}">
@@ -24,10 +24,12 @@
                 @click="$message.info(data.row[data.column.prop]+'')"></span>
         </template>
         <template #otherColumns>
-          <el-table-column label="操作" :min-width="200" align="center" fixed="right">
+          <el-table-column label="操作" :min-width="260" align="center" fixed="right">
             <template #default="scope">
+              <el-button @click="uploadFile($apis.login.fileUpload, {userName: 'addd'}, {acceptType: '.zip,.rar', acceptTypeErrMsg: '限.zip,.rar', limitSize: 30000 * 1024})" type="primary" size="small">上传</el-button>
+              <el-button @click="downLoadEvt(`${$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, 'FILE_DOWN')" type="primary" size="small">下载</el-button>
               <el-button @click="deleteEvt('row', scope.row)" type="primary" size="small">删除</el-button>
-              <el-button @click="toggleRowExpansion(scope.row)" type="primary" size="small">展开</el-button>
+              <el-button @click="toggleRowExpansion(scope.row)" type="primary" size="small">{{scope.row.expandRowDetail && scope.row.expandRowDetail.isExpanded ? '收起' : '展开'}}</el-button>
             </template>
           </el-table-column>
 
@@ -50,13 +52,42 @@
 
 <script>
 import table from '@m/table.js';
+import user from '@m/user.js';
+import file from '@m/file.js';
 export default {
   name: 'Home',
-  mixins: [table],
+  mixins: [table, user, file],
   data() {
     return {
-      nodeId: null
+      nodeId: null,
+      tableData: {
+        defaultSort: {prop: 'lastOrderTime', order: 'descending'},
+        rowClassName: ({row}) => !row.orderTotal ? 'table-cell1' : '',
+        columns: [
+          {label: '最近下单时间', prop: 'lastOrderTime', sortable: true, filter: 'formatDate', filterParam: [], width: 150},
+          {label: '客户名', prop: 'userName', cls: 'green'},
+          {label: '订单总数', prop: 'orderTotal', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
+          {label: '未完成订单', prop: 'orderUnfinished', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
+          {label: '已完成订单', prop: 'orderFinished', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
+          {label: '采购类型', prop: 'purchaseType', align: 'center', filter: 'transformArrToStr', isHidden: !this.isAdmin},
+          {label: '采购数量', prop: 'purchaseTotal', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
+          {label: '优选客户', prop: 'isVip', sortable: true, align: 'center'},
+          {label: '客户描述', prop: 'description'}
+        ],
+        configColumnList: [
+          {label: '订单总数', value: 'orderTotal'},
+          {label: '采购类型', value: 'purchaseType'},
+          {label: '采购数量', value: 'purchaseTotal'},
+          {label: '优选客户', value: 'isVip'},
+          {label: '客户描述', value: 'description'}
+        ]
+      }
     };
+  },
+  watch: {
+    'tableData.configColumnCheckedList': function(newVal) {
+      console.log('监听:', newVal);
+    }
   },
   methods: {
     getTableData() {
@@ -77,18 +108,6 @@ export default {
     }
   },
   created() {
-    this.tableData.defaultSort.prop = 'lastOrderTime';
-    this.tableData.columns = [
-      {label: '最近下单时间', prop: 'lastOrderTime', sortable: true, filter: 'formatDate', filterParam: [], width: 150},
-      {label: '客户名', prop: 'userName'},
-      {label: '订单总数', prop: 'orderTotal', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
-      {label: '未完成订单', prop: 'orderUnfinished', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
-      {label: '已完成订单', prop: 'orderFinished', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
-      {label: '采购类型', prop: 'purchaseType', align: 'center', filter: 'transformArrToStr'},
-      {label: '采购数量', prop: 'purchaseTotal', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
-      {label: '优选客户', prop: 'isVip', sortable: true, align: 'center'},
-      {label: '客户描述', prop: 'description'}
-    ];
     this.getTableData();
   }
 };
@@ -103,5 +122,21 @@ export default {
   width: 120px;
   margin-right: 5px;
   .tr;
+}
+/deep/.table-cell1 {
+  .el-table-column--selection {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      .w(8px);
+      .h(8px);
+      border-radius: 50%;
+      background: @error;
+    }
+  }
 }
 </style>

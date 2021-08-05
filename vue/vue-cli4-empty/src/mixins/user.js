@@ -9,7 +9,8 @@ export default {
       userInfo: 'getUserInfo'
     }),
     ...mapState({
-      userRole: state => state.userInfo.userInfo.role
+      userRole: state => state.userInfo.userInfo.role,
+      isAdmin: state => state.userInfo.userInfo.role === '管理员'
     })
   },
   methods: {

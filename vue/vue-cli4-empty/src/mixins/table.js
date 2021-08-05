@@ -16,11 +16,12 @@ export default {
         orderBy: 'DESC',                                             // 表格排序类型：DESC-降序  ASC-升序
         selection: [],                                               // 表格勾选数据
         defaultSort: {prop: 'createTime', order: 'descending'},      // 表格默认排序，elment-ui14+不再支持默认查询
-        rowClassName: null,                                          // 表格行class
+        rowClassName: '',                                            // 表格行class
         isSingleExpand: true,                                        // 表格是否始终允许之展开一行数据
         rowKey: row => row.id,                                       // 表格rowKey,供展开时使用
         expandedRows: [],                                            // 表格展开的rowKey列表
-        configColumnList: []                                         // 表格设置列
+        configColumnList: [],                                        // 表格设置列
+        configColumnCheckedList: ['purchaseType']                    // 表格设置列-勾选列
       }
     };
   },
@@ -33,7 +34,7 @@ export default {
     refreshTableData() {
       this.pagingData.current = 1;
       this.getTableData();
-      this.scrollToTop();
+      this.scrollToEvt();
     },
     // 请求表格数据
     async requestTableData(requestApi, params = {}, type = ['page', 'sort']) {
@@ -68,11 +69,15 @@ export default {
         this.pagingData.current = val;
       }
       this.getTableData();
+      this.scrollToEvt();
     },
     // 表格数据滚到到顶部
-    scrollToTop() {
+    scrollToEvt(type) {
       this.$nextTick(() => {
-        document.querySelector('.base-table-container .el-table__body-wrapper').scrollTo(0, 0);
+        const dom = document.querySelector('.base-table-container .el-table__body-wrapper');
+        !type && dom.scrollTo(0, 0);
+        type === 'top' && (dom.scrollTop = 0);
+        type === 'left' && (dom.scrollLeft = 0);
       });
     },
     // 设置表格排序字段
@@ -85,7 +90,7 @@ export default {
       this.setTableSortData({prop, order});
       this.pagingData.current = 1;
       this.getTableData();
-      this.scrollToTop();
+      this.scrollToEvt('top');
     },
     // 表格勾选事件
     selectionChangeEvt(selection) {
@@ -143,6 +148,10 @@ export default {
     },
     // 只展开一行
     singleExpand(row, index) {
+      // 设置其他行的isExpanded为false
+      const list = this.tableData.data.filter(it => it.expandRowDetail && it.expandRowDetail.isExpanded);
+      list.map(it => (it.expandRowDetail.isExpanded = false));
+      row.expandRowDetail.isExpanded = true;
       this.tableData.expandedRows = this.tableData.expandedRows.splice(index, 1);
     },
     // 行展开/收起状态切换
@@ -150,10 +159,10 @@ export default {
       // 切换当前行的状态
       this.findBaseTableComp().toggleRowExpansion(row);
       const {isExpanded: isNeedExpand, index} = this.getExpandRowInfo(row);
+      this.$set(row, 'expandRowDetail', {isLoading: true, data: {}, isExpanded: isNeedExpand});
       if (isNeedExpand) {
         // 是否只展开一行
         this.tableData.isSingleExpand && this.singleExpand(row, index);
-        if (!row.expandRowDetail) this.$set(row, 'expandRowDetail', {isLoading: true, data: {}});
         this.getExpandRowDetail(row);
       }
     },

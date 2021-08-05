@@ -27,7 +27,7 @@ axios.interceptors.response.use((response) => {
 });
 
 // 构建请求头--post、put默认'application/x-www-form-urlencoded',其他默认application/json;charset=utf-8
-const buildRequestHeader = (requestConfig) => {
+const buildRequestHeaders = (requestConfig) => {
   const token = localStorage.getItem('current_user_token');
   const contentType = requestConfig.onUploadProgress ? 'multipart/form-data' : (['post', 'put'].includes(requestConfig.method) ? 'application/x-www-form-urlencoded' : 'application/json;charset=utf-8');
   requestConfig.contentType = requestConfig.contentType || contentType;
@@ -40,7 +40,7 @@ const buildRequestHeader = (requestConfig) => {
 const buildRequestConfig = (requestConfig) => {
   const config = {};
   // axios.transformRequest对于 'PUT', 'POST' 和 'PATCH' 方法，ContentType会自动设置为'application/x-www-form-urlencoded'或者'multipart/form-data'
-  config.header = buildRequestHeader(requestConfig);
+  config.headers = buildRequestHeaders(requestConfig);
   config.url = Tools.getFullUrl(requestConfig.url, requestConfig.urlPrefix);
   config.method = requestConfig.method;
   config[/get|delete/.test(config.method) ? 'params' : 'data'] = Tools.transformRequestData(requestConfig.contentType, requestConfig.params);
