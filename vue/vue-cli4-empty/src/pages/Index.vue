@@ -27,6 +27,9 @@ export default {
   watch: {
     '$route.path': function(val) {
       this.currentComp = this.$route.meta.layout || 'main-layout';
+
+      // 若当前页面被内嵌则修改浏览器访问地址为实际访问地址(避免访问子系统时，地址栏未改变)
+      (window.self !== window.top) && (window.top.location.href = window.location.href);
     }
   },
   methods: {
@@ -47,6 +50,16 @@ export default {
     this.currentComp = this.layout;
     this.updateOperatorTime();
     this.operatorData.actions.map(type => document.addEventListener(type, this.updateOperatorTime));
+  },
+  mounted() {
+    // 同一浏览器以最后一次登录为准
+    window.addEventListener('storage', e => {
+      if (e.key === 'current_user_token' && e.newValue !== e.oldValue) {
+        if (window.location.pathname.includes('/login')) return;
+        this.$message.warning('用户信息已更新，即将刷新页面...');
+        setTimeout(() => location.reload(), 4000);
+      }
+    });
   },
   beforeDestroy() {
     this.clearOperatorTimer();

@@ -8,5 +8,6 @@ export default {
   fileUpload: (params, requestConfig) => ajax.post('/file/upload', params, requestConfig),
   fileDownload: '',
   getTableList: params => ajax.post('/table/list', params),
-  getTableDetail: params => ajax.post('/table/detail', params)
+  getTableDetail: params => ajax.post('/table/detail', params),
+  getCharts: params => ajax.post('/chart', params)
 };

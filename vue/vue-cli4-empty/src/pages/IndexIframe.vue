@@ -14,9 +14,9 @@
       </div>
     </div>
     <component v-if="activeTabName === 'first'" :is="currentComp"></component>
-    <!-- iframe会引起跨域，用代理 -->
-    <iframe v-if="activeTabName === 'second'" class="iframe" scrolling=auto src="/segmentfault" frameborder="0"></iframe>
-    <iframe v-if="activeTabName === 'third'"  class="iframe" scrolling=auto src="/baidu" frameborder="0"></iframe>
+    <!-- iframe会引起跨域，用代理 或者 动态赋值，内嵌别人的网站且跨域情况下，地址栏无法获取实时地址-->
+    <iframe v-if="activeTabName === 'second'" class="iframe" scrolling=auto :src="iframeSrc1" frameborder="0"></iframe>
+    <iframe v-if="activeTabName === 'third'"  class="iframe" scrolling=auto :src="iframeSrc2" frameborder="0"></iframe>
   </div>
 </template>
 
@@ -47,12 +47,17 @@ export default {
         timer: null,               // 定时器id
         timeout: process.env.VUE_APP_TIMEOUT_INTERVAL * 60 * 1000,   // 10分钟
         actions: ['mousemove', 'keyup', 'click']
-      }
+      },
+      iframeSrc1: '',
+      iframeSrc2: ''
     };
   },
   watch: {
     '$route.path': function(val) {
       this.currentComp = this.$route.meta.layout || 'main-layout';
+
+      // 若当前页面被内嵌则修改浏览器访问地址为实际访问地址(避免访问子系统时，地址栏未改变)
+      (window.self !== window.top) && (window.top.location.href = window.location.href);
     }
   },
   methods: {
@@ -73,6 +78,8 @@ export default {
     this.currentComp = this.layout;
     this.updateOperatorTime();
     this.operatorData.actions.map(type => document.addEventListener(type, this.updateOperatorTime));
+    this.iframeSrc1 = 'https://cn.vuejs.org/v2/guide/';
+    this.iframeSrc2 = 'http://eslint.cn/docs/rules/';
   },
   beforeDestroy() {
     this.clearOperatorTimer();

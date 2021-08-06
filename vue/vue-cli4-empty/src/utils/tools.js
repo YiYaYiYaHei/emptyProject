@@ -578,6 +578,15 @@ const isSpecifyFileType = (fileName, acceptType, type) => {
   }
 };
 
+// 判断数据是否为空
+const dataIsEmpty = (data) => {
+  if (data === null) return true;
+  if (typeof data !== 'object') return !data;
+  if (data.constructor === Array) return !data.length;
+  if (data.constructor === Object) return !Object.keys(data).length;
+  return !data;
+};
+
 export {
   getModules,
   jumpHome
@@ -607,5 +616,6 @@ export default {
   isUrl,
   isUri,
   isChinese,
-  isEnglish
+  isEnglish,
+  dataIsEmpty
 };
