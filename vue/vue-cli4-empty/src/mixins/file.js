@@ -24,20 +24,39 @@ export default {
     /**
      * 使用input标签属性上传文件
      * @param {Function} cb - 回调函数
-     * @param {Boolean} [isMultiple] - 是否多文件上传
-     * @param {String} [acceptType] - 接受的文件类型
+     * @param {Object} config - 配置项
      */
-    fileUploadNode(cb, isMultiple = false, acceptType = '') {
+    fileUploadNode(cb, config) {
+      const _config = Object.assign({
+        isMultiple: false,                // 是否多文件上传
+        acceptType: '',                   // 接受的文件类型
+        acceptTypeErrMsg: '文件类型错误',  // 文件类型错误提示语
+        limitSize: 0                      // 文件大小限制
+      }, config);
       const input = document.createElement('input');
       input.style = 'display: block; width: 0; height: 0; padding: 0; border: 0;';
       input.setAttribute('type', 'file');
       input.setAttribute('name', 'file');
-      isMultiple && input.setAttribute('multiple', isMultiple);
-      acceptType && input.setAttribute('accept', acceptType);
+      _config.isMultiple && input.setAttribute('multiple', _config.isMultiple);
+      _config.acceptType && input.setAttribute('accept', _config.acceptType);
       document.body.appendChild(input);
 
       input.addEventListener('change', (e) => {
         const files = e.target.files;
+        // 检测文件大小
+        let limitSizeFlag = true;
+        _config.limitSize && (limitSizeFlag = this.checkFileSize(files, _config.limitSize));
+        if (!limitSizeFlag) {
+          this.$message.warning(`只能上传${this.$tool.formatByteSize(_config.limitSize)}的文件`);
+          return;
+        }
+        // 检测文件类型
+        let acceptTypeFlag = true;
+        _config.acceptType && (acceptTypeFlag = this.checkFileType(files, _config.acceptType));
+        if (!acceptTypeFlag) {
+          this.$message.warning(_config.acceptTypeErrMsg);
+          return;
+        }
         cb(files);
         setTimeout(() => {
           document.body.removeChild(input);
@@ -56,33 +75,17 @@ export default {
      */
     uploadFile(urlFunc, params, config) {
       const _config = Object.assign({
-        isMultiple: true,           // 是否多文件上传
-        acceptType: '',             // 文件类型[String] eg: image/*  、'.zip,.rar'
-        acceptTypeErrMsg: '',       // 文件类型错误提示语
-        limitSize: 0,               // 文件限制大小(单位字节) 1KB=1024B
-        successMsg: '文件上传成功',  // 文件上传成功提示语
-        successCb: null,            // 成功的回调
-        paramsFileKey: 'file',      // 上传参数-文件key
-        urlPrefix: 'BASE_URL',      // 地址前缀（防止多台服务器时，请求前缀不同）
-        hasProgress: true           // 是否有notify提示
+        isMultiple: false,                     // 是否多文件上传
+        acceptType: '',                        // 文件类型[String] eg: image/*  、'.zip,.rar'
+        acceptTypeErrMsg: '文件类型错误',       // 文件类型错误提示语
+        limitSize: 0,                          // 文件限制大小(单位字节) 1KB=1024B
+        successMsg: '文件上传成功',             // 文件上传成功提示语
+        successCb: null,                       // 成功的回调
+        paramsFileKey: 'file',                 // 上传参数-文件key
+        urlPrefix: 'BASE_URL',                 // 地址前缀（防止多台服务器时，请求前缀不同）
+        hasProgress: true                      // 是否有notify提示
       }, config);
       this.fileUploadNode(async (files) => {
-        // 检测文件大小
-        let limitSizeFlag = true;
-        _config.limitSize && (limitSizeFlag = this.checkFileSize(files, _config.limitSize));
-        if (!limitSizeFlag) {
-          this.$message.warning(`只能上传${this.$tools.formatByteSize(_config.limitSize)}的文件`);
-          return;
-        }
-
-        // 检测文件类型
-        let acceptTypeFlag = true;
-        _config.acceptType && (acceptTypeFlag = this.checkFileType(files, _config.acceptType));
-        if (!acceptTypeFlag) {
-          _config.acceptTypeErrMsg && this.$message.error(_config.acceptTypeErrMsg);
-          return;
-        }
-
         // 请求参数
         const _params = Object.assign({
           [_config.paramsFileKey]: _config.isMultiple ? files : files[0]
@@ -108,7 +111,7 @@ export default {
         } else {
           this.$message.error(result.message);
         }
-      }, _config.isMultiple, _config.acceptType);
+      }, {isMultiple: _config.isMultiple, acceptType: _config.acceptType, acceptTypeErrMsg: _config.acceptTypeErrMsg, limitSize: _config.limitSize});
     },
     // notify进度条message
     notifyMessage(msg, percentage) {
