@@ -1,7 +1,7 @@
 import Tools from '@/utils/tools';
 
 // 日期格式化
-const formatDate = (val, type) => val ? Tools.formatDate(type, val) : '-';
+const formatDate = (val, type = 'YYYY-MM-DD hh:mm:ss') => val ? Tools.formatDate(type, val) : '-';
 
 // 字节大小格式化
 const formatByteSize = (val) => Tools.formatByteSize(val);
@@ -10,9 +10,8 @@ const formatByteSize = (val) => Tools.formatByteSize(val);
 const numberWithCommas = val => Tools.numberWithCommas(val);
 
 // 转换空字符串
-const transformNull = (value, defaultString) => {
-  defaultString = (defaultString || defaultString === 0) ? defaultString : '-';
-  return value || value === 0 ? value : defaultString;
+const transformNull = (value, defaultString = '-') => {
+  return value === 0 || !Tools.dataIsEmpty(value) ? value : defaultString;
 };
 
 // 成功/失败/告警状态

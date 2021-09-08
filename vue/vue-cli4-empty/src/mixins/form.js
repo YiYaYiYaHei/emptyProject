@@ -26,7 +26,7 @@ export default {
         });
       });
     },
-    // 重置表单 -- 重置表单是重置为初始值，若先点击编辑再点击新增时，出现表单未重置情况，是表单初始值设置问题：打开弹框后且dom元素渲染完成后再赋值
+    // 重置表单 -- 重置表单是重置为初始值，若先点击编辑再点击新增时，出现表单未重置情况，是表单初始值设置问题：打开弹框后 且 dom元素渲染完成 后再赋值
     resetForm(formName = 'form') {
       this.$nextTick(() => {
         this.$refs[formName] && this.$refs[formName].resetFields() && this.$refs[formName].clearValidate();

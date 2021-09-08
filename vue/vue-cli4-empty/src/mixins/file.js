@@ -47,7 +47,7 @@ export default {
         let limitSizeFlag = true;
         _config.limitSize && (limitSizeFlag = this.checkFileSize(files, _config.limitSize));
         if (!limitSizeFlag) {
-          this.$message.warning(`只能上传${this.$tool.formatByteSize(_config.limitSize)}的文件`);
+          this.$message.warning(`只能上传${this.$tools.formatByteSize(_config.limitSize)}的文件`);
           return;
         }
         // 检测文件类型
@@ -96,7 +96,7 @@ export default {
           // 获取上传文件进度
           onUploadProgress: progress => {
             const percentage = ((progress.loaded / progress.total) * 100).toFixed(2);
-            this.uploadFileMsg = (progress.loaded === progress.total) ? '正在上传中，请稍后...' : `上传进度 ${percentage}%...`;
+            this.uploadFileMsg = (progress.loaded === progress.total) ? `${_config.isMultiple ? '' : files[0].name} - 正在上传中，请稍后...` : `${_config.isMultiple ? '' : files[0].name} - 上传进度 ${percentage}%`;
             // 设置notify的msg
             notify && (notify.message = this.notifyMessage(this.uploadFileMsg, percentage));
           },
@@ -133,14 +133,14 @@ export default {
      * @param {string} url - 接口地址
      * @param {Object} [params=null] - 下载参数，也可以使用qs.stringify(params)会将该对像转为形如：id=123&name=Ada
      * @param {String} [urlPrefix='BASE_URL'] - 接口前缀: 类似BASE_URL
-     * @param {string} [downloadName=''] - 下载文件名, 对于pdf：若不设置download属性，则默认在浏览器上打开(预览功能)
+     * @param {string} [fileName=''] - 下载文件名, 对于pdf：若不设置download属性，则默认在浏览器上打开(预览功能)
      * @example this.downLoadEvt(`${this.$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, 'FILE_DOWN')
      */
-    downLoadEvt(url, params = null, urlPrefix, downloadName = '') {
+    downLoadEvt(url, params = null, fileName = '', urlPrefix = 'BASE_URL') {
       const el = document.createElement('a');
       el.style.display = 'none';
       el.setAttribute('target', '_blank');
-      downloadName && el.setAttribute('download', downloadName);
+      fileName && el.setAttribute('download', fileName);
       const queryParams = params ? this.$tools.transformRequestData('application/x-www-form-urlencoded', params) : '';
       el.href = url.startsWith('blob') ? url : this.$tools.getFullUrl(`${url}${queryParams ? '?' + queryParams : ''}`, urlPrefix);
       console.log(el.href);
@@ -149,10 +149,10 @@ export default {
       document.body.removeChild(el);
     },
     // 获取文件下载进度
-    bindFileDownloadProgress(ajax, notify) {
+    bindFileDownloadProgress(ajax, notify, fileName) {
       ajax.addEventListener('progress', (progress) => {
         const percentage = ((progress.loaded / progress.total) * 100).toFixed(2);
-        this.downloadFileMsg = (progress.loaded === progress.total) ? '正在下载中，请稍后...' : `下载进度 ${percentage}%...`;
+        this.downloadFileMsg = (progress.loaded === progress.total) ? `${fileName} - 正在下载中，请稍后...` : `${fileName} - 下载进度 ${percentage}%...`;
         notify.message = this.notifyMessage(this.downloadFileMsg, percentage);
       });
     },
@@ -164,16 +164,17 @@ export default {
      * @param {Object} [config] - 方法配置
      * @example this.downLoadAjaxEvt(`${this.$apis.login.fileDownload}`, {name: '检测异常邮件.zip'}, 'get', {urlPrefix: 'FILE_DOWN'})
      */
-    downLoadAjaxEvt(url, params, method = 'get', config) {
+    downLoadAjaxEvt(method = 'get', url, params, isPreview = false, config) {
       const _this = this;
       const _method = method.toUpperCase();
       const _config = Object.assign({
         contentType: _method === 'GET' ? 'application/x-www-form-urlencoded' : 'application/json',  // 请求头类型
-        downloadName: '未知文件',                                   // 下载文件名(必填，若为空，下载下来都是txt格式)
+        fileName: '未知文件',                                   // 下载文件名(必填，若为空，下载下来都是txt格式)
         async: true,                                               // 请求是否异步-true异步、false同步
-        token: localStorage.getItem('current_user_token') || '',   // 用户token
+        token: localStorage.getItem('token') || '',                // 用户token
         urlPrefix: 'BASE_URL',                                     // 接口前缀: 类似BASE_URL
-        hasProgress: true                                          // 是否需要展示下载进度
+        hasProgress: true,                                         // 是否需要展示下载进度
+        isDownload: true                                           // a 标签是否设置download属性
       }, config);
 
       const queryParams = this.$tools.transformRequestData(_config.contentType, params);
@@ -188,7 +189,7 @@ export default {
       let notify = false;
       if (_config.hasProgress) {
         notify = this.createNotify(this.downloadFileMsg);
-        this.bindFileDownloadProgress(ajax, notify);
+        this.bindFileDownloadProgress(ajax, notify, _config.fileName);
       }
       ajax.onload = function () {
         notify && notify.close();
@@ -201,12 +202,12 @@ export default {
               _this.$message.error(result.message);
             } else {
               // 两种解码方式，区别自行百度: decodeURIComponent/decodeURI
-              const fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].slice(10));
-              const file = new Blob([this.response]);
-              const blobUrl = URL.createObjectURL(file);
-              _this.downLoadEvt(blobUrl, null, undefined, fileName);
+              const _fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].slice(10));
+              const blob = new Blob([this.response], isPreview ? {type: 'application/pdf'} : {});
+              const href = URL.createObjectURL(blob);
+              _this.downLoadEvt(href, null, isPreview ? '' : _fileName);
               // 释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象
-              URL.revokeObjectURL(blobUrl);
+              URL.revokeObjectURL(href);
             }
           };
           // 调用readAsText读取文件，少了readAsText将不会触发onloadend事件

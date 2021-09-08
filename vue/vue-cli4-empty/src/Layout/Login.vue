@@ -87,7 +87,7 @@ export default {
       });
       this.loading = false;
       if (result.status === 200) {
-        localStorage.setItem('token', result.data.token);
+        localStorage.setItem('token', `Bearer ${result.data.token}`);
         // {role: '普通用户', userName: 'user', userId: 1, token: ''}
         this.$store.dispatch('setUserInfo', result.data);
         // 根据用户角色跳转页面

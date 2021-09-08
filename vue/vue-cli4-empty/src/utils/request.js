@@ -6,9 +6,10 @@ import Tools from '@/utils/tools.js';
 
 const TIME_OUT = 60 * 1000;
 const MESSAGE = {
-  NETWORK_ERR: '哎哟,出问题啦,刷新界面试试！',
-  PERMISSION_DENIED: '凭证失效，请重新登录',
-  NETWORK_REFUSE: '服务器拒绝连接或连接超时'
+  NETWORK_ERR: '哎哟,出问题啦,刷新界面试试！',      // >=500 且 !=502
+  SERVICE_ERR: '连接失败，请联系管理员',           // message中有html标签（nginx代理-后台服务没起）
+  PERMISSION_DENIED: '凭证失效，请重新登录',       // 401
+  TIMEOUT: '连接超时，请检查网络。'                // 502、message中含有ETIMEDOUT/timeout
 };
 
 // 请求拦截器
@@ -42,7 +43,11 @@ const buildRequestConfig = (requestConfig) => {
   const config = {};
   // axios.transformRequest对于 'PUT', 'POST' 和 'PATCH' 方法，ContentType会自动设置为'application/x-www-form-urlencoded'或者'multipart/form-data'
   config.headers = buildRequestHeaders(requestConfig);
-  config.url = Tools.getFullUrl(requestConfig.url, requestConfig.urlPrefix);
+
+  const url = /^(http|https):/g.test(requestConfig.url) ? requestConfig.url : Tools.getFullUrl(requestConfig.url, requestConfig.urlPrefix);
+  /* 针对IE浏览器，避免code304读取缓存 */
+  config.url = url + '?_date=' + Date.now();
+
   config.method = requestConfig.method;
   config[/get|delete/.test(config.method) ? 'params' : 'data'] = Tools.transformRequestData(requestConfig.contentType, requestConfig.params);
   config.timeout = TIME_OUT;
@@ -55,12 +60,15 @@ const buildRequestConfig = (requestConfig) => {
 
 const sendRequest = async (requestConfig) => {
   const config = buildRequestConfig(requestConfig);
-  console.log('config:', config);
   const result = await axios.request(config).catch(e => {
-    console.log('错误的请求:', e, e.errMsg);
-    const isTimeout = e.errMsg ? e.errMsg.includes('ECONNREFUSED') || e.errMsg.includes('TIMEOUT') : false;
+    console.log('错误的请求:', e);
+    const {response, message} = e;
+    const isTimeout =
+      message.includes('timeout') ||
+      (response && typeof response.data === 'string' && response.data.includes('ETIMEDOUT')) ||
+      response.status === 502;
     return {
-      message: isTimeout ? MESSAGE.NETWORK_REFUSE : MESSAGE.NETWORK_ERR,
+      message: isTimeout ? MESSAGE.TIMEOUT : /<[^>]+>/g.test(response.data) ? MESSAGE.SERVICE_ERR : MESSAGE.NETWORK_ERR,
       status: isTimeout ? 502 : 500
     };
   });

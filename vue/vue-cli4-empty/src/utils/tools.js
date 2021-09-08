@@ -51,7 +51,7 @@ const getFullUrl = (url, urlPrefix = 'BASE_URL', isAxios = true) => {
 const transformRequestData = (contentType, requestData) => {
   requestData = requestData || {};
   if (contentType.includes('application/x-www-form-urlencoded')) {
-    // formData格式：key1=value1&key2=value2，方式二：qs.stringify(requestData)
+    // formData格式：key1=value1&key2=value2，方式二：qs.stringify(requestData, {arrayFormat: 'brackets'})--{arrayFormat: 'brackets'}是对于数组参数的处理
     let str = '';
     for (const key in requestData) {
       if (Object.prototype.hasOwnProperty.call(requestData, key)) {
@@ -64,11 +64,11 @@ const transformRequestData = (contentType, requestData) => {
     for (const key in requestData) {
       const files = requestData[key];
       // 判断是否是文件流
-      if (!!files && files.constructor === FileList) {
+      const isFile = files ? files.constructor === FileList || (files.constructor === Array && files[0].constructor === File) : false;
+      if (isFile) {
         for (let i = 0; i < files.length; i++) {
           formData.append(key, files[i]);
         }
-        // formData.append(key, files);
       } else {
         formData.append(key, files);
       }
