@@ -46,8 +46,9 @@
     <!--修改密码弹框-->
     <base-dialog ref="dialog"
                  title="修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码"
-                 :dialogId="editPwdData.nodeId"
-                 @dialogConfirm="submitForm('editPwdForm', editPwdConfirm)">
+                 :dialogId.sync="editPwdData.nodeId"
+                 @dialogConfirm="submitForm(editPwdConfirm, 'editPwdForm')"
+                 @dialogClose="resetForm('editPwdForm');">
       <el-form :model="editPwdData.formData" :rules="editPwdData.formRules" ref="editPwdForm" label-width="80px">
         <el-form-item label="原始密码" prop="oldPwd">
           <el-input maxlength=20 type="password" placeholder="请输入原始密码" v-model.trim="editPwdData.formData.oldPwd" clearable onpaste="return false"/>
@@ -65,14 +66,13 @@
 
 <script>
 import MenuItem from './MenuItem';
-import user from '@m/user.js';
-import form from '@m/form.js';
+import mixins from '@m';
 import {MENU_CONFIG} from '@/router/config.js';
 import SHA256 from 'js-sha256';
 
 export default {
   name: 'MenuTop',
-  mixins: [user, form],
+  mixins: [mixins.user, mixins.form],
   components: {MenuItem},
   props: {
     // 顶部导航列表

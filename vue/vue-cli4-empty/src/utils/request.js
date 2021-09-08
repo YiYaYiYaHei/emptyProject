@@ -28,7 +28,7 @@ axios.interceptors.response.use((response) => {
 
 // 构建请求头--post、put默认'application/x-www-form-urlencoded',其他默认application/json;charset=utf-8
 const buildRequestHeaders = (requestConfig) => {
-  const token = localStorage.getItem('current_user_token');
+  const token = localStorage.getItem('token');
   const contentType = requestConfig.onUploadProgress ? 'multipart/form-data' : (['post', 'put'].includes(requestConfig.method) ? 'application/x-www-form-urlencoded' : 'application/json;charset=utf-8');
   requestConfig.contentType = requestConfig.contentType || contentType;
   return {

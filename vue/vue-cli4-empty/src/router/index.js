@@ -17,7 +17,7 @@ const router = new VueRouter({
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  let token = localStorage.getItem('current_user_token') || '';
+  let token = localStorage.getItem('token') || '';
   // let token = '213213';
   if ((!token && to.path !== '/login') || to.path === '/') {
     next('/login');
@@ -36,7 +36,7 @@ router.beforeEach((to, from, next) => {
     next(path);
     return;
   }
-  // 根据用户角色跳转首页：utils/tools/jumpHome(userRole)
+  // 根据用户角色跳转首页：utils/tools/jumpRoute(userRole)
   next();
 })
 

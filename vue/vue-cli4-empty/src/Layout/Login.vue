@@ -29,7 +29,7 @@
         </el-form-item>
         <el-form-item class="mgt50">
           <span class="login-msg">{{msg}}</span>
-          <el-button @click="submitForm('loginForm', loginEvt)" plain :loading="loading" type="primary">{{`${loading?'登录中':'登 录'}`}}</el-button>
+          <el-button @click="submitForm(loginEvt, 'loginForm')" plain :loading="loading" type="primary">{{`${loading?'登录中':'登 录'}`}}</el-button>
         </el-form-item>
         <div class="login-tip">
           <p v-if="!isDeviceMatch.resolution">当前分辨率过低会影响体验，推荐使用分辨率1366*768及以上终端。</p>
@@ -45,7 +45,7 @@
 <script>
 import SHA256 from 'js-sha256';
 import form from '@m/form.js';
-import {jumpHome} from '@u/tools';
+import {jumpRoute} from '@u/tools';
 
 export default {
   name: 'Login',
@@ -87,11 +87,11 @@ export default {
       });
       this.loading = false;
       if (result.status === 200) {
-        localStorage.setItem('current_user_token', result.data.token);
+        localStorage.setItem('token', result.data.token);
         // {role: '普通用户', userName: 'user', userId: 1, token: ''}
         this.$store.dispatch('setUserInfo', result.data);
         // 根据用户角色跳转页面
-        this.$router.push(jumpHome(result.data.role));
+        this.$router.push(jumpRoute(result.data.role));
       } else {
         this.$message.error(result.message);
       }

@@ -31,7 +31,7 @@ const getModules = (name) => {
 };
 
 // 根据权限跳转首页
-const jumpHome = (userRole) => {
+const jumpRoute = (userRole) => {
   return userRole === '管理员' ? '/system/user' : '/home';
 };
 
@@ -578,7 +578,7 @@ const isSpecifyFileType = (fileName, acceptType, type) => {
   }
 };
 
-// 判断数据是否为空
+// 判断数据是否为空  true 为空
 const dataIsEmpty = (data) => {
   if (data === null) return true;
   if (typeof data !== 'object') return !data;
@@ -589,7 +589,7 @@ const dataIsEmpty = (data) => {
 
 export {
   getModules,
-  jumpHome
+  jumpRoute
 };
 
 export default {

@@ -4,7 +4,7 @@
              :close-on-click-modal="false"
              :close-on-press-escape="false"
              :append-to-body="true"
-             @closed="$emit('dialogClose')"
+             @closed="dialogClose"
              :custom-class="`base-dailog-container${visible ? ' base-dialog-show' : ''}`">
     <template #title>
       <base-text :content="title" class="el-dialog__title"></base-text>
@@ -12,7 +12,7 @@
     <slot></slot>
     <template v-if="hasFooter" #footer>
       <el-button type="primary" @click="$emit('dialogConfirm')">确 定</el-button>
-      <el-button type="info" @click="$emit('dialogCancel');closeDialog();">取 消</el-button>
+      <el-button type="info" @click="dialogClose">取 消</el-button>
     </template>
     <template v-else #footer>
       <slot name="dialogFooter"></slot>
@@ -74,9 +74,10 @@ export default {
       this.dialogLoading.close();
     },
     // 关闭弹框
-    closeDialog(formRefName = 'form') {
-      this.$refs[formRefName] && this.$refs[formRefName].resetFields();
+    dialogClose() {
       this.$emit('update:dialogId', 0);
+      // 作表单重置等操作
+      this.$emit('dialogClose');
     }
   }
 };

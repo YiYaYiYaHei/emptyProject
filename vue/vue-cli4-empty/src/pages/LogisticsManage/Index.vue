@@ -1,6 +1,5 @@
 <template>
-  <div>
-    物流管理
+  <div class="full">
     <router-view></router-view>
   </div>
 </template>

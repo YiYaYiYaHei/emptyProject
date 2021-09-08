@@ -1,7 +1,7 @@
 <template>
-  <div class="base-table-container full pr">
+  <div class="base-table-container full pr" v-loading="tableData.isLoading">
     <!-- 设置列 -->
-    <template v-if="tableData.configColumnList.length">
+    <template v-if="tableData.configColumnList && tableData.configColumnList.length">
       <el-dropdown class="table-columns-config" trigger="click">
         <i class="el-icon-setting"></i>
         <el-dropdown-menu slot="dropdown" class="table-columns-config-dropdown">
@@ -16,7 +16,7 @@
       </el-dropdown>
     </template>
 
-    <template v-if="tableData.columns.length">
+    <template v-if="tableData.columns && tableData.columns.length">
       <!-- 固定列不随表格内容滚动：el-table设置height属性 -->
       <el-table ref="baseTable"
                 :data="tableData.data"
@@ -37,7 +37,7 @@
                            :prop="item.prop"
                            :label="item.label"
                            :min-width="item.width || 120"
-                           :show-overflow-tooltip="true"
+                           :show-overflow-tooltip="!item.showTooltip"
                            :align="item.align || 'left'"
                            :sort-orders="['descending', 'ascending']"
                            :sortable="item.sortable ? 'custom' : false"
@@ -82,9 +82,10 @@
  * cls: 列样式class
  * sortable: 列是否可排序（后端排序）
  * filter: 过滤器名称：默认transformNull
- * filterParam: 数组-过滤器参数
+ * filterParam: 过滤器参数（数组类型）
  * width: 列最小宽度，默认120
- * slotName: 插槽名
+ * showTooltip：是否展示自定义tooltip 为true时，表格默认tooltip不显示
+ * slotName: 自定义插槽名 <template #relationProjectSlot="{data}"><span>{{data.row[data.column.prop] | transformNull}}</span></template>
  */
 export default {
   props: {
@@ -116,7 +117,7 @@ export default {
   methods: {
     // 判断表格列是否展示
     getColumnIsShow(item) {
-      const flag = this.tableData.configColumnList.length ? this.tableData.configColumnList.find(it => it.value === item.prop) : false;
+      const flag = (this.tableData.configColumnList || []).find(it => it.value === item.prop);
       return flag ? this.tableData.configColumnCheckedList.includes(item.prop) : !item.isHidden;
     }
   }

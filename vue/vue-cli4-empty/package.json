@@ -1,6 +1,6 @@
 {
-  "name": "vue4-empty",
-  "version": "0.1.0",
+  "name": "vue-cli4-empty",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "vue-cli-service serve --open",

@@ -1,11 +1,29 @@
 <template>
   <div class="home-container full pd20">
-    <header class="mgb20">
+    <header class="mgb20 dflex">
       <el-button @click="deleteEvt('many')" type="primary" size="medium">批量删除</el-button>
+      <div class="mgl20">
+        <span class="mgr10">用户类型</span>
+        <el-select v-model="searchCondition.userType" placeholder="全部" clearable multiple collapse-tags :title="searchCondition.userType.join()" @change="refreshTableData">
+          <el-option v-for="item in ['普通用户', '管理员']"
+                    :key="item"
+                    :label="item"
+                    :value="item"></el-option>
+        </el-select>
+      </div>
+      <el-input v-model.trim="searchCondition.keyword"
+                placeholder="模糊搜索"
+                maxlength=100
+                clearable
+                @clear="refreshTableData"
+                @keyup.enter.native="refreshTableData"
+                style="width: 300px;"
+                class="mgl20">
+        <span slot="append" @click="refreshTableData" class="pointer">搜索</span>
+      </el-input>
     </header>
     <div class="table-container">
       <base-table ref="table"
-                  v-loading="tableData.isLoading"
                   :tableData="tableData"
                   :pagingData="pagingData"
                   @sizeChange="pagingEvent"
@@ -17,6 +35,7 @@
           <el-table-column type="selection" width="46" :selectable="(row, index) => row.orderTotal === 100"></el-table-column>
           <el-table-column type="index" :index="rowIndex" width="60" label="序号" align="center"></el-table-column>
         </template>
+        <!-- 自定义插槽名 -->
         <template #totalName="{data}">
           <span v-html="$options.filters[data.column.filter || 'transformNull'](data.row[data.column.prop], ...data.column.filterParam)"
                 data-status-text="primary"
@@ -58,7 +77,13 @@ export default {
   name: 'Home',
   mixins: [table, user, file],
   data() {
+    const initQuery = {
+      userType: [],
+      keyword: ''
+    };
     return {
+      searchCondition: JSON.parse(JSON.stringify(initQuery)),
+      searchReallyCondition: JSON.parse(JSON.stringify(initQuery)),
       nodeId: null,
       tableData: {
         defaultSort: {prop: 'lastOrderTime', order: 'descending'},
@@ -91,14 +116,14 @@ export default {
   },
   methods: {
     getTableData() {
-      this.requestTableData(this.$apis.login.getTableList);
+      this.reqTableData(this.$apis.login.getTableList, this.searchReallyCondition);
     },
     getExpandRowDetail(row) {
       this.requestExpandRowDetail(row, this.$apis.login.getTableDetail, {id: row.id});
     },
     deleteEvt(type, row) {
       if (type === 'many' && !this.isTableSelect()) {
-        this.$message.error('暂无勾选数据');
+        this.$message.warning('暂无勾选数据');
         return;
       }
       const params = type === 'row' ? row : this.getSelectData('userName');
