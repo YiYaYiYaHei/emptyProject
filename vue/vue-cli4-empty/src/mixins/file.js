@@ -44,16 +44,12 @@ export default {
       input.addEventListener('change', (e) => {
         const files = e.target.files;
         // 检测文件大小
-        let limitSizeFlag = true;
-        _config.limitSize && (limitSizeFlag = this.checkFileSize(files, _config.limitSize));
-        if (!limitSizeFlag) {
+        if (_config.limitSize && !this.checkFileSize(files, _config.limitSize)) {
           this.$message.warning(`只能上传${this.$tools.formatByteSize(_config.limitSize)}的文件`);
           return;
         }
         // 检测文件类型
-        let acceptTypeFlag = true;
-        _config.acceptType && (acceptTypeFlag = this.checkFileType(files, _config.acceptType));
-        if (!acceptTypeFlag) {
+        if (_config.acceptType && !this.checkFileType(files, _config.acceptType)) {
           this.$message.warning(_config.acceptTypeErrMsg);
           return;
         }

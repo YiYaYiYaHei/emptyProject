@@ -1,5 +1,6 @@
-import login from '@/apis/login.js';
-import Tools from './tools.js';
+import * as ToolsAll from '@/utils/tools';
+const Tools = ToolsAll.default;
+const Api = ToolsAll.getModules('apis');
 
 /**
  * 表单验证前期工作 先验证是否是必填
@@ -13,7 +14,7 @@ import Tools from './tools.js';
  * @param {Function|Null} [handlerCb = null] - 返回 除表单项是否必填验证后，其它后续验证工作过程中的错误信息
  */
 const commonValidate = async (rule, value, callback, handlerCb) => {
-  const isValueEmpty = value === 0 ? false : !value;
+  const isValueEmpty = value === 0 ? false : Tools.dataIsEmpty(value);
   // 非必填且无值 不继续验证
   if (!rule.required && isValueEmpty) {
     callback();
@@ -33,7 +34,7 @@ const commonValidate = async (rule, value, callback, handlerCb) => {
 // 验证原密码是否正确
 const oldPwd = (rule, value, callback) => commonValidate(rule, value, callback, async ({rule}) => {
   const passward = rule.encryValue();
-  const result = await login.checkOldPwd({passward});
+  const result = await Api.login.checkOldPwd({passward});
   return result.status === 200 ? '' : result.message || '原密码不正确';
 });
 
@@ -54,7 +55,7 @@ const password = (rule, value, callback) => commonValidate(rule, value, callback
 // 用户名
 const userName = (rule, value, callback) => commonValidate(rule, value, callback, async (value) => {
   if (rule.isEdit) return '';
-  const result = await login.checkUserName(value);
+  const result = await Api.login.checkUserName(value);
   if (!!result && result.status === 200 && result.data) return '该用户名已存在';
 });
 
