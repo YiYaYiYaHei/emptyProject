@@ -1,6 +1,6 @@
 import * as ToolsAll from '@/utils/tools';
 const Tools = ToolsAll.default;
-const Api = ToolsAll.getModules('apis');
+const Apis = ToolsAll.getModules('apis');
 
 /**
  * 表单验证前期工作 先验证是否是必填
@@ -34,7 +34,7 @@ const commonValidate = async (rule, value, callback, handlerCb) => {
 // 验证原密码是否正确
 const oldPwd = (rule, value, callback) => commonValidate(rule, value, callback, async ({rule}) => {
   const passward = rule.encryValue();
-  const result = await Api.login.checkOldPwd({passward});
+  const result = await Apis.login.checkOldPwd({passward});
   return result.status === 200 ? '' : result.message || '原密码不正确';
 });
 
@@ -55,7 +55,7 @@ const password = (rule, value, callback) => commonValidate(rule, value, callback
 // 用户名
 const userName = (rule, value, callback) => commonValidate(rule, value, callback, async (value) => {
   if (rule.isEdit) return '';
-  const result = await Api.login.checkUserName(value);
+  const result = await Apis.login.checkUserName(value);
   if (!!result && result.status === 200 && result.data) return '该用户名已存在';
 });
 

@@ -1,4 +1,7 @@
-// 通用的枚举类型
+// 相关键值对字典
+import {getModules} from './tools';
+const Apis = getModules('apis');
+
 const Dict = {};
 
 // 任务状态
@@ -10,5 +13,25 @@ Dict.taskStatus = [
   {label: '分析异常', value: '分析异常', status: 'danger'},
   {label: '分析完成', value: '分析完成', status: 'success'}
 ];
+
+// 任务类型
+Dict.taskType = [
+  {label: '域名', value: '域名', cls: 'fa fa-internet-explorer'},
+  {label: 'IP', value: 'IP', cls: 'fa fa-info'},
+  {label: 'URL', value: 'URL', cls: 'fa fa-link'},
+  {label: '样本', value: '样本', cls: 'fa fa-bug'},
+  {label: '邮箱', value: '邮箱', cls: 'fa fa-envelope'}
+];
+
+// 如果枚举列表多个页面都会用到，可以在router/index路由守卫那统一获取/更新枚举列表，这样就不用每个页面都写一遍请求了  if (!/\/(login|relationalAnalysis|tag)$/.test(to.path)) Dict.updateAnalysisModel();
+Dict.updateAnalysisModel = async function() {
+  try {
+    const res = await Apis.taskCenter.getAllModel();
+    Dict.analysisModel = res.data;
+  } catch (e) {
+    Dict.analysisModel = [];
+    console.log(e);
+  }
+};
 
 export default Dict;
