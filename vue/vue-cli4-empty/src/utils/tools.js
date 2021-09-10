@@ -87,7 +87,8 @@ const transformRequestData = (contentType, requestData) => {
  * @return {string} 格式化后的时间
  */
 const formatDate = (type = 'YYYY-MM-DD hh:mm:ss', val, granularity = 1) => {
-  const date = val instanceof Date ? val : new Date(/^[0-9]*$/g.test(val) ? val * 1 : Date.now());
+  const _val = isNaN(val) ? val : val * 1;
+  const date = new Date(_val) === 'Invalid Date' ? Date.now() : new Date(_val);
   const YYYY = date.getFullYear() + '';
   const m = date.getMonth() + 1;
   const MM = m > 9 ? m + '' : '0' + m;
@@ -409,7 +410,7 @@ const getStringLength = (str) => {
  */
 const isDomain = (str) => {
   // 先做一个简单的域名格式判断，下一个正则虽然判断的更全面但是效率很低，如果字符串长了很浪费时间 // (([a-z0-9\\-]{2,}\\[?\\.\\]?)+
-  const regFirst = /[a-zA-Z0-9][a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][a-zA-Z0-9]{0,62})+\.?/;
+  const regFirst = /^(?=^.{3,255})[a-zA-Z0-9][a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][a-zA-Z0-9]{0,62})+\.?/;
   if (!regFirst.test(str)) return false;
 
   // eslint-disable-next-line

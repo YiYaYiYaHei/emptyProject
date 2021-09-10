@@ -198,7 +198,7 @@ export default {
               _this.$message.error(result.message);
             } else {
               // 两种解码方式，区别自行百度: decodeURIComponent/decodeURI
-              const _fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].slice(10));
+              const _fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].trim().slice(10));
               const blob = new Blob([this.response], isPreview ? {type: 'application/pdf'} : {});
               const href = URL.createObjectURL(blob);
               _this.downLoadEvt(href, null, isPreview ? '' : _fileName);
