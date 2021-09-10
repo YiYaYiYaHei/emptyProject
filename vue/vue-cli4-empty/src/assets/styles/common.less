@@ -59,10 +59,10 @@
   height: @height;
 }
 .wfull {
-  .w(100%);
+  .w(100%)!important;
 }
 .hfull {
-  .h(100%);
+  .h(100%)!important;
 }
 .full {
   .wfull;
@@ -227,6 +227,21 @@
 .mgt10 {
   .mg(10, 0, 0, 0);
 }
+.mg0 {
+  .mg(0, 0, 0, 0);
+}
+.mgl0 {
+  margin-left: 0;
+}
+.mgr0 {
+  margin-right: 0;
+}
+.mgt0 {
+  margin-top: 0;
+}
+.mgb0 {
+  margin-bottom: 0;
+}
 .mgb10 {
   .mg(0, 0, 10, 0);
 }
@@ -259,6 +274,21 @@
 }
 .pdb10 {
   .pd(0, 0, 10, 0);
+}
+.pd0 {
+  .pd(0, 0, 0, 0);
+}
+.pdl0 {
+  padding-left: 0;
+}
+.pdr0 {
+  padding-right: 0;
+}
+.pdt0 {
+  padding-top: 0;
+}
+.pdb0 {
+  padding-bottom: 0;
 }
 // 字体库设置
 .iconfont(@size: 16px, @color: @primary) {

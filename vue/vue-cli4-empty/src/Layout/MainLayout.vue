@@ -9,7 +9,7 @@
                :leftMenuList="leftMenuList"
                :leftActiveIndex="leftActiveIndex"></menu-left>
 
-    <div class="application-content-container" :class="[menuType, {'has-left-menu': leftMenuList.length}]" :data-menu-fork="menuIsFork">
+    <div class="application-content-container pd20" :class="[menuType, {'has-left-menu': leftMenuList.length}]" :data-menu-fork="menuIsFork">
       <router-view />
     </div>
   </div>
@@ -158,6 +158,7 @@ export default {
   .wfull();
   .h(calc(~"100% - "@menuTopHeight));
   background: @bg-base;
+  overflow: auto;
   &.left {
     .w(calc(~"100% - "@menuLeftWidth));
     .fl();

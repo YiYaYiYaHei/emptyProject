@@ -10,5 +10,7 @@ export default {
   fileDownloadAsync: '/download',
   getTableList: params => ajax.post('/table/list', params),
   getTableDetail: params => ajax.post('/table/detail', params),
-  getCharts: params => ajax.post('/chart', params)
+  getPieChartData: params => ajax.post('/chart/pie', params),
+  getLineChartData: params => ajax.post('/chart/line', params),
+  getPieBarData: params => ajax.post('/chart/bar', params)
 };

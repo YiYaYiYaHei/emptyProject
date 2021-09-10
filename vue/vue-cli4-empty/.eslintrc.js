@@ -1,9 +1,9 @@
 /**
  ********************************************************************
  * 1、不检查某一行代码：
- * "// eslint-disable-next-line" 在代码上一行使用  或者  "// eslint-disable-line" 和代码在一行
+ * '// eslint-disable-next-line' 在代码上一行使用  或者  '// eslint-disable-line' 和代码在一行
  * 2、不检查某一段代码：
- * 用 "/* eslint-disable 星号/" 包裹
+ * 用 '/* eslint-disable 星号/' 包裹
  * 3、不检查某一文件/文件夹：
  * 将文件路径写入.eslintignore文件即可
  ********************************************************************
@@ -71,6 +71,8 @@ module.exports = {
     // 不允许花括号中有空格，类似{ a:1 }
     'object-curly-spacing': [2, 'never'],
     // 允许出现多个空格
-    'no-multi-spaces': [0, { "ignoreEOLComments": true }]
+    'no-multi-spaces': [0, {'ignoreEOLComments': true}],
+    // 允许 const a = [], b = []
+    'one-var': [0, 'always']
   }
 };

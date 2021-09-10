@@ -1,167 +1,68 @@
 <template>
-  <div class="home-container full pd20">
-    <header class="mgb20 dflex">
-      <el-button @click="deleteEvt('many')" type="primary" size="medium">批量删除</el-button>
-      <div class="mgl20">
-        <span class="mgr10">用户类型</span>
-        <el-select v-model="searchCondition.userType" placeholder="全部" clearable multiple collapse-tags :title="searchCondition.userType.join()" @change="refreshTableData">
-          <el-option v-for="item in ['普通用户', '管理员']"
-                    :key="item"
-                    :label="item"
-                    :value="item"></el-option>
-        </el-select>
+  <div class="home-container full">
+    <div class="full dflex fjc fw">
+      <div class="chart-box" v-for="(item, i) in chartList" :key="`chart_${i}`" v-loading="item.isLoading" :class="item.pCls">
+        <div v-if="!item.isEmpty" :id="item.id" class="full chart" :class="item.cls"></div>
+        <div v-else class="full box--empty"></div>
       </div>
-      <el-input v-model.trim="searchCondition.keyword"
-                placeholder="模糊搜索"
-                maxlength=100
-                clearable
-                @clear="refreshTableData"
-                @keyup.enter.native="refreshTableData"
-                style="width: 300px;"
-                class="mgl20">
-        <span slot="append" @click="refreshTableData" class="pointer">搜索</span>
-      </el-input>
-    </header>
-    <div class="table-container">
-      <base-table ref="table"
-                  :tableData="tableData"
-                  :pagingData="pagingData"
-                  @sizeChange="pagingEvent"
-                  @currentChange="pagingEvent"
-                  @sortChange="sortChangeEvt"
-                  @selectionChange="selectionChangeEvt"
-                  @expandChange="expandChangeEvt">
-        <template #columnType>
-          <el-table-column type="selection" width="46" :selectable="(row, index) => row.orderTotal === 100"></el-table-column>
-          <el-table-column type="index" :index="rowIndex" width="60" label="序号" align="center"></el-table-column>
-        </template>
-        <!-- 自定义插槽名 -->
-        <template #totalName="{data}">
-          <span v-html="$options.filters[data.column.filter || 'transformNull'](data.row[data.column.prop], ...data.column.filterParam)"
-                data-status-text="primary"
-                class="pointer"
-                @click="$message.info(data.row[data.column.prop]+'')"></span>
-        </template>
-        <template #otherColumns>
-          <el-table-column label="操作" :min-width="260" align="center" fixed="right">
-            <template #default="scope">
-              <el-button @click="uploadFile($apis.login.fileUpload, {userName: 'addd'}, {acceptType: '.zip,.rar', acceptTypeErrMsg: '限.zip,.rar', limitSize: 30000 * 1024})" type="primary" size="small">上传</el-button>
-              <el-button @click="downLoadEvt(`${$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, 'FILE_DOWN')" type="primary" size="small">下载</el-button>
-              <el-button @click="deleteEvt('row', scope.row)" type="primary" size="small">删除</el-button>
-              <el-button @click="toggleRowExpansion(scope.row)" type="primary" size="small">{{scope.row.expandRowDetail && scope.row.expandRowDetail.isExpanded ? '收起' : '展开'}}</el-button>
-            </template>
-          </el-table-column>
-
-          <!-- 展开 -->
-          <el-table-column type="expand" width="1">
-            <template #default="{row}">
-              <div v-loading="row.expandRowDetail.isLoading" class="full" :class="Object.keys(row.expandRowDetail.data).length ? '' : 'box--empty'">
-                <p v-for="(value, key) in row.expandRowDetail.data" :key="key">
-                  <span class="expanded-item-label">{{key}}：</span>
-                  <span>{{value}}</span>
-                </p>
-              </div>
-            </template>
-          </el-table-column>
-        </template>
-      </base-table>
     </div>
   </div>
 </template>
 
 <script>
-import table from '@m/table.js';
-import user from '@m/user.js';
-import file from '@m/file.js';
+import mixins from '@m';
+import {PIE, LINE, BAR, mapPL} from '@a/js/echartOptions.js';
 export default {
   name: 'Home',
-  mixins: [table, user, file],
+  mixins: [mixins.echarts],
   data() {
-    const initQuery = {
-      userType: [],
-      keyword: ''
-    };
     return {
-      searchCondition: JSON.parse(JSON.stringify(initQuery)),
-      searchReallyCondition: JSON.parse(JSON.stringify(initQuery)),
-      nodeId: null,
-      tableData: {
-        defaultSort: {prop: 'lastOrderTime', order: 'descending'},
-        rowClassName: ({row}) => !row.orderTotal ? 'table-cell1' : '',
-        columns: [
-          {label: '最近下单时间', prop: 'lastOrderTime', sortable: true, filter: 'formatDate', filterParam: [], width: 150},
-          {label: '客户名', prop: 'userName', cls: 'green'},
-          {label: '订单总数', prop: 'orderTotal', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
-          {label: '未完成订单', prop: 'orderUnfinished', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
-          {label: '已完成订单', prop: 'orderFinished', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
-          {label: '采购类型', prop: 'purchaseType', align: 'center', filter: 'transformArrToStr', isHidden: !this.isAdmin},
-          {label: '采购数量', prop: 'purchaseTotal', align: 'center', filter: 'numberWithCommas', slotName: 'totalName'},
-          {label: '优选客户', prop: 'isVip', sortable: true, align: 'center'},
-          {label: '客户描述', prop: 'description'}
-        ],
-        configColumnList: [
-          {label: '订单总数', value: 'orderTotal'},
-          {label: '采购类型', value: 'purchaseType'},
-          {label: '采购数量', value: 'purchaseTotal'},
-          {label: '优选客户', value: 'isVip'},
-          {label: '客户描述', value: 'description'}
-        ]
-      }
+      chartList: [
+        {id: 'pie', chart: null, isLoading: false, requestApi: this.$apis.login.getPieChartData, params: null, option: JSON.parse(JSON.stringify(PIE)), successCb: this.drawPie, cls: 'pd10'},
+        {id: 'line', chart: null, isLoading: false, requestApi: this.$apis.login.getLineChartData, params: null, option: JSON.parse(JSON.stringify(LINE)), successCb: this.drawLine, cls: 'pd10'},
+        {id: 'bar', chart: null, isLoading: false, requestApi: this.$apis.login.getPieBarData, params: null, option: JSON.parse(JSON.stringify(BAR)), successCb: this.drawBar, cls: 'pd10'},
+        {id: 'map', chart: null, isLoading: false, requestApi: this.$apis.login.getPieBarData, params: null, option: JSON.parse(JSON.stringify(mapPL)), successCb: this.drawBar, cls: 'pd10', pCls: 'w5'},
+        {id: 'mapPL', chart: null, isLoading: false, requestApi: this.$apis.login.getPieBarData, params: null, option: JSON.parse(JSON.stringify(mapPL)), successCb: this.drawBar, cls: 'pd10', pCls: 'w5'},
+        {id: 'mapM', chart: null, isLoading: false, requestApi: this.$apis.login.getPieBarData, params: null, option: JSON.parse(JSON.stringify(mapPL)), successCb: this.drawBar, cls: 'pd10', pCls: 'wfull mgb0'}
+      ]
     };
-  },
-  watch: {
-    'tableData.configColumnCheckedList': function(newVal) {
-      console.log('监听:', newVal);
-    }
   },
   methods: {
-    getTableData() {
-      this.reqTableData(this.$apis.login.getTableList, this.searchReallyCondition);
+    drawPie(item, data) {
+      item.option.series[0].data = data;
     },
-    getExpandRowDetail(row) {
-      this.requestExpandRowDetail(row, this.$apis.login.getTableDetail, {id: row.id});
+    drawLine(item, data) {
+      const xAxis = [], seriesData = [];
+      data.map(it => {
+        xAxis.push(it.time);
+        seriesData.push(it.value);
+      });
+      item.option.xAxis.data = xAxis;
+      item.option.series[0].data = seriesData;
     },
-    deleteEvt(type, row) {
-      if (type === 'many' && !this.isTableSelect()) {
-        this.$message.warning('暂无勾选数据');
-        return;
-      }
-      const params = type === 'row' ? row : this.getSelectData('userName');
-      console.log('删除参数:', params);
-      this.$message.success('删除成功');
-      this.refreshTableData();
+    drawBar(item, data) {
+      const xAxis = [], seriesData = [];
+      data.map(it => {
+        xAxis.push(it.name);
+        seriesData.push(it.value);
+      });
+      item.option.xAxis.data = xAxis;
+      item.option.series[0].data = seriesData;
     }
-  },
-  created() {
-    this.getTableData();
   }
 };
 </script>
 
 <style lang="less" scoped>
-.table-container {
-  .h(calc(~"100% - 56px"));
-}
-.expanded-item-label {
-  .dinlineb;
-  width: 120px;
-  margin-right: 5px;
-  .tr;
-}
-/deep/.table-cell1 {
-  .el-table-column--selection {
-    position: relative;
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      .w(8px);
-      .h(8px);
-      border-radius: 50%;
-      background: @error;
-    }
+.chart-box {
+  flex-shrink: 0;
+  width: 32%;
+  height: 49%;
+  background: @bg-lighter;
+  border-radius: 20px;
+  margin-bottom: 2%;
+  &.w5 {
+    .w(49%);
   }
 }
 </style>
