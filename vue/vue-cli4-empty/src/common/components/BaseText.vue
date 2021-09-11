@@ -1,10 +1,7 @@
 <template>
-  <el-tooltip class="ellipsis" :disabled="!isShowTooltip" :content="content" placement="top">
-    <p @click="$emit('click')"
-       @mouseenter.stop="$emit('mouseenter', isShowTooltip)"
-       @mouseleave="$emit('mouseleave', false)">
-      {{content | transformNull}}
-    </p>
+  <el-tooltip class="ellipsis" :disabled="disabled || !isShowTooltip" placement="top">
+    <div slot="content" v-html="content || '-'"></div>
+    <p v-html="content || '-'"></p>
   </el-tooltip>
 </template>
 
@@ -34,7 +31,6 @@ export default {
   methods: {
     // 判断是否展示el-tooltip
     getShowTooltip() {
-      console.log(this.$el.scrollWidth, this.$el.clientWidth);
       this.isShowTooltip = this.$el.scrollWidth > this.$el.clientWidth;
     }
   },

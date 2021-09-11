@@ -2,7 +2,7 @@
   <div class="menu-top-container wfull dflex fai fjc" :class="{'menu-top-container--collapse': menuIsFork}">
     <!-- 系统logo -->
     <div class="system-logo-box transition" :style="{'width': menuIsFork ? '60px' : '240px'}">
-      <!-- <img class="system-logo" :src="logoSrc" height="35" width="147"/> -->
+      <img class="system-logo" :src="logoSrc" height="35" width="147"/>
     </div>
     <!-- 导航折叠icon -->
     <template v-if="menuHasFork">
