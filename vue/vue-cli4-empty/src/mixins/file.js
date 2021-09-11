@@ -16,8 +16,10 @@ export default {
     },
     // 检测文件大小
     checkFileSize(files, size) {
+      let sizeTotal = 0;
       for (const item of files) {
-        if (item.size > size) return false;
+        sizeTotal += item.size;
+        if (item.size > size || sizeTotal > size) return false;
       }
       return true;
     },

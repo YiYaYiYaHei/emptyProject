@@ -70,6 +70,7 @@ const yAxis = {
   }
 };
 
+// 饼状图
 const PIE = {
   // 直角坐标系区域位置
   grid: {
@@ -131,6 +132,7 @@ const PIE = {
   }]
 };
 
+// 折线图
 const LINE = {
   // 直角坐标系区域位置
   grid: {
@@ -167,6 +169,7 @@ const LINE = {
   }]
 };
 
+// 柱状图
 const BAR = {
   // 直角坐标系区域位置
   grid: {
@@ -340,7 +343,7 @@ const baseMapEffectScatter = {
   // 数据为二维经纬度数组
   data: [{name: '吐鲁番市', value: [89.184078, 42.947613]}]
 };
-const titleTetxStyle = {
+const titleTextStyle = {
   textStyle: {
     color: '#fff',
     fontStyle: 'normal'
@@ -349,7 +352,7 @@ const titleTetxStyle = {
 
 // 地图
 const MAP = {
-  title: Object.assign({text: '中国地图'}, titleTetxStyle),
+  title: Object.assign({text: '中国地图'}, titleTextStyle),
   // 滑上tooltip
   tooltip: Object.assign({}, tooltipStyle, {
     trigger: 'item',
@@ -359,7 +362,7 @@ const MAP = {
   series: [Object.assign({}, baseMapConfig)]
 };
 
-// 地图 - 带区间
+// 地图 - 带文字区间
 const MAP1 = Object.assign({}, MAP, {
   // 地图 左下角区间 颜色控制
   dataRange: {
@@ -405,7 +408,7 @@ const MAP2 = Object.assign({}, MAP, {
 
 // 地图 - 气泡
 const MAP_P = {
-  title: Object.assign({text: '中国地图'}, titleTetxStyle),
+  title: Object.assign({text: '中国地图'}, titleTextStyle),
   tooltip: Object.assign({}, tooltipStyle),
   // 地图
   geo: Object.assign({}, baseMapGeo),
@@ -414,7 +417,7 @@ const MAP_P = {
 
 // 地图 - 起点 指向 终点
 const MAP_PL = {
-  title: Object.assign({text: '中国地图'}, titleTetxStyle),
+  title: Object.assign({text: '中国地图'}, titleTextStyle),
   tooltip: Object.assign({}, tooltipStyle),
   // 地图
   geo: Object.assign({}, baseMapGeo),
