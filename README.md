@@ -6,4 +6,5 @@
    * left_empty_project(vue-cli 4.*) 为 左侧菜单框架
    * left_top_empty_project(vue-cli 4.*) 为 左侧+顶部菜单框架
    * top_empty_project(vue-cli 4.*) 为 顶部菜单框架
+   * vue-cli4-empty(vue-cli 4.*) 为 顶部菜单、左侧菜单、左侧+顶部菜单（默认）框架
 ---
