@@ -47,6 +47,9 @@ const getFullUrl = (url, urlPrefix = 'BASE_URL', isAxios = true) => {
   return /^(http|https):/g.test(url) ? url : (process.env[urlPrefix] + url);
 };
 
+// 获取静态文件地址（process.env.BASE_URL 为 vue.config.js中的publicPath）
+const getStaticUrl = (url) => (`${process.env.BASE_URL}${url}`);
+
 // 根据header里的contenteType转换请求参数
 const transformRequestData = (contentType, requestData) => {
   requestData = requestData || {};
@@ -596,6 +599,7 @@ export {
 export default {
   isSpecifyFileType,
   getFullUrl,
+  getStaticUrl,
   transformRequestData,
   formatDate,
   formatByteSize,

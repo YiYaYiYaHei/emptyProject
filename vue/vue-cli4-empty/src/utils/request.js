@@ -81,10 +81,16 @@ const sendRequest = async (requestConfig) => {
   // token失效
   if (result.status === 401) {
     result.message = MESSAGE.PERMISSION_DENIED;
-    Message.error(result.message);
+    !document.getElementsByClassName('token-invalid-message').length && Message({
+      type: 'error',
+      showClose: false,
+      customClass: 'token-invalid-message',
+      duration: 2000,
+      message: result.message
+    });
     localStorage.clear();
     store.dispatch('resetStore');
-    location.replace('/login');
+    setTimeout(() => location.replace('/login'), 2000);
   }
   if (result.status >= 500 && result.status !== 502) result.message = result.message || MESSAGE.NETWORK_ERR;
   return result;

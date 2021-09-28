@@ -54,10 +54,14 @@ export default {
   mounted() {
     // 同一浏览器以最后一次登录为准
     window.addEventListener('storage', e => {
-      if (e.key === 'token' && e.newValue !== e.oldValue) {
+      if (!window.localStorage.length) {
+        location.replace('/login');
+        return;
+      }
+      if (e.key === 'userName' && e.newValue !== e.oldValue) {
         if (window.location.pathname.includes('/login')) return;
         this.$message.warning('用户信息已更新，即将刷新页面...');
-        setTimeout(() => location.reload(), 4000);
+        setTimeout(() => location.reload(), 2000);
       }
     });
   },
