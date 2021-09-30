@@ -32,7 +32,7 @@ const ROUTES_LIST = [
   [0, '登录', '/login', Login, {layout: 'blank-layout'}],
   // 导航配置
   [1, '首页', '/home', 'Home/Index.vue', {iconCls: 'el-icon-s-home'}],
-  [1, '商品管理', '/goods', EMPTY_PATH, {...pageUserAdmin, iconCls: 'el-icon-s-grid', redirect: '/goods/create'}, [
+  [1, '商品管理', '/goods', EMPTY_PATH, {iconCls: 'el-icon-s-grid', redirect: '/goods/create'}, [
     [2, '商品创建', 'create', 'GoodsManage/GoodsCreate.vue', {iconCls: 'el-icon-shopping-bag-1'}],
     [2, '商品列表', 'list', 'GoodsManage/GoodsList.vue', {iconCls: 'el-icon-present'}, [
       [3, '商品详情', 'detail/:id', 'GoodsManage/GoodsList/Detail.vue', {isHidden: true}],

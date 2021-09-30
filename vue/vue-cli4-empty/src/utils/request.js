@@ -12,9 +12,42 @@ const MESSAGE = {
   TIMEOUT: '连接超时，请检查网络。'                // 502、message中含有ETIMEDOUT/timeout
 };
 
+// 退出操作
+const logout = () => {
+  localStorage.clear();
+  store.dispatch('resetStore');
+  setTimeout(() => location.replace('/login'), 2000);
+};
+
+const REFRESH_TOKEN_INTERVAL = process.env.VUE_APP_REFRESH_TOKEN_INTERVAL;
+// token即将失效时，将请求挂起，等token刷新后重新请求
+let refreshRequestList = [];
+// 用于判断是否正在刷新token
+let isRefresh = false;
+// 判断token是否即将过期
+const tokenIsInvalid = () => (Date.now() - store.getters.getUserLoginTime > REFRESH_TOKEN_INTERVAL * 60 * 1000);
 // 请求拦截器
-axios.interceptors.request.use((config) => {
-  return config;
+axios.interceptors.request.use(async (config) => {
+  // token未过期，直接返回
+  if (/\/(login|auth\/refresh)\?/.test(config.url) || !tokenIsInvalid()) return config;
+  // 刷新token机制
+  if (!isRefresh) {
+    isRefresh = true;
+    const res = await get('/auth/refresh');
+    isRefresh = false;
+    if (res.status === 200) {
+      localStorage.setItem('token', res.data);
+      store.dispatch('setUserLoginTime');
+      refreshRequestList.map(cb => cb());
+      refreshRequestList = [];
+    } else {
+      res && Message.error(res.message);
+      logout();
+    }
+    // 刷新token后，需更新token(第一个请求会走这)
+    return Object.assign(config, {headers: {Authorization: localStorage.getItem('token')}});
+  }
+  return new Promise((resolve, reject) => refreshRequestList.push(() => resolve(Object.assign(config, {headers: {Authorization: localStorage.getItem('token')}}))));
 }, config => {
   return Promise.reject(config);
 });
@@ -88,9 +121,7 @@ const sendRequest = async (requestConfig) => {
       duration: 2000,
       message: result.message
     });
-    localStorage.clear();
-    store.dispatch('resetStore');
-    setTimeout(() => location.replace('/login'), 2000);
+    logout();
   }
   if (result.status >= 500 && result.status !== 502) result.message = result.message || MESSAGE.NETWORK_ERR;
   return result;
