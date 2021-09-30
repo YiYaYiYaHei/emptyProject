@@ -72,7 +72,7 @@ module.exports = {
   lintOnSave: !isPRD,
   devServer: {
     host: '0.0.0.0',
-    port: 9090,
+    port: 8080,
     https: false,
     hotOnly: false,
     // eslint作为编译错误在浏览器上显示
