@@ -82,8 +82,8 @@ const PIE = {
   // 滑上tooltip
   tooltip: Object.assign({}, tooltipStyle, {
     trigger: 'item',
-    // example: item.option.tooltip.formatter = (params) => (`<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}`);
-    formatter: (params) => (`<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}`)
+    // example: item.option.tooltip.formatter = (params) => (`<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}（${params.percent}%）`);
+    formatter: (params) => (`<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}（${params.percent}%）`)
   }),
   // 图例（左上角各区域颜色说明）
   legend: {
@@ -113,7 +113,7 @@ const PIE = {
       fontStyle: 'normal',
       fontFamily: 'Microsoft YaHei',
       // formatter若是函数需要动态设置PIE.option.series[0].label.formatter = (val) => `${val.name}：${val.value}`才会生效
-      formatter: '{b}：{d}'
+      formatter: '{b}：{d}%'
     },
     // 饼图图形上的文本标签 引导线
     labelLine: {
@@ -186,7 +186,7 @@ const BAR = {
     // example: item.option.tooltip.formatter = (params) => (`<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}`);
     formatter: (params) => (`<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}`)
   }),
-  xAxis: Object.assign({}, xAxis, {name: '名称'}),
+  xAxis: Object.assign({}, xAxis, {name: '种类'}),
   yAxis: Object.assign({}, yAxis, {}),
   series: [{
     name: '柱状图',

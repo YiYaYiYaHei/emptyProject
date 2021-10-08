@@ -32,6 +32,7 @@ export default {
   methods: {
     // 绘制饼状图
     drawPie(item, data) {
+      item.option.tooltip.formatter = (params) => (`<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}（${params.percent}%）`);
       item.option.series[0].data = data;
     },
     // 绘制折线图
