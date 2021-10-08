@@ -45,7 +45,7 @@
 
     <!--修改密码弹框-->
     <base-dialog ref="dialog"
-                 title="修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码修改密码"
+                 title="修改密码"
                  :dialogId.sync="editPwdData.nodeId"
                  @dialogConfirm="submitForm(editPwdConfirm, 'editPwdForm')"
                  @dialogClose="resetForm('editPwdForm');">

@@ -7,7 +7,7 @@
              @closed="dialogClose"
              :custom-class="`base-dailog-container${visible ? ' base-dialog-show' : ''}`">
     <template #title>
-      <base-text :content="title" class="el-dialog__title"></base-text>
+      <base-text :text="title" class="el-dialog__title" ref="baseText"></base-text>
     </template>
     <slot></slot>
     <template v-if="hasFooter" #footer>
@@ -52,6 +52,8 @@ export default {
   watch: {
     dialogId(val) {
       this.visible = !!val;
+      // 标题超出...同时显示tooltip
+      this.visible && this.$nextTick(() => this.$refs.baseText && this.$refs.baseText.getShowTooltip());
     }
   },
   methods: {

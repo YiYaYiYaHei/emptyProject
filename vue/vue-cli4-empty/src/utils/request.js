@@ -47,6 +47,7 @@ axios.interceptors.request.use(async (config) => {
     // 刷新token后，需更新token(第一个请求会走这)
     return Object.assign(config, {headers: {Authorization: localStorage.getItem('token')}});
   }
+  // token即将过期，将请求挂起
   return new Promise((resolve, reject) => refreshRequestList.push(() => resolve(Object.assign(config, {headers: {Authorization: localStorage.getItem('token')}}))));
 }, config => {
   return Promise.reject(config);
@@ -114,6 +115,7 @@ const sendRequest = async (requestConfig) => {
   // token失效
   if (result.status === 401) {
     result.message = MESSAGE.PERMISSION_DENIED;
+    // 保证页面上只弹出一个message
     !document.getElementsByClassName('token-invalid-message').length && Message({
       type: 'error',
       showClose: false,
