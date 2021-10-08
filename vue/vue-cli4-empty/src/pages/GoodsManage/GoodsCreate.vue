@@ -46,9 +46,9 @@
           <el-table-column label="操作" :min-width="400" align="center" fixed="right">
             <template #default="scope">
               <el-button @click="uploadFile($apis.login.fileUpload, {userName: 'addd'}, {acceptType: '.zip,.rar', acceptTypeErrMsg: '限.zip,.rar', limitSize: 30000 * 1024})" type="primary" size="small">上传</el-button>
-              <el-button @click="downLoadEvt(`${$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, 'FILE_DOWN')" type="primary" size="small">下载</el-button>
-              <el-button @click="downLoadAjaxEvt('get', `${$apis.login.fileDownloadAsync}?name=login955.jpeg`, null, false, {urlPrefix: 'FILE_DOWN1'})" type="primary" size="small">axios下载</el-button>
-              <el-button @click="downLoadAjaxEvt('get', `${$apis.login.fileDownloadAsync}?name=HAP.pdf`, null, true, {urlPrefix: 'FILE_DOWN1'})" type="primary" size="small">预览</el-button>
+              <el-button @click="downLoadEvt(`${$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, '未知文件', 'FILE_DOWN')" type="primary" size="small">下载</el-button>
+              <el-button @click="downLoadAjaxEvt('get', `${$apis.login.fileDownloadAsync}?name=login955.jpeg`, null, false)" type="primary" size="small">axios下载</el-button>
+              <el-button @click="downLoadAjaxEvt('get', `${$apis.login.fileDownloadAsync}?name=HAP.pdf`, null, true)" type="primary" size="small">预览</el-button>
               <el-button @click="deleteEvt('row', scope.row)" type="primary" size="small">删除</el-button>
               <el-button @click="toggleRowExpansion(scope.row)" type="primary" size="small">{{scope.row.expandRowDetail && scope.row.expandRowDetail.isExpanded ? '收起' : '展开'}}</el-button>
             </template>
@@ -89,7 +89,7 @@ export default {
       nodeId: null,
       tableData: {
         defaultSort: {prop: 'lastOrderTime', order: 'descending'},
-        rowClassName: ({row}) => !row.orderTotal ? 'table-cell1' : '',
+        rowClassName: ({row}) => row.orderTotal % 2 === 0 ? 'table-cell1' : '',
         columns: [
           {label: '最近下单时间', prop: 'lastOrderTime', sortable: true, filter: 'formatDate', filterParam: [], width: 150},
           {label: '客户名', prop: 'userName', cls: 'green'},

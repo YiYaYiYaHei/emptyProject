@@ -38,9 +38,10 @@ export default {
     drawLine(item, data) {
       const xAxis = [], seriesData = [];
       data.map(it => {
-        xAxis.push(it.time);
+        xAxis.push(it.name);
         seriesData.push(it.value);
       });
+      item.option.xAxis.name = '种类';
       item.option.xAxis.data = xAxis;
       item.option.series[0].data = seriesData;
     },

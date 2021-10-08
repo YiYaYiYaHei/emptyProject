@@ -83,8 +83,8 @@ module.exports = {
     proxy: {
       '/apis': {
         // yApi: mengshuhui  mengshuhui961117
-        target: 'https://yapi.142vip.cn/mock/857',
-        // target: 'http://127.0.0.1:13666',
+        // target: 'https://yapi.142vip.cn/mock/857',
+        target: 'http://127.0.0.1:13666',
         pathRewrite: {
           '^/apis': ''
         },
@@ -101,7 +101,7 @@ module.exports = {
         changeOrigin: true  // 如果接口跨域，需要进行这个参数配置
       },
       '/download': {
-        target: 'http://127.0.0.1:13666',
+        target: 'http://47.100.181.44:13666',
         pathRewrite: {
           '^/download': ''
         }

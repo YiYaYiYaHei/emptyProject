@@ -134,7 +134,7 @@ export default {
      * @param {string} [fileName=''] - 下载文件名, 对于pdf：若不设置download属性，则默认在浏览器上打开(预览功能)
      * @example this.downLoadEvt(`${this.$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, 'FILE_DOWN')
      */
-    downLoadEvt(url, params = null, fileName = '', urlPrefix = 'BASE_URL') {
+    downLoadEvt(url, params = null, fileName = '未知文件', urlPrefix = 'BASE_URL') {
       const el = document.createElement('a');
       el.style.display = 'none';
       el.setAttribute('target', '_blank');
@@ -203,7 +203,7 @@ export default {
               const _fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].trim().slice(10));
               const blob = new Blob([this.response], isPreview ? {type: 'application/pdf'} : {});
               const href = URL.createObjectURL(blob);
-              _this.downLoadEvt(href, null, isPreview ? '' : _fileName);
+              _this.downLoadEvt(href, null, isPreview ? '' : _fileName, _config.urlPrefix);
               // 释放一个之前已经存在的、通过调用 URL.createObjectURL() 创建的 URL 对象
               URL.revokeObjectURL(href);
             }
