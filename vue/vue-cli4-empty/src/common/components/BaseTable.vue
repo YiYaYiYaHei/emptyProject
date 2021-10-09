@@ -66,7 +66,8 @@
                      :page-size="pagingData.size"
                      :total="pagingData.total"
                      class="fr"
-                     layout="total, sizes, prev, pager, next, jumper">
+                     layout="total, sizes, prev, pager, next, jumper"
+                     size="small">
       </el-pagination>
     </template>
   </div>

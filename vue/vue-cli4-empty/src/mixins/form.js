@@ -54,8 +54,8 @@ export default {
     },
     // 关闭弹框 - 重置数据为初始化值
     dialogCloseEvt(dataName, formName = 'form') {
-      this[dataName] = this.$options.data.call(this)[dataName];
       this.resetForm(formName);
+      this[dataName] = this.$options.data.call(this)[dataName];
     }
   }
 };

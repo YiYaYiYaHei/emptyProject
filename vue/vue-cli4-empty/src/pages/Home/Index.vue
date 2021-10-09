@@ -18,14 +18,14 @@ export default {
   data() {
     return {
       chartList: [
-        {id: 'pie', chart: null, isLoading: false, requestApi: this.$apis.login.getPieChartData, params: null, option: JSON.parse(JSON.stringify(PIE)), successCb: this.drawPie, cls: 'pd10'},
-        {id: 'line', chart: null, isLoading: false, requestApi: this.$apis.login.getLineChartData, params: null, option: JSON.parse(JSON.stringify(LINE)), successCb: this.drawLine, cls: 'pd10'},
-        {id: 'bar', chart: null, isLoading: false, requestApi: this.$apis.login.getPieBarData, params: null, option: JSON.parse(JSON.stringify(BAR)), successCb: this.drawBar, cls: 'pd10'},
-        {id: 'map', chart: null, isLoading: false, requestApi: this.$apis.login.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
-        {id: 'map1', chart: null, isLoading: false, requestApi: this.$apis.login.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP1)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
-        {id: 'map2', chart: null, isLoading: false, requestApi: this.$apis.login.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP2)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
-        {id: 'mapP', chart: null, isLoading: false, requestApi: this.$apis.login.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP_P)), successCb: this.drawMapP, cls: 'pd10', pCls: 'w5'},
-        {id: 'mapPL', chart: null, isLoading: false, requestApi: this.$apis.login.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP_PL)), successCb: this.drawMAPPL, cls: 'pd10', pCls: 'wfull mgb0'}
+        {id: 'pie', chart: null, isLoading: false, requestApi: this.$apis.home.getPieChartData, params: null, option: JSON.parse(JSON.stringify(PIE)), successCb: this.drawPie, cls: 'pd10'},
+        {id: 'line', chart: null, isLoading: false, requestApi: this.$apis.home.getLineChartData, params: null, option: JSON.parse(JSON.stringify(LINE)), successCb: this.drawLine, cls: 'pd10'},
+        {id: 'bar', chart: null, isLoading: false, requestApi: this.$apis.home.getPieBarData, params: null, option: JSON.parse(JSON.stringify(BAR)), successCb: this.drawBar, cls: 'pd10'},
+        {id: 'map', chart: null, isLoading: false, requestApi: this.$apis.home.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
+        {id: 'map1', chart: null, isLoading: false, requestApi: this.$apis.home.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP1)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
+        {id: 'map2', chart: null, isLoading: false, requestApi: this.$apis.home.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP2)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
+        {id: 'mapP', chart: null, isLoading: false, requestApi: this.$apis.home.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP_P)), successCb: this.drawMapP, cls: 'pd10', pCls: 'w5'},
+        {id: 'mapPL', chart: null, isLoading: false, requestApi: this.$apis.home.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP_PL)), successCb: this.drawMAPPL, cls: 'pd10', pCls: 'wfull mgb0'}
       ]
     };
   },

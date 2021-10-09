@@ -1,10 +1,10 @@
 <template>
-  <div class="home-container full pd20">
+  <div class="goods-created-container full table-page-layout">
     <header class="mgb20 dflex">
-      <el-button @click="deleteEvt('many')" type="primary" size="medium">批量删除</el-button>
+      <el-button @click="deleteEvt('many')" type="primary" size="small">批量删除</el-button>
       <div class="mgl20">
         <span class="mgr10">用户类型</span>
-        <el-select v-model="searchCondition.userType" placeholder="全部" clearable multiple collapse-tags :title="searchCondition.userType.join()" @change="refreshTableData">
+        <el-select v-model="searchCondition.userType" size="small" placeholder="全部" clearable multiple collapse-tags :title="searchCondition.userType.join()" @change="refreshTableData">
           <el-option v-for="item in ['普通用户', '管理员']"
                     :key="item"
                     :label="item"
@@ -15,6 +15,7 @@
                 placeholder="模糊搜索"
                 maxlength=100
                 clearable
+                size="small"
                 @clear="refreshTableData"
                 @keyup.enter.native="refreshTableData"
                 style="width: 300px;"
@@ -32,7 +33,7 @@
                   @selectionChange="selectionChangeEvt"
                   @expandChange="expandChangeEvt">
         <template #columnType>
-          <el-table-column type="selection" width="46" :selectable="(row, index) => row.orderTotal === 100"></el-table-column>
+          <el-table-column type="selection" width="46" :selectable="(row, index) => row.orderTotal % 2 != 0"></el-table-column>
           <el-table-column type="index" :index="rowIndex" width="60" label="序号" align="center"></el-table-column>
         </template>
         <!-- 自定义插槽名 -->
@@ -45,10 +46,10 @@
         <template #otherColumns>
           <el-table-column label="操作" :min-width="400" align="center" fixed="right">
             <template #default="scope">
-              <el-button @click="uploadFile($apis.login.fileUpload, {userName: 'addd'}, {acceptType: '.zip,.rar', acceptTypeErrMsg: '限.zip,.rar', limitSize: 30000 * 1024})" type="primary" size="small">上传</el-button>
-              <el-button @click="downLoadEvt(`${$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, '未知文件', 'FILE_DOWN')" type="primary" size="small">下载</el-button>
-              <el-button @click="downLoadAjaxEvt('get', `${$apis.login.fileDownloadAsync}?name=login955.jpeg`, null, false)" type="primary" size="small">axios下载</el-button>
-              <el-button @click="downLoadAjaxEvt('get', `${$apis.login.fileDownloadAsync}?name=HAP.pdf`, null, true)" type="primary" size="small">预览</el-button>
+              <el-button @click="uploadFile($apis.home.fileUpload, {userName: 'addd'}, {acceptType: '.zip,.rar', acceptTypeErrMsg: '限.zip,.rar', limitSize: 30000 * 1024})" type="primary" size="small">上传</el-button>
+              <el-button @click="downLoadEvt(`${$apis.home.fileDownload}/npm-1.1.0-1.zip`, null, '未知文件', 'FILE_DOWN')" type="primary" size="small">下载</el-button>
+              <el-button @click="downLoadAjaxEvt('get', `${$apis.home.fileDownloadAsync}?name=login955.jpeg`, null, false)" type="primary" size="small">axios下载</el-button>
+              <el-button @click="downLoadAjaxEvt('get', `${$apis.home.fileDownloadAsync}?name=HAP.pdf`, null, true)" type="primary" size="small">预览</el-button>
               <el-button @click="deleteEvt('row', scope.row)" type="primary" size="small">删除</el-button>
               <el-button @click="toggleRowExpansion(scope.row)" type="primary" size="small">{{scope.row.expandRowDetail && scope.row.expandRowDetail.isExpanded ? '收起' : '展开'}}</el-button>
             </template>
@@ -118,10 +119,10 @@ export default {
   },
   methods: {
     getTableData() {
-      this.reqTableData(this.$apis.login.getTableList, this.searchReallyCondition);
+      this.reqTableData(this.$apis.home.getTableList, this.searchReallyCondition);
     },
     getExpandRowDetail(row) {
-      this.requestExpandRowDetail(row, this.$apis.login.getTableDetail, {id: row.id});
+      this.requestExpandRowDetail(row, this.$apis.home.getTableDetail, {id: row.id});
     },
     deleteEvt(type, row) {
       if (type === 'many' && !this.isTableSelect()) {

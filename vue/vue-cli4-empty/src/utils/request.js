@@ -36,7 +36,7 @@ axios.interceptors.request.use(async (config) => {
     const res = await get('/auth/refresh');
     isRefresh = false;
     if (res.status === 200) {
-      localStorage.setItem('token', res.data);
+      localStorage.setItem('token', `Bearer ${res.data}`);
       store.dispatch('setUserLoginTime');
       refreshRequestList.map(cb => cb());
       refreshRequestList = [];

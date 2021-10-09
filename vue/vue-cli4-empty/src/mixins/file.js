@@ -132,7 +132,7 @@ export default {
      * @param {Object} [params=null] - 下载参数，也可以使用qs.stringify(params)会将该对像转为形如：id=123&name=Ada
      * @param {String} [urlPrefix='BASE_URL'] - 接口前缀: 类似BASE_URL
      * @param {string} [fileName=''] - 下载文件名, 对于pdf：若不设置download属性，则默认在浏览器上打开(预览功能)
-     * @example this.downLoadEvt(`${this.$apis.login.fileDownload}/npm-1.1.0-1.zip`, null, 'FILE_DOWN')
+     * @example this.downLoadEvt(`${this.$apis.home.fileDownload}/npm-1.1.0-1.zip`, null, 'FILE_DOWN')
      */
     downLoadEvt(url, params = null, fileName = '未知文件', urlPrefix = 'BASE_URL') {
       const el = document.createElement('a');
@@ -167,7 +167,7 @@ export default {
       const _method = method.toUpperCase();
       const _config = Object.assign({
         contentType: _method === 'GET' ? 'application/x-www-form-urlencoded' : 'application/json',  // 请求头类型
-        fileName: '未知文件',                                   // 下载文件名(必填，若为空，下载下来都是txt格式)
+        fileName: '未知文件',                                       // 下载文件名(必填，若为空，下载下来都是txt格式)
         async: true,                                               // 请求是否异步-true异步、false同步
         token: localStorage.getItem('token') || '',                // 用户token
         urlPrefix: 'BASE_URL',                                     // 接口前缀: 类似BASE_URL

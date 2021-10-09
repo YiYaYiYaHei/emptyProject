@@ -22,7 +22,7 @@ export default {
      * @param {Object | null} item.params - 接口参数
      * @param {Object} item.option - echarts配置项
      * @param {Function} [item.successCb] - 请求成功的回调函数（用于处理echart配置项数据）
-     * @example {id: 'pie', chart: null, isLoading: false, requestApi: this.$apis.login.getPieChartData, params: null, option: JSON.parse(JSON.stringify(PIE)), successCb: this.drawPie}
+     * @example {id: 'pie', chart: null, isLoading: false, requestApi: this.$apis.home.getPieChartData, params: null, option: JSON.parse(JSON.stringify(PIE)), successCb: this.drawPie}
      */
     initChartList(chartList = this.chartList) {
       if (!chartList.length) {

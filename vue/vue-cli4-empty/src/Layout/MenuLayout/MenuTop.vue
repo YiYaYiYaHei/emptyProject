@@ -49,7 +49,7 @@
                  :dialogId.sync="editPwdData.nodeId"
                  @dialogConfirm="submitForm(editPwdConfirm, 'editPwdForm')"
                  @dialogClose="resetForm('editPwdForm');">
-      <el-form :model="editPwdData.formData" :rules="editPwdData.formRules" ref="editPwdForm" label-width="80px">
+      <el-form :model="editPwdData.formData" :rules="editPwdData.formRules" ref="editPwdForm" label-width="80px" size="small">
         <el-form-item label="原始密码" prop="oldPwd">
           <el-input maxlength=20 type="password" placeholder="请输入原始密码" v-model.trim="editPwdData.formData.oldPwd" clearable onpaste="return false"/>
         </el-form-item>

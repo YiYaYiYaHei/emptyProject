@@ -32,7 +32,7 @@ export default {
       return Object.prototype.hasOwnProperty.call(row, 'id') ? row.id : row.tableIndex;
     },
     // 获取表格数据
-    async getTableData() {
+    getTableData() {
       console.log('base view method...');
     },
     // 搜索、新增、删除 表格数据时调用,  编辑时使用getTableData
@@ -167,6 +167,10 @@ export default {
     // 展开/收起触发事件--expandedRows需与rowKey对应
     expandChangeEvt(row, expandedRows) {
       this.tableData.expandedRows = expandedRows.map(row => this.tableData.rowKey(row));
+    },
+    // 清除表格勾选状态
+    clearTableSelection() {
+      this.findBaseTableComp().clearSelection();
     },
     // 只展开一行
     singleExpand(row, index) {

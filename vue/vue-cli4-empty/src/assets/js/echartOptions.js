@@ -104,7 +104,7 @@ const PIE = {
     // 圆心位置
     center: ['50%', '60%'],
     // radius为数组-空心圆
-    radius: '50%',
+    radius: '45%',
     // 饼图图形上的文本标签
     label: {
       show: true,
@@ -112,13 +112,14 @@ const PIE = {
       color: '#fff',
       fontStyle: 'normal',
       fontFamily: 'Microsoft YaHei',
+      fontSize: 12,
       // formatter若是函数需要动态设置PIE.option.series[0].label.formatter = (val) => `${val.name}：${val.value}`才会生效
       formatter: '{b}：{d}%'
     },
     // 饼图图形上的文本标签 引导线
     labelLine: {
       show: true,
-      length: 8
+      length: 6
     },
     // 高亮状态的扇区和标签样式
     emphasis: {

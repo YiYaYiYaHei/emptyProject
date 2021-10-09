@@ -4,11 +4,12 @@
              :close-on-click-modal="false"
              :close-on-press-escape="false"
              :append-to-body="true"
-             @closed="dialogClose"
+             :before-close="dialogClose"
              :custom-class="`base-dailog-container${visible ? ' base-dialog-show' : ''}`">
     <template #title>
       <base-text :text="title" class="el-dialog__title" ref="baseText"></base-text>
     </template>
+    <div v-if="tips" class="full tc">{{tips}}</div>
     <slot></slot>
     <template v-if="hasFooter" #footer>
       <el-button type="primary" @click="$emit('dialogConfirm')">确 定</el-button>
@@ -37,6 +38,10 @@ export default {
     dialogId: {
       type: Number,
       default: 0
+    },
+    tips: {
+      type: String,
+      default: ''
     },
     hasFooter: {
       type: Boolean,
