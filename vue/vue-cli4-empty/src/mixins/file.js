@@ -156,9 +156,10 @@ export default {
     },
     /**
      * ajax实现文件下载（也可以使用封装的axios方法，雷同uploadFile）
+     * @param {String} method - 请求方法get/post(不区分大小写)
      * @param {String} url - 接口地址，以'/'开头的接口地址
      * @param {Object} [params] - 请求参数，{name: '文件下载'}
-     * @param {String} [method] - 请求方法get/post(不区分大小写)
+     * @param {Boolean} [isPreview] - 是否预览(pdf有效)
      * @param {Object} [config] - 方法配置
      * @example this.downLoadAjaxEvt(`${this.$apis.login.fileDownload}`, {name: '检测异常邮件.zip'}, 'get', {urlPrefix: 'FILE_DOWN'})
      */
@@ -171,8 +172,7 @@ export default {
         async: true,                                               // 请求是否异步-true异步、false同步
         token: localStorage.getItem('token') || '',                // 用户token
         urlPrefix: 'BASE_URL',                                     // 接口前缀: 类似BASE_URL
-        hasProgress: true,                                         // 是否需要展示下载进度
-        isDownload: true                                           // a 标签是否设置download属性
+        hasProgress: true                                          // 是否需要展示下载进度
       }, config);
 
       const queryParams = this.$tools.transformRequestData(_config.contentType, params);
@@ -191,7 +191,7 @@ export default {
       }
       ajax.onload = function () {
         notify && notify.close();
-        if (this.status === 200) {
+        if (this.status === 200 || this.status === 304) {
           // 通过FileReader去判断接口返回是json还是文件流
           const fileReader = new FileReader();
           fileReader.onloadend = () => {
@@ -199,8 +199,8 @@ export default {
               const result = JSON.parse(fileReader.result || '{message: 服务器出现问题，请联系管理员}');
               _this.$message.error(result.message);
             } else {
-              // 两种解码方式，区别自行百度: decodeURIComponent/decodeURI
-              const _fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].trim().slice(10));
+              // 两种解码方式，区别自行百度: decodeURIComponent/decodeURI（主要获取后缀名，否则低版本浏览器会一律识别为txt，导致下载下来的都是txt）
+              const _fileName = decodeURIComponent((this.getResponseHeader('content-disposition') || '; filename="未知文件"').split(';')[1].trim().slice(9));
               const blob = new Blob([this.response], isPreview ? {type: 'application/pdf'} : {});
               const href = URL.createObjectURL(blob);
               _this.downLoadEvt(href, null, isPreview ? '' : _fileName, _config.urlPrefix);
