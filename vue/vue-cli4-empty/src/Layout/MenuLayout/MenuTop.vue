@@ -51,13 +51,13 @@
                  @dialogClose="resetForm('editPwdForm');">
       <el-form :model="editPwdData.formData" :rules="editPwdData.formRules" ref="editPwdForm" label-width="80px" size="small">
         <el-form-item label="原始密码" prop="oldPwd">
-          <el-input maxlength=20 type="password" placeholder="请输入原始密码" v-model.trim="editPwdData.formData.oldPwd" clearable onpaste="return false"/>
+          <el-input maxlength=20 type="password" placeholder="请输入原始密码" v-trim v-model="editPwdData.formData.oldPwd" clearable onpaste="return false"/>
         </el-form-item>
         <el-form-item label="新密码" prop="newPwd">
-          <el-input maxlength=20 type="password" placeholder="请输入新密码" v-model.trim="editPwdData.formData.newPwd" clearable onpaste="return false"/>
+          <el-input maxlength=20 type="password" placeholder="请输入新密码" v-trim v-model="editPwdData.formData.newPwd" clearable onpaste="return false"/>
         </el-form-item>
         <el-form-item label="确认密码" prop="newPwdRepeat">
-          <el-input maxlength=20 type="password" placeholder="请再次输入新密码" v-model.trim="editPwdData.formData.newPwdRepeat" clearable onpaste="return false"/>
+          <el-input maxlength=20 type="password" placeholder="请再次输入新密码" v-trim v-model="editPwdData.formData.newPwdRepeat" clearable onpaste="return false"/>
         </el-form-item>
       </el-form>
     </base-dialog>

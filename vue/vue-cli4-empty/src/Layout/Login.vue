@@ -13,7 +13,8 @@
                     clearable
                     @focus="focusInput('userName')"
                     class="user-name"
-                    :class="{'active': !!loginData.userName}"></el-input>
+                    :class="{'active': !!loginData.userName}"
+                    v-trim></el-input>
         </el-form-item>
         <el-form-item prop="userPwd">
           <el-input maxlength=20
@@ -25,7 +26,8 @@
                     @focus="focusInput('userPwd')"
                     class="user-name password"
                     :class="{'active': !!loginData.userPwd}"
-                    onpaste="return false"></el-input>
+                    onpaste="return false"
+                    v-trim></el-input>
         </el-form-item>
         <el-form-item class="mgt50">
           <span class="login-msg">{{msg}}</span>

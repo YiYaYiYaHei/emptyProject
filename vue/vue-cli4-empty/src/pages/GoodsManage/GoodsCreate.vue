@@ -11,7 +11,7 @@
                     :value="item"></el-option>
         </el-select>
       </div>
-      <el-input v-model.trim="searchCondition.keyword"
+      <el-input v-model="searchCondition.keyword"
                 placeholder="模糊搜索"
                 maxlength=100
                 clearable
@@ -19,7 +19,8 @@
                 @clear="refreshTableData"
                 @keyup.enter.native="refreshTableData"
                 style="width: 300px;"
-                class="mgl20">
+                class="mgl20"
+                v-trim>
         <span slot="append" @click="refreshTableData" class="pointer">搜索</span>
       </el-input>
     </header>

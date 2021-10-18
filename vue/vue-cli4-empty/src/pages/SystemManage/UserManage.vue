@@ -28,14 +28,14 @@
                  @dialogClose="dialogCloseEvt('addOrEditUser', 'addOrEditForm')">
       <el-form :model="addOrEditUser.formData" :rules="addOrEditUser.formRules" ref="addOrEditForm" label-width="80px">
         <el-form-item label="用户名" prop="userName">
-          <el-input v-model.trim="addOrEditUser.formData.userName" maxlength=20 placeholder="请输入用户名" clearable :disabled="addOrEditUser.type === 'edit'" onpaste="return false"></el-input>
+          <el-input v-trim v-model="addOrEditUser.formData.userName" maxlength=20 placeholder="请输入用户名" clearable :disabled="addOrEditUser.type === 'edit'" onpaste="return false"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model.trim="addOrEditUser.formData.password" v-if="addOrEditUser.type === 'add' || addOrEditUser.isResetPwd" maxlength=20 type="password" placeholder="请输入密码" clearable onpaste="return false"></el-input>
+          <el-input v-trim v-model="addOrEditUser.formData.password" v-if="addOrEditUser.type === 'add' || addOrEditUser.isResetPwd" maxlength=20 type="password" placeholder="请输入密码" clearable onpaste="return false"></el-input>
           <el-button v-else type="primary" size="small" @click="addOrEditUser.isResetPwd=true">重 置</el-button>
         </el-form-item>
         <el-form-item  label="确认密码" prop="repeatPassword" v-if="addOrEditUser.type === 'add'">
-          <el-input v-model.trim="addOrEditUser.formData.repeatPassword" maxlength=20 type="password" placeholder="请再次输入密码" clearable onpaste="return false"></el-input>
+          <el-input v-trim v-model="addOrEditUser.formData.repeatPassword" maxlength=20 type="password" placeholder="请再次输入密码" clearable onpaste="return false"></el-input>
         </el-form-item>
         <el-form-item label="用户角色">
           <el-select v-model="addOrEditUser.formData.role" placeholder="请选择用户角色" v-if="addOrEditUser.type === 'add'">
@@ -45,7 +45,7 @@
           <el-tag v-else>{{addOrEditUser.formData.role}}</el-tag>
         </el-form-item>
         <el-form-item label="描述" prop="origin">
-          <el-input v-model.trim="addOrEditUser.formData.description" type="textarea" maxlength=250 placeholder="请输入描述" rows=4 resize="none"></el-input>
+          <el-input v-trim v-model="addOrEditUser.formData.description" type="textarea" maxlength=250 placeholder="请输入描述" rows=4 resize="none"></el-input>
         </el-form-item>
       </el-form>
     </base-dialog>
