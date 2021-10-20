@@ -3,7 +3,7 @@
 - 项目主要基于：vue2、elementui、axios、less、vuex、vue-router开发
 
 ## 1、项目主要功能
-- eslint配置；
+- eslint配置（为了多人开发时统一规范，减少冗余代码：冗余代码过多，会导致打包后文件变大，影响首页白屏时间）；
 - 常用工具方法提供；
 - 异步请求相关方法整合，接口文件整合；
 - 路由的快速配置（含权限配置）；
@@ -17,11 +17,16 @@
 - 默认25分钟前端刷新一次token
 - ...
 
-## 2、浏览器兼容说明
+## 2、webpack优化
+- 打包时：去除console.log、注释、多线程打包  https://www.jianshu.com/p/abd8e319d131
+- 添加gzip配置（compression-webpack-plugin插件, nginx、服务端需要配置才能生效）https://www.jianshu.com/p/fcfa1945db23
+- 第三方库(ecahrts、element-ui、vue、vuex、vue-router、axios)，使用CDN加载  https://www.jianshu.com/p/ae78c2d5d4f0
+
+## 3、浏览器兼容说明
 1. 整体架构支持 >= IE10+;
 2. 最佳体验 >= IE11+;
 
-## 3、项目目录结构说明
+## 4、项目目录结构说明
 ```
 |-- vue-cli4-empty
     |-- public
@@ -80,28 +85,30 @@
     |-- webstorm.config.js                 // 处理webstorm配置路径别名后，ctrl+左键失效
 ```
 
-## 4、开发说明
+## 5、开发说明
 1. 整个项目属于单页面开发，所有路由都在（router/config.js）中进行配置；
 2. 所有通用、多页面公用数据状态缓存在Vuex中，按功能进行文件管理，所有功能文件放在（store/modules）文件夹下，在index.js中进行集成；
 3. 所有页面功能开发按功能模块包管理方式并以.vue文件存在，建议使用 大驼峰 命名方式（例如：/pages/GoodsManage/GoodsCreated.vue）；
 4. 所有公共组件、指令、过滤器、原型都定义在common文件夹；
 5. 针对不同模块的接口地址，以 (模块名.js) 命名并放在(apis)文件夹下
 
-## 5、项目环境安装与运行
+## 6、项目环境安装与运行
 1. 运行项目：(运行前确保依赖安装完成且无失败项, 已设置localhost和本地ip均可访问)
  `npm run start`
 2. 重启项目：(与运行一致，但不会自动打开浏览器页签)
  `npm run restart`
 3. 打包发布命令：
  `npm run build`
-4. 打包文件名修改:
+4. webpack打包体积分析
+  `npm run report`
+5. 打包文件名修改:
   `修改vue.config.js中的outputDir参数`
-5. 项目标题修改：
+6. 项目标题修改：
    `修改.env的VUE_APP_SYSTEM_NAME参数`
 
 # nginx配置
 ```
-vue-router history模式下的ngnix代理
+# vue-router history模式下的ngnix代理
 server {
         listen       9600;
         server_name  localhost;
@@ -124,5 +131,25 @@ server {
       proxy_set_header Upgrade websocket;  # 配置允许创建websocket
       proxy_set_header Connection Upgrade; # 配置允许创建websocket
     }
+# gzip配置
+http {
+    # nginx开启Gzip：若没有找到.gz，会动态压缩，因此建议前端打包成.gz文件
+    # 是否启用Gzip（on为启用，off为关闭）
+    gzip  on;
+    # 设置允许压缩的页面最小字节数，页面字节数从header头中的Content-Length中进行获取。默认值是0，不管页面多大都压缩。建议设置成大于1k的字节数，小于1k可能会越压越大。
+    gzip_min_length 1k;
+    # 获取多少内存用于缓存压缩结果，‘4 16k’表示以16k*4为单位获得
+    gzip_buffers 4 16k;
+    # Gzip压缩比（1~9），越小压缩效果越差，但是越大处理越慢，所以一般取中间值;
+    gzip_comp_level 5;
+    # 对特定的MIME类型生效,其中'text/html'被系统强制启用（少啥类型就添加啥）
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
+    # 识别http协议的版本,早起浏览器可能不支持Gzip自解压,用户会看到乱码
+    gzip_http_version 1.1;
+    # 启用应答头"Vary: Accept-Encoding"
+    gzip_vary on;
+    # ie6以下禁用Gzip
+    gzip_disable "MSIE [1-6]\.";
+}
 ```
 

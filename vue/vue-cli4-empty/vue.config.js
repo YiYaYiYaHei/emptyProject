@@ -1,10 +1,21 @@
-// webpack: https://cli.vuejs.org/zh/config/#%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE
+// webpack官方文档: https://cli.vuejs.org/zh/config/#%E5%85%A8%E5%B1%80-cli-%E9%85%8D%E7%BD%AE
 const path = require('path'),
   TerserPlugin = require('terser-webpack-plugin'),
   isPRD = process.env.NODE_ENV === 'production',
   publicPath = '/',
   outputDir = 'dist',
   title = process.env.VUE_APP_SYSTEM_NAME;
+
+// webpack启用gzip压缩
+const CompressionPlugin = require('compression-webpack-plugin');
+const productionGzipExtensions = ['js', 'css'];
+
+// webpack打包速度分析插件
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const smp = new SpeedMeasurePlugin();
+
+// cdn相关配置
+const cdnConfig = require('./cdn.config.js');
 
 module.exports = {
   publicPath,
@@ -22,7 +33,9 @@ module.exports = {
       title,
       // 在这个页面中包含的块，默认情况下会包含
       // 提取出来的通用 chunk 和 vendor chunk。
-      chunks: ['chunk-vendors', 'chunk-common', 'index']
+      chunks: ['chunk-vendors', 'chunk-common', 'index'],
+      // 调用：htmlWebpackPlugin.options.CDN（设置CDN链接）
+      CDN: isPRD && cdnConfig.useCDN ? cdnConfig.CDN : null
     }
   },
   css: {
@@ -32,7 +45,7 @@ module.exports = {
       chunkFilename: `css/[name].${+new Date()}.css`
     },
   },
-  configureWebpack: {
+  configureWebpack: smp.wrap({
     mode: isPRD ? 'production' : 'development',
     // 别名配置
     resolve: {
@@ -50,24 +63,50 @@ module.exports = {
       filename: `js/[name].${+new Date()}.js`,
       chunkFilename: `js/[name].${+new Date()}.js`
     },
-    // production环境, 去除打包的console.log
     optimization: {
+      // production环境生效 - 官方文档https://webpack.docschina.org/plugins/terser-webpack-plugin/
       minimizer: [
         new TerserPlugin({
-          // 去除js打包后的LICENSE.txt文件
+          // 使用多进程并发运行以提高构建速度（webpack是单线程，开启多线程压缩速度更快）
+          parallel: 4,
+          // 是否将注释剥离到单独的文件中（默认为true）: 去除js打包后的LICENSE.txt文件(里面是注释)
           extractComments: false,
           terserOptions: {
+            // 去除打包的console.log
             compress: {
               warnings: false,
               drop_console: true,
               drop_debugger: true,
               pure_funcs: ['console.log']
+            },
+            // 去除注释
+            format: {
+              comments: false
             }
           }
         })
       ]
-    }
-  },
+    },
+    plugins: isPRD ? [
+      // 使用Gzip压缩文件 - https://segmentfault.com/a/1190000012571492   https://www.jianshu.com/p/fcfa1945db23
+      // 官方文档 - https://webpack.docschina.org/plugins/compression-webpack-plugin/
+      // 报错："TypeError: Cannot read property 'tapPromise' of undefined"是compression-webpack-plugin版本问题5.0.1
+      new CompressionPlugin({
+        // 目标资产文件名
+        filename: '[path].gz[query]',
+        // 压缩算法/函数（默认gzip）
+        algorithm: 'gzip',
+        // 匹配需要压缩的文件
+        test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+        // 仅处理大于此大小的资产。以字节为单位。（10k以上压缩）
+        threshold: 10240,
+        // 仅处理压缩率高于此比率的资产 ( minRatio = Compressed Size / Original Size)。示例：您的image.png文件大小为 1024b，文件的压缩版本大小为 768b，因此minRatio等于0.75. 换句话说，资产将在Compressed Size / Original Size价值减去minRatio价值时进行处理
+        minRatio: 0.8
+      })
+    ] : [],
+    // 生产环境注入CDN
+    externals: isPRD && cdnConfig.useCDN ? cdnConfig.externals : {}
+  }),
   // 配置eslint - 安装@vue/cli-plugin-eslint之后生效。
   lintOnSave: !isPRD,
   devServer: {
@@ -75,7 +114,7 @@ module.exports = {
     port: 8080,
     https: false,
     hotOnly: false,
-    // eslint作为编译错误在浏览器上显示
+    // 当出现编译错误或警告时，在浏览器上显示(eslint语法错误也会显示)
     overlay: {
       warnings: true,
       errors: true

@@ -23,6 +23,18 @@
     <link rel="icon" sizes="any" mask="" href="<%= BASE_URL %>favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="<%= BASE_URL %>favicon.ico" type="image/x-icon">
     <link rel="bookmark" href="<%= BASE_URL %>favicon.ico" type="image/x-icon">
+
+    <!-- 使用 CDN 的 CSS 文件 start -->
+    <% for (var i in htmlWebpackPlugin.options.CDN && htmlWebpackPlugin.options.CDN.css) { %>
+      <link href="<%= htmlWebpackPlugin.options.CDN.css[i] %>" rel="stylesheet">
+    <% } %>
+    <!-- 使用 CDN 的 CSS 文件 end -->
+
+    <!-- 使用 CDN 的 JS 文件 -->
+    <% for (var i in htmlWebpackPlugin.options.CDN && htmlWebpackPlugin.options.CDN.js) { %>
+      <script src="<%= htmlWebpackPlugin.options.CDN.js[i] %>"></script>
+    <% } %>
+    <!-- 使用 CDN 的 JS 文件 end -->
   </head>
   <body>
     <noscript>

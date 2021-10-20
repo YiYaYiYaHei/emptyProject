@@ -2,14 +2,18 @@
   "name": "vue-cli4-empty",
   "version": "1.0.0",
   "private": true,
+  "//命令文档参照": "https://cli.vuejs.org/zh/guide/cli-service.html#vue-cli-service-build",
   "scripts": {
     "start": "vue-cli-service serve --open",
     "restart": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "//": "在/dist/report.html中查看webpack打包报告",
+    "report": "vue-cli-service build --report",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "compression-webpack-plugin": "^5.0.1",
     "core-js": "^3.6.5",
     "echarts": "^5.1.2",
     "element-ui": "^2.15.3",
@@ -38,6 +42,7 @@
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
     "prettier": "^2.2.1",
+    "speed-measure-webpack-plugin": "^1.5.0",
     "style-resources-loader": "^1.4.1",
     "vue-cli-plugin-style-resources-loader": "~0.1.5",
     "vue-template-compiler": "^2.6.11"

@@ -4,7 +4,8 @@ import '@a/styles/index.less';
 
 // 引入element-ui组件库
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+// 情况1：由于我们对element.ui进行了样式重置，所以这里不需要引入了。情况2：第三方库cdn加载：index.html已经引入了element.ui的css，所以这里不需要重复引入。
+// import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
 // 项目入口文件
