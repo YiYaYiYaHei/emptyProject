@@ -2,9 +2,9 @@
  * 输入框失焦时，去除字符串首尾空格
  * 需求：输入框 - 由于首尾空格，导致查询结果不对
  * v-model.trim也可以过滤掉首尾空格，但是对于“input str”中间的空格需要先输入"inputstr"，然后手动移到中间位置去插入空格
- *思路：
- *  1、获取到所有的input标签并绑定change事件
- *@example：<el-input v-model="searchCondition.keyword" placeholder="模糊搜索" v-trim>
+ * 思路：
+ *   1、获取到所有的input标签并绑定change事件
+ * @example：<el-input v-model="searchCondition.keyword" placeholder="模糊搜索" v-trim>
  */
 
 export default {

@@ -7,6 +7,7 @@ const path = require('path'),
   title = process.env.VUE_APP_SYSTEM_NAME;
 
 // webpack启用gzip压缩
+const isGizp = false;
 const CompressionPlugin = require('compression-webpack-plugin');
 const productionGzipExtensions = ['js', 'css'];
 
@@ -80,14 +81,14 @@ module.exports = {
               pure_funcs: ['console.log']
             },
             // 去除注释
-            format: {
+            output: {
               comments: false
             }
           }
         })
       ]
     },
-    plugins: isPRD ? [
+    plugins: isPRD && isGizp? [
       // 使用Gzip压缩文件 - https://segmentfault.com/a/1190000012571492   https://www.jianshu.com/p/fcfa1945db23
       // 官方文档 - https://webpack.docschina.org/plugins/compression-webpack-plugin/
       // 报错："TypeError: Cannot read property 'tapPromise' of undefined"是compression-webpack-plugin版本问题5.0.1
@@ -113,6 +114,7 @@ module.exports = {
     host: '0.0.0.0',
     port: 8080,
     https: false,
+    // 是否开启热更新 热更新：在应用程序运行时交换、添加或删除模块，无需完全重新加载，即新代码生效，网页不刷新，状态不丢失；若为false表示自动刷新，即每次修改网页都会刷新状态也会丢失
     hotOnly: false,
     // 当出现编译错误或警告时，在浏览器上显示(eslint语法错误也会显示)
     overlay: {

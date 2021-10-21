@@ -1,6 +1,6 @@
 module.exports = {
   // 是否使用cdn
-  useCDN: true,
+  useCDN: false,
   // key是'包名', value是静态资源引入后全局的名称 import Vue from 'vue'
   externals: {
     'vue': 'Vue',

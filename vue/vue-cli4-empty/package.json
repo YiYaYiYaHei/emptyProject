@@ -9,7 +9,9 @@
     "build": "vue-cli-service build",
     "//": "在/dist/report.html中查看webpack打包报告",
     "report": "vue-cli-service build --report",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "//": "查看webpack配置(inspect.js)",
+    "inspect": "vue-cli-service inspect > inspect.js"
   },
   "dependencies": {
     "axios": "^0.21.1",

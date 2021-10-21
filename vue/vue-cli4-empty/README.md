@@ -101,9 +101,11 @@
  `npm run build`
 4. webpack打包体积分析
   `npm run report`
-5. 打包文件名修改:
+5. 查看webpack配置
+  `npm run inspect`
+6. 打包文件名修改:
   `修改vue.config.js中的outputDir参数`
-6. 项目标题修改：
+7. 项目标题修改：
    `修改.env的VUE_APP_SYSTEM_NAME参数`
 
 # nginx配置
