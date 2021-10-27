@@ -12,7 +12,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const productionGzipExtensions = ['js', 'css'];
 
 // webpack打包速度分析插件
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const smp = new SpeedMeasurePlugin();
 
 // cdn相关配置
@@ -44,7 +44,7 @@ module.exports = {
       // 修改打包后的css文件名
       filename: `css/[name].${+new Date()}.css`,
       chunkFilename: `css/[name].${+new Date()}.css`
-    },
+    }
   },
   configureWebpack: smp.wrap({
     mode: isPRD ? 'production' : 'development',
@@ -88,7 +88,7 @@ module.exports = {
         })
       ]
     },
-    plugins: isPRD && isGizp? [
+    plugins: isPRD && isGizp ? [
       // 使用Gzip压缩文件 - https://segmentfault.com/a/1190000012571492   https://www.jianshu.com/p/fcfa1945db23
       // 官方文档 - https://webpack.docschina.org/plugins/compression-webpack-plugin/
       // 报错："TypeError: Cannot read property 'tapPromise' of undefined"是compression-webpack-plugin版本问题5.0.1

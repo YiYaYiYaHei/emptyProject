@@ -12,6 +12,7 @@ import mixins from '@m';
 import {PIE, LINE, BAR, MAP, MAP1, MAP2, MAP_P, MAP_PL} from '@a/js/echartOptions.js';
 import '@a/js/map/js/china.js';
 import {areaCoordMap} from '@a/js/map/longAndLat.js';
+
 export default {
   name: 'Home',
   mixins: [mixins.echarts],
