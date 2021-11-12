@@ -591,6 +591,24 @@ const dataIsEmpty = (data) => {
   return !data;
 };
 
+/**
+ * 简单过滤字符串输入输出，将部分字符转换为字符实体，避免XSS攻击（URL请用 encodeURI() encodeURIComponent()来处理）
+ * @param {string} str - 需要过滤的字符串
+ * @return {string}
+ */
+const filterStr = (str) => {
+  const signs = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;'
+  };
+  const reg = /[&<>"'/]/g;
+  return (str && reg.test(str)) ? str.replace(reg, chr => signs[chr]) : str;
+};
+
 export {
   getModules,
   jumpRoute
@@ -622,5 +640,6 @@ export default {
   isUri,
   isChinese,
   isEnglish,
-  dataIsEmpty
+  dataIsEmpty,
+  filterStr
 };
