@@ -1,6 +1,6 @@
 # vue-cli4-empty
 - 本项目旨在快速开发后台管理系统，提供此类项目前端架构和部分常用功能组件的使用。
-- 项目主要基于：vue2、elementui、axios、less、vuex、vue-router开发
+- 项目主要基于：vue2、elementui、axios、less、vuex、vue-router开发。
 
 ## 1、项目主要功能
 - eslint配置（为了多人开发时统一规范，减少冗余代码：冗余代码过多，会导致打包后文件变大，影响首页白屏时间）；

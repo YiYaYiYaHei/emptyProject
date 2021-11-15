@@ -1,0 +1,17 @@
+{
+  "name": "expressservice",
+  "version": "1.0.0",
+  "description": "empty express develop environment",
+  "main": "app.js",
+  "scripts": {
+    "supervisor": "supervisor app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "formidable": "^2.0.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {}
+}
