@@ -3,6 +3,7 @@ const app = express();
 const PORT = 13666;
 
 const routes = require('./routes/index.js');
+const webSocket = require('./routes/common/webSocket');
 
 // 将指定目录下的文件对外开放  http://localhost:13666/test.jpg就可以访问到public下的文件了
 app.use(express.static('public'));
@@ -34,8 +35,10 @@ app.all('*', (req, res, next) => {
  * cbList - 回调函数，可以是个数组/函数，使用next就会调用下一个回调；参数req、res、next
 */
 
-app.listen(PORT, () => {
+const httpServe = app.listen(PORT, () => {
   console.log('\033[;32m expressService listening at http://localhost:' + PORT + '\033[0m');
 });
 
 routes(app);
+
+webSocket(httpServe);

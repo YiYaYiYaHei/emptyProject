@@ -23,4 +23,16 @@ module.exports = app => {
     common.sendData(res);
     console.log('================ 普通接口示例 end================');
   });
+
+  app.post('/chart/pie', (req, res) => common.commonDeal(req, res, () => {
+    console.log('================ 记录接口日志示例 start================');
+    return Object.assign({}, common.baseResponse, {data: [
+      {value: 196, name: "电脑数码"},
+      {value: 234, name: "日用百货"},
+      {value: 125, name: "个护清洁"},
+      {value: 316, name: "图书影像"},
+      {value: 63, name: "家具厨具"}
+    ]});
+    console.log('================ 记录接口日志示例 end================');
+  }));
 };

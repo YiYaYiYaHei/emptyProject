@@ -6,7 +6,8 @@
 - 提供 文件上传、下载接口；
 - 提供 大文件下载（包括分片下载）接口；
 - 提供 mysql数据库连接和部分sql语句封装；
-- 提供 日志功能；
+- 提供 记录接口日志功能；
+- 提供 webSocket连接；
 - 热更新（supervisor）；
 
 ## 2、目录结构说明
@@ -24,6 +25,7 @@
         |   |-- bigFileReq.js              // 大文件下载
         |   |-- common.js                  // 公共处理文件（接口返回字段处理等）
         |   |-- fileReq.js                 // 文件上传、下载
+        |   |-- webSocket.js               // webSocket
         |-- db                             // 数据库处理
         |   |-- mysql_db_conf.js           // mysql数据库
         |-- modules                        // 路由功能模块（按功能模块划分命名）
