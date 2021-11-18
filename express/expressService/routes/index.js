@@ -1,5 +1,5 @@
 /*********************************************************************
- * 模块接口引用入口(自动引入modules下的js文件, common下非common.js、webSocket.js文件)
+ * 模块接口引用入口(自动引入modules下的js文件, common下非common.js文件)
  *********************************************************************/
 
 const fs = require('fs');
@@ -7,7 +7,7 @@ const path = require('path');
 
 const Apis = [];
 // __dirname为当前文件所在目录的路径
-const filePathList = [{path: path.join(__dirname, 'modules'), reg: '\.js$'}, {path: path.join(__dirname, 'common'), reg: /^.+(?<!common|webSocket)\.js$/}];
+const filePathList = [{path: path.join(__dirname, 'modules'), reg: '\.js$'}, {path: path.join(__dirname, 'common'), reg: /^.+(?<!common)\.js$/}];
 
 for(const item of filePathList) {
   const filePath = item.path;

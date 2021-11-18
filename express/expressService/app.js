@@ -3,7 +3,8 @@ const app = express();
 const PORT = 13666;
 
 const routes = require('./routes/index.js');
-const webSocket = require('./routes/common/webSocket');
+const webSocket = require('./routes/polling/webSocket');
+const sse = require('./routes/polling/sse');
 
 // 将指定目录下的文件对外开放  http://localhost:13666/test.jpg就可以访问到public下的文件了
 app.use(express.static('public'));
@@ -42,3 +43,4 @@ const httpServe = app.listen(PORT, () => {
 routes(app);
 
 webSocket(httpServe);
+sse(httpServe);

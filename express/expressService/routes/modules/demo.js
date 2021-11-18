@@ -18,7 +18,7 @@ module.exports = app => {
   });
 
   // 接口/delete/30   获取id: req.params.id
-  app.delete('/delete/:id', async (req, res) => {
+  app.delete('/delete/:id', (req, res) => {
     console.log('================ 普通接口示例 start================');
     common.sendData(res);
     console.log('================ 普通接口示例 end================');
@@ -35,4 +35,20 @@ module.exports = app => {
     ]});
     console.log('================ 记录接口日志示例 end================');
   }));
+
+  app.get('/polling', (req, res) => {
+    console.log('================ 模拟短轮询 start================');
+    const time = Math.floor(Math.random() * 10000);
+    // 死循环：实现符合条件时才返回
+    while(true) {
+      const random = Math.floor(Math.random() * 50);
+      if (random > 10 && random < 25) {
+        setTimeout(() => {
+          common.sendData(res, {data: random});
+        }, time)
+        break;
+      }
+    };
+    console.log('================ 模拟短轮询 end================');
+  });
 };
