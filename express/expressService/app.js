@@ -2,13 +2,28 @@ const express = require("express");
 const app = express();
 const PORT = 13666;
 
+// 配置http/https
+const isHttps = false;
+const https = require('https');
+const path = require('path');
+const fs = require('fs');
+
+// 引入路由
 const routes = require('./routes/index.js');
 const webSocket = require('./routes/polling/webSocket');
 const sse = require('./routes/polling/sse');
 
+
+// 服务端开启gzip支持
+var compression = require('compression');
+//尽量在其他中间件前使用compression
+app.use(compression());
+
 // 将指定目录下的文件对外开放  http://localhost:13666/test.jpg就可以访问到public下的文件了
 app.use(express.static('public'));
 
+// 对于get请求参数可以直接通过req.query获取，post请求需要转码再使用req.body获取
+app.use(express.urlencoded());
 
 // app.all() 用于在所有HTTP 请求方法的路径上加载中间件函数, 所有的路由都会走这
 app.all('*', (req, res, next) => {
@@ -35,10 +50,23 @@ app.all('*', (req, res, next) => {
  * method - 方法：get、post、put、delete
  * cbList - 回调函数，可以是个数组/函数，使用next就会调用下一个回调；参数req、res、next
 */
-
-const httpServe = app.listen(PORT, () => {
-  console.log('\033[;32m expressService listening at http://localhost:' + PORT + '\033[0m');
-});
+let httpServe = null;
+if (isHttps) {
+  var privateCrt = fs.readFileSync(path.join(process.cwd(), 'cert/server.pem'), 'utf8');
+  var privateKey = fs.readFileSync(path.join(process.cwd(), 'cert/server.key'), 'utf8');
+  const HTTPS_OPTOIN = {
+    key: privateKey,
+    cert: privateCrt
+  };
+  httpServe = https.createServer(HTTPS_OPTOIN, app);
+  httpServe.listen(PORT, () => {
+    console.log('\033[;32m expressService listening at ' + (isHttps ? 'https' : 'http') + '://localhost:' + PORT + '\033[0m');
+  });
+} else {
+  httpServe = app.listen(PORT, () => {
+    console.log('\033[;32m expressService listening at http://localhost:' + PORT + '\033[0m');
+  });
+};
 
 routes(app);
 
