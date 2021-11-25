@@ -12,6 +12,7 @@ const fs = require('fs');
 const routes = require('./routes/index.js');
 const webSocket = require('./routes/polling/webSocket');
 const sse = require('./routes/polling/sse');
+require('./routes/polling/novnc');
 
 
 // 服务端开启gzip支持
