@@ -7,15 +7,6 @@
  * @example：<el-input v-model="searchCondition.keyword" placeholder="模糊搜索" v-trim>
  */
 
-export default {
-  // 当传进来的值更新的时候触发
-  componentUpdated(el) {
-    bindChangeEvt(el, 'bind');
-  },
-  unbind(el) {
-    bindChangeEvt(el, 'unBind');
-  }
-};
 // 给'input', 'textarea'标签绑定change事件 -- 失焦时，去除首尾空格
 function bindChangeEvt(el, type) {
   const tagsList = ['input', 'textarea'];
@@ -36,3 +27,12 @@ function changeEvt(event) {
   // 调用input事件使vue v-model绑定更新
   dom.dispatchEvent(new Event('input'));
 }
+export default {
+  // 当传进来的值更新的时候触发
+  componentUpdated(el) {
+    bindChangeEvt(el, 'bind');
+  },
+  unbind(el) {
+    bindChangeEvt(el, 'unBind');
+  }
+};

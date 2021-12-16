@@ -11,7 +11,7 @@ const numberWithCommas = val => Tools.numberWithCommas(val);
 
 // 转换空字符串
 const transformNull = (value, defaultString = '-') => {
-  return value === 0 || !Tools.dataIsEmpty(value) ? value : defaultString;
+  return value === 0 || !Tools.dataIsEmpty(value) ? Tools.escapeStr(value) : defaultString;
 };
 
 // 成功/失败/告警状态

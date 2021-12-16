@@ -56,7 +56,7 @@ module.exports = app => {
     for(let i = 0; i < length; i++) {
       rows.push({
         lastOrderTime: +new Date(),
-        userName: i % 5 === 1 ? '张三' : i % 5 === 2 ? '李四' : i % 5 === 3 ? '隔壁王五' : i % 5 === 4 ? '老李头' : '小王头',
+        userName: i % 5 === 1 ? '张三' : i % 5 === 2 ? '李四' : i % 5 === 3 ? '隔壁王五' : i % 5 === 4 ? '老李头' : '<script></script>小王头',
         orderTotal: parseInt(Math.random() * 100000),
         orderUnfinished: parseInt(Math.random() * 10000),
         orderFinished: parseInt(Math.random() * 1000),
