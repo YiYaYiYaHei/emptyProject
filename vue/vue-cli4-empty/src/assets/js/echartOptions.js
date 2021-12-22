@@ -325,7 +325,7 @@ const baseMapEffectScatter = {
     verticalAlign: 'middle',
     align: 'center'
   },
-  // 修改气泡标记的图形，本地图片以"image://"开头 -- `image://${require('@a/images/common/domain.png')}`
+  // 修改气泡标记的图形，本地图片以"image://"开头 -- `image://${require('@a/images/other/domain.png')}`
   symbol: 'arrow',
   symbolSize: 12,
   // 设置气泡样式
@@ -425,7 +425,7 @@ const MAP_PL = {
   series: [
     // 起点
     Object.assign({}, baseMapEffectScatter, {
-      // 修改气泡标记的图形，本地图片以"image://"开头 -- `image://${require('@a/images/common/domain.png')}`
+      // 修改气泡标记的图形，本地图片以"image://"开头 -- `image://${require('@a/images/other/domain.png')}`
       symbol: 'circle',
       tooltip: {
         formatter: (params) => `起点：${params.name}`
@@ -438,8 +438,8 @@ const MAP_PL = {
     }),
     // 终点
     Object.assign({}, baseMapEffectScatter, {
-      // 修改气泡标记的图形，本地图片以"image://"开头 -- `image://${require('@a/images/common/domain.png')}`
-      symbol: `image://${require('@a/images/common/domain.png')}`,
+      // 修改气泡标记的图形，本地图片以"image://"开头 -- `image://${require('@a/images/other/domain.png')}`
+      symbol: `image://${require('@a/images/other/domain.png')}`,
       tooltip: {
         formatter: (params) => `终点：${params.name}`
       }
@@ -453,7 +453,7 @@ const MAP_PL = {
       // 是否为多端点的连线 -- 若连接多个端点，data里的coords设置多个经纬度即可
       polyline: false,
       // 线两端的标记类型
-      symbol: ['circle', `image://${require('@a/images/common/domain.png')}`],
+      symbol: ['circle', `image://${require('@a/images/other/domain.png')}`],
       // 连接线样式
       lineStyle: {
         color: '#00ffff',
@@ -506,6 +506,90 @@ const MAP_PL = {
   ]
 };
 
+const pieSeries = {
+  name: 'Access From',
+  type: 'pie',
+  radius: ['40%', '70%'],
+  // 逆时针排布
+  clockwise: false,
+  label: {show: false},
+  emphasis: {scale: false},
+  labelLine: {show: false},
+  data: [
+    {name: 'Access From', value: 80, itemStyle: {color: '#d96b21'}},
+    {name: '', value: 20, itemStyle: {color: '#262e54'}}
+  ]
+};
+
+// 五环图
+const PIE_POLY = {
+  tooltip: {show: true},
+  legend: {
+    top: '5%',
+    left: '50%',
+    width: 150,
+    padding: [10, 20, 10, 14],
+    textStyle: {
+      color: '#fff'
+    },
+    backgroundColor: '#262e54',
+    borderRadius: 10,
+    // 图例关闭时的颜色
+    inactiveColor: '#ccc'
+  },
+  series: [
+    /**
+     * 一个环一个series，所以每个环的数据只有2个
+     * https://blog.51cto.com/u_11871779/2385888
+     * 由于个别环颜色设置不成功，所以需要在series中使用color，示例 data: [{name, value: obj.value, itemStyle: {color: '#d96b21'}}]
+    */
+    Object.assign({}, pieSeries, {name: '电脑数码', radius: ['55%', '60%'], data: [], color: ['#8841c5', '#262e54']}),
+    Object.assign({}, pieSeries, {name: '日用百货', radius: ['45%', '50%'], data: [], color: ['#be9ddb', '#262e54']}),
+    Object.assign({}, pieSeries, {name: '个护清洁', radius: ['35%', '40%'], data: [], color: ['#12a2e1', '#262e54']}),
+    Object.assign({}, pieSeries, {name: '图书影像', radius: ['25%', '30%'], data: [], color: ['#6ae4f8', '#262e54']}),
+    Object.assign({}, pieSeries, {name: '家具厨具', radius: ['10%', '15%'], data: [], color: ['#d96b21', '#262e54']})
+  ]
+};
+
+// 南丁格尔玫瑰图(带有背景图)
+const PIE_BG = {
+  tooltip: {show: true},
+  legend: {show: false},
+  /**
+   * 设置背景图 - 三种写法：
+   * 1、div+定位；
+   * 2、backgroundColor: {image: require('@a/images/other/pie.png'), repeat: 'no-repeat'}设置backgroundColor无法对背景图进行定位
+   * 3、graphic
+  */
+  graphic: {
+    type: 'image',
+    left: 'center',
+    top: '21%',
+    style: {
+      image: require('@a/images/other/pie.png'),
+      width: 230
+    }
+  },
+  series: [
+    // 最里层的空心圆
+    Object.assign({}, pieSeries, {name: '', radius: ['5%', '10%'], data: [{name: '', value: 100}], color: ['#262e54']}),
+    // 南丁格尔玫瑰图配置项
+    {
+      name: '南丁格尔玫瑰图',
+      type: 'pie',
+      roseType: 'area',
+      radius: ['17%', '40%'],
+      // 设置牵引线的文字
+      label: {
+        show: true,
+        color: '#fff'
+      },
+      // 设置每块的样式
+      itemStyle: {borderRadius: 2},
+      data: [{value: 40, name: 'rose 1'}]
+    }
+  ]
+};
 export {
   PIE,
   LINE,
@@ -514,5 +598,7 @@ export {
   MAP1,
   MAP2,
   MAP_P,
-  MAP_PL
+  MAP_PL,
+  PIE_POLY,
+  PIE_BG
 };

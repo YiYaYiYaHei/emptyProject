@@ -9,7 +9,7 @@
 
 <script>
 import mixins from '@m';
-import {PIE, LINE, BAR, MAP, MAP1, MAP2, MAP_P, MAP_PL} from '@a/js/echartOptions.js';
+import {PIE, LINE, BAR, MAP, MAP1, MAP2, MAP_P, MAP_PL, PIE_POLY, PIE_BG} from '@a/js/echartOptions.js';
 import '@a/js/map/js/china.js';
 import {areaCoordMap} from '@a/js/map/longAndLat.js';
 
@@ -20,8 +20,10 @@ export default {
     return {
       chartList: [
         {id: 'pie', chart: null, isLoading: false, requestApi: this.$apis.home.getPieChartData, params: null, option: JSON.parse(JSON.stringify(PIE)), successCb: this.drawPie, cls: 'pd10'},
-        {id: 'line', chart: null, isLoading: false, requestApi: this.$apis.home.getLineChartData, params: null, option: JSON.parse(JSON.stringify(LINE)), successCb: this.drawLine, cls: 'pd10'},
-        {id: 'bar', chart: null, isLoading: false, requestApi: this.$apis.home.getPieBarData, params: null, option: JSON.parse(JSON.stringify(BAR)), successCb: this.drawBar, cls: 'pd10'},
+        {id: 'pie1', chart: null, isLoading: false, requestApi: this.$apis.home.getPieChartData, params: null, option: JSON.parse(JSON.stringify(PIE_POLY)), successCb: this.drawPiePoly, cls: 'pd10'},
+        {id: 'pie2', chart: null, isLoading: false, requestApi: this.$apis.home.getPieChartData, params: null, option: JSON.parse(JSON.stringify(PIE_BG)), successCb: this.drawPieBg, cls: 'pd10'},
+        {id: 'line', chart: null, isLoading: false, requestApi: this.$apis.home.getLineChartData, params: null, option: JSON.parse(JSON.stringify(LINE)), successCb: this.drawLine, cls: 'pd10', pCls: 'w5'},
+        {id: 'bar', chart: null, isLoading: false, requestApi: this.$apis.home.getPieBarData, params: null, option: JSON.parse(JSON.stringify(BAR)), successCb: this.drawBar, cls: 'pd10', pCls: 'w5'},
         {id: 'map', chart: null, isLoading: false, requestApi: this.$apis.home.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
         {id: 'map1', chart: null, isLoading: false, requestApi: this.$apis.home.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP1)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
         {id: 'map2', chart: null, isLoading: false, requestApi: this.$apis.home.getMapData, params: null, option: JSON.parse(JSON.stringify(MAP2)), successCb: this.drawMap, cls: 'pd10', pCls: 'w5'},
@@ -35,6 +37,41 @@ export default {
     drawPie(item, data) {
       item.option.tooltip.formatter = (params) => (`<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}（${params.percent}%）`);
       item.option.series[0].data = data;
+    },
+    // 绘制五环图
+    drawPiePoly(item, data) {
+      const colorList = {
+        电脑数码: '#8841c5',
+        日用百货: '#be9ddb',
+        个护清洁: '#12a2e1',
+        图书影像: '#6ae4f8',
+        家具厨具: '#d96b21',
+        其他: '#262e54'
+      };
+      item.option.tooltip.formatter = (params) => {
+        const nameList = params.seriesName.split(' ');
+        return `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:${colorList[nameList[0]]}"></span>${params.seriesName}`;
+      };
+      const total = data.reduce((init, current) => init + current.value, 0);
+      item.option.series.map(it => {
+        const seriesData = [];
+        const obj = data.find(item => item.name === it.name) || {value: 0};
+        // 图例，也可以使用div然后定位过去。由于图例项的名称，应等于某系列的name值（如果是饼图，也可以是饼图单个数据的 name），所以这里直接将name处理“电脑数码 164（13%）”这种格式
+        const name = `${it.name} ${obj.value}（${total ? ((obj.value / total) * 100).toFixed(2) : 0}%）`;
+
+        // itemStyle是因为直接在series中写color会导致部分环颜色不对  https://blog.51cto.com/u_11871779/2385888
+        seriesData.push({name, value: obj.value, itemStyle: {color: colorList[it.name]}});
+        seriesData.push({name: '', value: total - obj.value, itemStyle: {color: colorList['其他']}});
+
+        it.name = name;
+        it.data = seriesData;
+      });
+    },
+    // 绘制带有背景图的南丁格尔玫瑰图
+    drawPieBg(item, data) {
+      item.option.tooltip.formatter = (params) => (params.name ? `<p>${params.seriesName}</p>${params.marker}${params.name}：${params.value}（${params.percent}%）` : '');
+      item.option.series[1].data = data;
+      console.log(item, data);
     },
     // 绘制折线图
     drawLine(item, data) {
