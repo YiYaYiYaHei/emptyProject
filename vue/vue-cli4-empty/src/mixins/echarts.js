@@ -61,9 +61,9 @@ export default {
           config.chart = this.initChart(config.id);
         }
         typeof config.successCb === 'function' ? config.successCb(config, res.data) : config.option.series[0].data = res.data;
-        config.chart.setOption(config.option);
+        config.chart && config.chart.setOption(config.option);
         // chart绑定resize事件
-        !config.isEmpty && this.bindChartResizeEvt(config.chart.resize);
+        config.chart && !config.isEmpty && this.bindChartResizeEvt(config.chart.resize);
       } else {
         this.$message.error(res.message);
         config.isEmpty = true;
