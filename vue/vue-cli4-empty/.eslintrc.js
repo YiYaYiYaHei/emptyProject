@@ -47,7 +47,7 @@ module.exports = {
     // production环境 禁止 debugger 语句
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     // 要求在语句末尾使用分号
-    semi: [2, 'always'],
+    'semi': [2, 'always'],
     // 禁用不必要的分号
     'no-extra-semi': 2,
     // 不强制在 function的左括号之前使用一致的空格
