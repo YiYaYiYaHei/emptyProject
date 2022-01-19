@@ -60,7 +60,6 @@ export default {
     // 树联动处理(activeTreeItem改变时，需要定位到树上的某一项)
     async changeFile(val) {
       this.activeItem = val;
-      console.log(val);
       // 清空选中状态
       this.resetCheckedStatus();
       this.maxWidth = this.isSingleExpand ? 0 : this.maxWidth;
@@ -82,7 +81,7 @@ export default {
           // 右侧查询所有文件时，点击滚动到对应位置
           const dom = document.querySelector('.base-recurse-tree-container');
           dom.scrollTop = this.$refs[data.path].getBoundingClientRect().y > this.boxHeight ? this.$refs[data.path].getBoundingClientRect().y : dom.scrollTop;
-          // 防止多次点击同一个不高亮
+          // 防止多次点击同一个时不高亮
           this.$refs[`title_${data.path}`].setAttribute('class', this.setItemTitleCls(data));
         }
       });
@@ -327,7 +326,6 @@ export default {
      * 【业务代码】已删除样式：delete
     */
     setItemTitleCls(item) {
-      if (item.fileId === this.activeItem) console.log(item, `tree-item-title${item.isChecked ? ' active' : ''}${item.isClick || !item.hasChildren ? ' pointer' : ''}${item.isVirus ? ' virus' : ''}${item.isDelete ? ' delete' : ''}`);
       return `tree-item-title${item.isChecked ? ' active' : ''}${item.isClick || !item.hasChildren ? ' pointer' : ''}${item.isVirus ? ' virus' : ''}${item.isDelete ? ' delete' : ''}`;
     },
     // 重置数据 - 选中状态时，需清空其他项的选中状态
