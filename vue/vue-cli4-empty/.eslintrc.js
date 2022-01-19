@@ -65,7 +65,7 @@ module.exports = {
     // 禁止连续赋值，类似const a = b = 1;
     'no-multi-assign': 2,
     // 禁用行尾空白
-    'no-trailing-spaces': [2, {skipBlankLines: false}],
+    'no-trailing-spaces': [2, {'skipBlankLines': false}],
     // 不允许花括号中有空格，类似[ 1 ]
     'standard/array-bracket-even-spacing': [2, 'never'],
     // 不允许花括号中有空格，类似{ a:1 }
@@ -73,6 +73,8 @@ module.exports = {
     // 允许出现多个空格
     'no-multi-spaces': [0, {'ignoreEOLComments': true}],
     // 允许 const a = [], b = []
-    'one-var': [0, 'always']
+    'one-var': [0, 'always'],
+    // 关闭 强制使用一致的缩进
+    'indent': 0
   }
 };

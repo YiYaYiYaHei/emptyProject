@@ -164,5 +164,48 @@ module.exports = app => {
     };
     return {data: {rows, total: length}};
   }));
-
+  // 递归树接口
+  app.get('/tree/list', (req, res) => common.commonDeal(req, res, () => {
+    const treeList = [
+      {fileName: '/', fileId: '/', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
+        {fileName: 'usr', fileId: '/usr', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
+          {fileName: 'local', fileId: '/usr/local', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
+            {fileName: 'applicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.conf', fileId: '/usr/local/applicaiton.conf', codeLevel: 0, isDelete: 0, isFile: true, isVirus: 0},
+            {fileName: 'ffas-web.jar', fileId: '/usr/local/ffas-web.jar', codeLevel: 1, isDelete: 0, isFile: true, isVirus: 0}
+          ]}
+        ]},
+        {fileName: 'root', fileId: '/root', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
+          {fileName: 'winhex.sh', fileId: '/root/winhex.sh', codeLevel: 3, isDelete: 0, isFile: true, isVirus: 1, children: []}
+        ]},
+        {fileName: 'opt', fileId: '/opt', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
+          {fileName: 'index.html', fileId: '/opt/index.html', codeLevel: 2, isDelete: 0, isFile: true, isVirus: 0, children: []}
+        ]},
+        {fileName: 'etc', fileId: '/etc', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
+          {fileName: 'centos', fileId: '/etc/centos', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0},
+          {fileName: 'centos7.row', fileId: '/etc/centos7.row', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
+            {fileName: 'centos7.row1', fileId: '/etc/centos7.row1', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
+              {fileName: 'centos7.row2', fileId: '/etc/centos7.row2', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
+                {fileName: 'centos7.row3', fileId: '/etc/centos7.row3', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
+                  {fileName: 'centos7.row4', fileId: '/etc/centos7.row4', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
+                    {fileName: 'centos7.row5', fileId: '/etc/centos7.row5', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
+                      {fileName: 'centos7.row6', fileId: '/etc/centos7.row6', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
+                        {fileName: 'centos7.row7', fileId: '/etc/centos7.row7', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
+                          {fileName: 'centos7.row8', fileId: '/etc/centos7.row8', codeLevel: 0, isDelete: 1, isFile: true, isVirus: 0, children: []}
+                        ]}
+                      ]}
+                    ]}
+                  ]}
+                ]},
+                {fileName: 'centos7.row22', fileId: '/etc/centos7.row22', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0}
+              ]}
+            ]}
+          ]}
+        ]}
+      ]},
+      {fileName: '111.doc', fileId: '/111.doc', codeLevel: 0, isDelete: 0, isFile: true, isVirus: 1, children: []},
+      {fileName: 'ma.sh', fileId: '/ma.sh', codeLevel: 0, isDelete: 0, isFile: true, isVirus: 1, children: []},
+      {fileName: 'et', fileId: 'et', codeLevel: 0, isDelete: 0, isFile: true, isVirus: 1, children: []}
+    ];
+    return {data: treeList};
+  }));
 };

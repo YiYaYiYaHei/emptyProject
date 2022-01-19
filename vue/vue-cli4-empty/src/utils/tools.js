@@ -609,6 +609,19 @@ const filterStr = (str) => {
   return (str && reg.test(str)) ? str.replace(reg, chr => signs[chr]) : str;
 };
 
+/**
+ * 计算字符串的px宽度
+ * @param {string} str - 字符串
+ * @return {Number}
+ * @example this.$tools.strPxWidth('hello world');
+*/
+const strPxWidth = (str) => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  context.font = 'normal 14px Microsoft YaHei';
+  return context.measureText(str).width;
+};
+
 export {
   getModules,
   jumpRoute
@@ -641,5 +654,6 @@ export default {
   isChinese,
   isEnglish,
   dataIsEmpty,
-  filterStr
+  filterStr,
+  strPxWidth
 };

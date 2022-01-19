@@ -34,4 +34,11 @@ Dict.updateAnalysisModel = async function() {
   }
 };
 
+// 码址等级
+Dict.codeLevel = [
+  {label: '黑名单', value: 3},
+  {label: '白名单', value: 2},
+  {label: '灰名单', value: 1}
+];
+
 export default Dict;

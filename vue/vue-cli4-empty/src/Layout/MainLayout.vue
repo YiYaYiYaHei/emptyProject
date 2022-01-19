@@ -158,7 +158,7 @@ export default {
   .wfull();
   .h(calc(~"100% - "@menuTopHeight));
   background: @bg-base;
-  overflow: auto;
+  overflow: hidden;
   &.left {
     .w(calc(~"100% - "@menuLeftWidth));
     .fl();

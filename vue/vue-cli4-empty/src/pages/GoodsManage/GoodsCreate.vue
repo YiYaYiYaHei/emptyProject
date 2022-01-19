@@ -5,10 +5,7 @@
       <div class="mgl20">
         <span class="mgr10">用户类型</span>
         <el-select v-model="searchCondition.userType" size="small" placeholder="全部" clearable multiple collapse-tags :title="searchCondition.userType.join()" @change="refreshTableData">
-          <el-option v-for="item in ['普通用户', '管理员']"
-                    :key="item"
-                    :label="item"
-                    :value="item"></el-option>
+          <el-option v-for="item in ['普通用户', '管理员']" :key="item" :label="item" :value="item"></el-option>
         </el-select>
       </div>
       <el-input v-model="searchCondition.keyword"

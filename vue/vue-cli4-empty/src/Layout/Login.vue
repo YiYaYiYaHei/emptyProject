@@ -93,7 +93,7 @@ export default {
         localStorage.setItem('userName', this.loginData.username);
         // {role: '普通用户', userName: 'user', userId: 1, token: ''}
         this.$store.dispatch('setUserInfo', result.data);
-        // 用户登录后记录登录时间（用于前端主动刷新otken）
+        // 用户登录后记录登录时间（用于前端主动刷新token）
         this.$store.dispatch('setUserLoginTime');
         // 根据用户角色跳转页面
         this.$router.push(jumpRoute(result.data.role));

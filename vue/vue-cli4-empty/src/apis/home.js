@@ -8,5 +8,7 @@ export default {
   getPieChartData: params => ajax.post('/chart/pie', params),
   getLineChartData: params => ajax.post('/chart/line', params),
   getPieBarData: params => ajax.post('/chart/bar', params),
-  getMapData: params => ajax.post('/chart/map', params)
+  getMapData: params => ajax.post('/chart/map', params),
+
+  treeList: () => ajax.get('/tree/list')
 };

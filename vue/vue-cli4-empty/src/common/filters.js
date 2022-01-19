@@ -1,4 +1,5 @@
 import Tools from '@/utils/tools';
+import Dict from '@/utils/dict';
 
 // 日期格式化
 const formatDate = (val, type = 'YYYY-MM-DD hh:mm:ss') => val ? Tools.formatDate(type, val) : '-';
@@ -28,6 +29,12 @@ const transformArrToStr = (val, sep = ',', emptyVal = '-') => Tools.arrayToStrin
 // 字符串转数组
 const transformStrToArr = (val, sep = ',', emptyVal = '-') => Tools.stringToArray(val, sep, emptyVal);
 
+// 码址等级
+const transCodeLevel = (value, isHtml = true) => {
+  const label = (Dict.codeLevel.find(item => item.value === value) || {label: '灰名单'}).label.substr(0, 1);
+  return isHtml ? `<span class="code" level="${value}">${label}</span>` : label;
+};
+
 export default {
   formatDate,
   formatByteSize,
@@ -35,5 +42,6 @@ export default {
   transformNull,
   transformStatus,
   transformArrToStr,
-  transformStrToArr
+  transformStrToArr,
+  transCodeLevel
 };

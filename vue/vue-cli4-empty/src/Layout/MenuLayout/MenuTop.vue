@@ -129,9 +129,6 @@ export default {
     menuForkEvt() {
       this.menuIsFork = !this.menuIsFork;
       this.$store.dispatch('setMenuFork', this.menuIsFork);
-      setTimeout(() => {
-        this.$store.dispatch('resetStore', this.menuIsFork);
-      }, 5000);
       this.$emit('menuIsForkEvt', this.menuIsFork);
     },
     // 退出操作
@@ -189,7 +186,8 @@ export default {
 .menu-top-box {
   .w(calc(~"100% - 20px - " @menuLeftWidth));
   .hfull();
-  .pd(0, 20, 0, 20);
+  .pdr20();
+  .pdl20();
   /deep/.el-submenu__icon-arrow {
     right: 10px;
   }

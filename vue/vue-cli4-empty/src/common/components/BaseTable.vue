@@ -127,7 +127,7 @@ export default {
 
 <style lang="less" scoped>
 /deep/.el-pagination {
-  .pd(20, 20, 0, 20);
+  padding: 20px 20px 0 20px;
 }
 .table-columns-config {
   position: absolute;

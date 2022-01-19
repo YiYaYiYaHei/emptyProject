@@ -7,6 +7,7 @@
 // element样式重置
 @import "resetElementUI";
 
+// 空数据
 .box--empty {
   .dblock();
   .full;
@@ -14,5 +15,23 @@
 }
 
 .table-page-layout {
-  .pd(20, 20, 0, 20);
+  padding: 20px 20px 0 20px;
+}
+
+// 码址等级表示
+.code {
+  display: inline-block;
+  width: 28px;
+  background-color: #909399;
+  color: #fbfbfb;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 4px;
+  &[level="3"] {
+    background-color: #ff4040;
+  }
+  &[level="2"] {
+    background-color: #3dbb4d;
+  }
 }
