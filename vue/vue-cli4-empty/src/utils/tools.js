@@ -90,6 +90,7 @@ const transformRequestData = (contentType, requestData) => {
  * @return {string} 格式化后的时间
  */
 const formatDate = (type = 'YYYY-MM-DD hh:mm:ss', val, granularity = 1) => {
+  val = val || Date.now();
   const _val = isNaN(val) ? val : val * 1;
   const date = new Date(_val) === 'Invalid Date' ? Date.now() : new Date(_val);
   const YYYY = date.getFullYear() + '';
