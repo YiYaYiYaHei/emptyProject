@@ -23,12 +23,12 @@ function transStr(data) {
     !value.endsWith("\"") && (value = value + "\"");
   }
   return value;
-}
+};
 
 /**
-* createConnection：数据库连接-容易造成重复连接而报错
-* createPool：数据库连接池，可对数据库连接做统一管理（有连接上限限制,默认100）
-*/
+ * createConnection：数据库连接-容易造成重复连接而报错
+ * createPool：数据库连接池，可对数据库连接做统一管理（有连接上限限制,默认100）
+ */
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
@@ -50,17 +50,21 @@ const connectFunc = () => {
       }
       console.log('数据库连接成功');
       /**
-      * 连接池有数量限制，当达到连接上线后，会导致pool.getConnection直接卡死没有任何的回调，
-      * 所以需调用pool.releaseConnection释放
-      * https://blog.csdn.net/JavaFance/article/details/81437729#commentBox
+       * 连接池有数量限制，当达到连接上线后，会导致pool.getConnection直接卡死没有任何的回调，
+       * 所以需调用pool.releaseConnection释放
+       * https://blog.csdn.net/JavaFance/article/details/81437729#commentBox
       */
       pool.releaseConnection(connection);
       resolve({status: 200, database: connection});
     });
   })
-}
+};
 
-// 数据库操作--增、删、改、查   (db.query是异步，所以用Promise)
+/**
+ * 数据库操作--增、删、改、查   (db.query是异步，所以用Promise)
+ * @param {Object} db - 数据库对象
+ * @param {String} sql - SQL语句
+*/
 const opratorDB = (db, sql) => {
   return new Promise((resolve, reject) => {
     db.query(sql, (err, result) => {
@@ -73,9 +77,9 @@ const opratorDB = (db, sql) => {
       resolve({status: 200, message: '数据库操作成功', dbData: result});
     });
   });
-}
+};
 
-// 插入-获取数据表列、值
+// 插入 - 获取数据表列、值
 const getTableData = (data) => {
   let tableColumn = [],
       tabelData = [],
@@ -103,9 +107,13 @@ const getTableData = (data) => {
     _tableData = `${tabelData.join()}`;
   }
   return {tableColumn: tableColumn.join(), tabelData: _tableData};
-}
+};
 
-// 插入一条/多条数据
+/**
+ * 插入一条/多条数据
+ * @param {String} tableName - 表名
+ * @param {Object} data - 插入的数据 {userName: 'admin'}格式
+*/
 const insertFunc = (tableName, data) => {
   return new Promise(async (resolve, reject) => {
     if(!tableName) {
@@ -138,9 +146,15 @@ const insertFunc = (tableName, data) => {
       reject(e);
     });
   })
-}
+};
 
-// 获取数据库中符合条件的记录总数
+/**
+ * 获取数据库中符合条件的记录总数
+ * @param {String} tableName - 表名
+ * @param {String} column - 列名
+ * @param {Object} db - 数据库对象
+ * @param {String} where - SQL语句中的where子句
+*/
 const getTotal = (tableName, column = '*', db, where) => {
   return new Promise(async (resolve, reject) => {
     if(!tableName) {
@@ -154,7 +168,7 @@ const getTotal = (tableName, column = '*', db, where) => {
       });
       db = result.database;
     }
-    // 'SELECT COUNT(*) as total FROM user' WHERE openId="asdad";
+    // SELECT COUNT(*) as total FROM user WHERE openId="asdad";
     let sql = `SELECT COUNT(${column}) as total FROM ${tableName}${where ? ' WHERE ' + where : ''}`;
     opratorDB(db, sql).then((res) => {
       const resData = {
@@ -167,15 +181,19 @@ const getTotal = (tableName, column = '*', db, where) => {
       reject(e);
     });
   })
-}
+};
 
 /**
-* 查  data: {column: '查询列', where: '筛选条件', orderBy: '排序', limit: '分页', isGetTotal: true}
-* WHERE runoob_author='菜鸟教程'
-* WHERE runoob_author LIKE "%COM%"
-* ORDER BY submission_date ASC (ASC-升， DESC-降)
-* 分页：limit (pageNo-1)*pageSize, pageSize;  ----  第一个参数(pageNo-1)*pageSize是从哪开始查，第二个参数pageSize是查询个数
-*/
+ * 查  data: {column: '查询列', where: '筛选条件', orderBy: '排序', limit: '分页', isGetTotal: true}
+ * WHERE runoob_author='菜鸟教程'
+ * WHERE runoob_author='菜鸟教程' AND id < 5
+ * WHERE runoob_author LIKE "%COM%"
+ * ORDER BY submission_date ASC (ASC-升， DESC-降)
+ * 分页：limit (pageCurrent-1)*pageSize, pageSize;  ----  第一个参数(pageCurrent-1)*pageSize是从哪开始查，第二个参数pageSize是查询个数   【pageCurrent当前页数，pageSize一页呈现多少条数据】
+ *
+ * @param {String} tableName - 表名
+ * @param {Object} data - 查询条件
+ */
 const findFunc = (tableName, data) => {
   return new Promise(async (resolve, reject) => {
     if(!tableName) {
@@ -204,17 +222,22 @@ const findFunc = (tableName, data) => {
       const resData = {
         status: res.status,
         message: '查询成功',
-        data: data.isGetTotal ? {total: total, row: res.dbData} : res.dbData
+        data: res.dbData
       };
+      data.isGetTotal && (resData.total = total);
       resolve(resData);
     }).catch(e => {
       reject(e);
     });
 
   })
-}
+};
 
-// 改   data: {data: 更新的数据, where: '更新条件'}
+/**
+ * 改   data: {data: 更新的数据, where: '更新条件'}
+ * @param {String} tableName - 表名
+ * @param {Object} data - 查询条件
+*/
 const updateFunc = (tableName, data) => {
   return new Promise(async (resolve, reject) => {
     if(!tableName) {
@@ -255,11 +278,77 @@ const updateFunc = (tableName, data) => {
       reject(e);
     });
   })
-}
+};
+
+/**
+ * 删  DELETE FROM table_name [WHERE Clause]
+ * 如果没有指定 WHERE 子句，MySQL 表中的所有记录将被删除。
+ * 删除多条记录：where "栏位名" in ('值一', '值二', ...)
+ * @param {String} tableName - 表名
+ * @param {String} data - 查询条件
+*/
+const deleteFunc = (tableName, data) => {
+  return new Promise(async (resolve, reject) => {
+    if(!tableName) {
+      reject({status: 201, message: '表名不能为空'});
+      return;
+    }
+    if(!data) {
+      reject({status: 201, message: '数据不能为空'});
+      return;
+    }
+
+    let result = await connectFunc().catch(e => {
+      reject(e);
+    });
+
+    let db = result.database;
+    // DELETE FROM runoob_tbl WHERE runoob_id=3;
+    let sql = `DELETE FROM ${tableName} WHERE ${data}`;
+    opratorDB(db, sql).then((res) => {
+      const resData = {
+        status: res.status,
+        message: '删除成功'
+      }
+      resolve(resData);
+    }).catch(e => {
+      reject(e);
+    });
+  })
+};
+
+
+/**
+ * sql操作
+ * @param {String} sql - sql语句
+*/
+const SQLOperator = (sql) => {
+  return new Promise(async (resolve, reject) => {
+    const result = await connectFunc().catch(e => {
+      reject(e);
+    });
+    const db = result.database;
+
+    // 求和语句：SELECT SUM(goodsNum) AS total FROM shoppingcar;
+    opratorDB(db, sql).then((res) => {
+      const resData = {
+        status: res.status,
+        message: '成功',
+        data: res.dbData
+      }
+      resolve(resData);
+    }).catch(e => {
+      reject(e);
+    });
+  })
+};
 
 
 module.exports = {
   insertFunc,
+  getTotal,
   findFunc,
-  updateFunc
+  updateFunc,
+  deleteFunc,
+  SQLOperator
 }
