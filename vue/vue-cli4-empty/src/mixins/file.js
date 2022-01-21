@@ -155,7 +155,7 @@ export default {
       });
     },
     /**
-     * ajax实现文件下载（也可以使用封装的axios方法，雷同uploadFile）
+     * ajax实现文件下载（也可以使用封装的axios方法，雷同uploadFile） 下载的文件会存到浏览器内存里，所以下载大文件的时候容易导致浏览器奔溃
      * @param {String} method - 请求方法get/post(不区分大小写)
      * @param {String} url - 接口地址，以'/'开头的接口地址
      * @param {Object} [params] - 请求参数，{name: '文件下载'}
@@ -214,7 +214,8 @@ export default {
           _this.$message.error('服务器出现问题，请联系管理员');
         }
       };
-      ajax.send(queryParams);   // send(string): string：仅用于 POST 请求
+      // send(string): string：仅用于 POST 请求
+      ajax.send(queryParams);
     }
   }
 };

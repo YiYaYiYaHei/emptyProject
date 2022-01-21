@@ -3,11 +3,11 @@ module.exports = {
   useCDN: false,
   // key是'包名', value是静态资源引入后全局的名称 import Vue from 'vue'
   externals: {
-    'vue': 'Vue',
-    'vuex': 'Vuex',
+    vue: 'Vue',
+    vuex: 'Vuex',
     'vue-router': 'VueRouter',
-    'axios': 'axios',
-    'echarts': 'echarts',
+    axios: 'axios',
+    echarts: 'echarts',
     // 必须是ELEMENT，否则会报‘ElementUI is not defined’
     'element-ui': 'ELEMENT'
   },
@@ -26,4 +26,4 @@ module.exports = {
       'https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js'
     ]
   }
-}
+};

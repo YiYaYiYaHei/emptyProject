@@ -1,9 +1,7 @@
 <template>
   <div class="menu-item-container">
     <template v-for="item in menuListShow">
-      <el-submenu v-if="!item.isHidden && item.hasChildren"
-                  :key="item.fullPath"
-                  :index="item.fullPath">
+      <el-submenu v-if="!item.isHidden && item.hasChildren" :key="item.fullPath" :index="item.fullPath">
         <template #title>
           <i class="menu-icon" :class="item.meta.iconCls"></i>
           <span>{{item.name}}</span>
@@ -11,9 +9,7 @@
         <menu-item :menuList="item.children"></menu-item>
       </el-submenu>
 
-      <el-menu-item v-else-if="!item.isHidden"
-                    :key="item.fullPath"
-                    :index="item.fullPath">
+      <el-menu-item v-else-if="!item.isHidden" :key="item.fullPath" :index="item.fullPath">
         <!-- icon不能放在title插槽中: 会导致collapse为true时，icon无法显示 -->
         <i class="menu-icon" :class="item.meta.iconCls"></i>
         <span slot="title">{{item.name}}</span>

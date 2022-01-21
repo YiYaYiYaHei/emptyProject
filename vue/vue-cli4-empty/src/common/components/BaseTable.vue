@@ -7,9 +7,7 @@
         <el-dropdown-menu slot="dropdown" class="table-columns-config-dropdown">
           <el-checkbox-group v-model="tableData.configColumnCheckedList">
             <template v-for="item in tableData.configColumnList">
-              <el-checkbox :key="item.value"
-                          :label="item.value"
-                          v-if="!item.isHidden">{{item.label}}</el-checkbox>
+              <el-checkbox v-if="!item.isHidden" :key="item.value" :label="item.value">{{item.label}}</el-checkbox>
             </template>
           </el-checkbox-group>
         </el-dropdown-menu>

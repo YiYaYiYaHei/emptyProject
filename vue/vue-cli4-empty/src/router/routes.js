@@ -2,17 +2,17 @@ import {EMPTY_PATH, PAGE_USER_All, ROUTES_LIST} from './config.js';
 
 /**
  * 创建路由
- * name 导航中文名
- * path 导航对应的路径
- * fullPath 导航全路径
- * redirect 非必填，重定向地址
- * component 该页面组件
- * meta object 存一些额外的附件数据
- * meta-level [number] 导航层级，1表示一级导航，依次类推
- * meta-layout 页面布局方式：main-layout：带有导航布局，blank-layout: 空白页面
- * meta-isHidden 是否隐藏（true隐藏）
- * meta-iconCls 表示该导航模块应用的css-class
- * meta-authority [string]-该页面所属用户权限（'管理员'、'普通用户'）
+ * @param [String] name - 导航中文名
+ * @param [String] path - 导航对应的路径
+ * @param [String] fullPath - 导航全路径
+ * @param [String] [redirect] - 非必填，重定向地址
+ * @param [Function] component - 该页面组件
+ * @param [Object] meta - 路由云信息 存一些额外的附件数据
+ * [Number] meta-level 导航层级，1表示一级导航，依次类推
+ * [String] meta-layout 页面布局方式：main-layout：带有导航布局，blank-layout: 空白页面
+ * [Boolean] meta-isHidden 是否隐藏（true隐藏）
+ * [String] meta-iconCls 表示该导航模块应用的css-class
+ * [Array] meta-authority 该页面所属用户权限（['管理员'、'普通用户']）
  */
 function createRoute(level, name, path, filePath, meta = {}, children = []) {
   const routeConfig = {
@@ -43,14 +43,17 @@ function createRoute(level, name, path, filePath, meta = {}, children = []) {
 }
 
 /**
- * 路由懒加载-处理异步加载页面组件，传递组件文件路径（必须是相对路径）。
+ * 路由懒加载 - 处理异步加载页面组件，传递组件文件路径（必须是相对路径）。
  * 组件路径如果是字面量直接引用就行：() => return import( /* webpackChunkName: "Login" 星号/ '@/components/common/Login.vue');
- * 参数的话就需要用这个方法。
+ *
  * require引用文件（模块），必须是字符串（可以是字符串+变量（路径必须是相对路径）），直接引用字符串变量会报错
  * 方法体中两种引用组件的写法都可以，核心就是require引入，import引入必须是字面量
+ * @param [String | Function] filePath - 文件路径
  */
 function getComponent(filePath) {
+  // 如果filePath不是字符串类型，表示已经是组件，此时无需处理
   if (typeof filePath !== 'string') return filePath;
+
   if (filePath === EMPTY_PATH) {
     return () => Promise.resolve(require(`@/Layout/${filePath}`).default);
   }

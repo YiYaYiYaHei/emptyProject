@@ -23,7 +23,7 @@ const PAGE_USER_All = {
 const EMPTY_PATH = 'RouterViewPage.vue';
 
 /**
- * 路由配置--0表示非导航路由，1/2/3表示一/二/三级菜单
+ * 路由配置--0表示非导航路由，1/2/3对应表示一/二/三级菜单
  * [菜单级别, 菜单名称, 路由地址, 组件, {layout: '布局方式', iconCls: 'icon类名', redirect: '重定向路由地址', isHidden: '是否隐藏(true隐藏)', authority: ['权限']}]
  */
 const ROUTES_LIST = [
