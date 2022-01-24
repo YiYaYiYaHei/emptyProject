@@ -38,7 +38,7 @@ export default {
     // 是否保证只有一个展开
     isSingleExpand: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data() {
@@ -75,12 +75,13 @@ export default {
       });
 
       // 强制数据刷新
-      // this.$forceUpdate();
+      this.$forceUpdate();
       this.$nextTick(() => {
         if (this.$refs[data.path]) {
           // 右侧查询所有文件时，点击滚动到对应位置
           const dom = document.querySelector('.base-recurse-tree-container');
-          dom.scrollTop = this.$refs[data.path].getBoundingClientRect().y > this.boxHeight ? this.$refs[data.path].getBoundingClientRect().y : dom.scrollTop;
+          const top = this.$refs[data.path].offsetTop;
+          dom.scrollTop = top >= dom.scrollTop && top <= (dom.scrollTop + this.boxHeight) ? dom.scrollTop : top < this.boxHeight ? 0 : top;
           // 防止多次点击同一个时不高亮
           this.$refs[`title_${data.path}`].setAttribute('class', this.setItemTitleCls(data));
         }
@@ -160,7 +161,9 @@ export default {
       const treeNodes = this.createTreeNodes();
       return (
         <div class="base-recurse-tree-container">
-          <div class="base-recurse-tree-box" style={{width: `${this.setBoxWidth()}`}}>{treeNodes}</div>
+          <div class="base-recurse-tree-box" style={{width: `${this.setBoxWidth()}`}}>
+            <div id="treeBox" class="pr">{treeNodes}</div>
+          </div>
         </div>
       );
     },

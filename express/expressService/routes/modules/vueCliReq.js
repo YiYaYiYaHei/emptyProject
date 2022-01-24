@@ -17,6 +17,48 @@ function createToken(userName) {
   crypted += cipher.final("base64");
   return crypted;
 }
+
+// 生成递归树数据 - 目前是十层
+function createTreeList(list = [], filePath = '/', level = 1, maxLevel = 10) {
+  const num = 20;
+  for (let i = 0; i < num; i++) {
+    const isFile = i % 3 === 0;
+    list.push({
+      fileName: `${filePath}/第${i}层`,
+      fileId: `${filePath}/第${i}层`,
+      codeLevel: isFile ? i % 3 === 0 ? 0 : i % 3 === 1 ? 1 : i % 3 === 2 ? 2 : 3 : 0,
+      isDelete: isFile ? i % 2 === 0 ? 1 : 0 : 0,
+      isVirus: isFile ? i % 2 === 0 ? 1 : 0 : 0,
+      level: level++,
+      children: []
+    });
+    // 根据层数再次判断是否有子节点，防止无限递归
+    list[i].isFile = !isFile ? list[i].level > (maxLevel - 1) : true;
+    if (!list[i].isFile) {
+      createTreeList(list[i].children, list[i].fileId, list[i].level, maxLevel);
+    }
+  }
+  return list;
+};
+
+// 处理数据 - 保证目录始终在最上层
+function dealData(list, result = []) {
+  const dirList = list.filter(it => !it.isFile);
+  const dirLength = dirList.length;
+  for (let i = 0; i < dirLength; i++) {
+    const item = dirList[i];
+    result.push(Object.assign({}, item, {children: []}));
+    dealData(item.children, result[i].children);
+  }
+  const fileList = list.filter(it => it.isFile);
+  const fileLength = fileList.length;
+  for (let i = 0; i < fileLength; i++) {
+    const it = fileList[i];
+    result.push(it);
+  }
+  return result;
+};
+
 // 解token
 function decryptToken(req) {
   const token = req.headers.authorization.slice(7);
@@ -166,46 +208,7 @@ module.exports = app => {
   }));
   // 递归树接口
   app.get('/tree/list', (req, res) => common.commonDeal(req, res, () => {
-    const treeList = [
-      {fileName: '/', fileId: '/', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
-        {fileName: 'usr', fileId: '/usr', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
-          {fileName: 'local', fileId: '/usr/local', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
-            {fileName: 'applicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.confapplicaiton.conf', fileId: '/usr/local/applicaiton.conf', codeLevel: 0, isDelete: 0, isFile: true, isVirus: 0},
-            {fileName: 'ffas-web.jar', fileId: '/usr/local/ffas-web.jar', codeLevel: 1, isDelete: 0, isFile: true, isVirus: 0}
-          ]}
-        ]},
-        {fileName: 'root', fileId: '/root', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
-          {fileName: 'winhex.sh', fileId: '/root/winhex.sh', codeLevel: 3, isDelete: 0, isFile: true, isVirus: 1, children: []}
-        ]},
-        {fileName: 'opt', fileId: '/opt', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
-          {fileName: 'index.html', fileId: '/opt/index.html', codeLevel: 2, isDelete: 0, isFile: true, isVirus: 0, children: []}
-        ]},
-        {fileName: 'etc', fileId: '/etc', codeLevel: 0, isDelete: 0, isFile: false, isVirus: 0, children: [
-          {fileName: 'centos', fileId: '/etc/centos', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0},
-          {fileName: 'centos7.row', fileId: '/etc/centos7.row', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
-            {fileName: 'centos7.row1', fileId: '/etc/centos7.row1', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
-              {fileName: 'centos7.row2', fileId: '/etc/centos7.row2', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
-                {fileName: 'centos7.row3', fileId: '/etc/centos7.row3', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
-                  {fileName: 'centos7.row4', fileId: '/etc/centos7.row4', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
-                    {fileName: 'centos7.row5', fileId: '/etc/centos7.row5', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
-                      {fileName: 'centos7.row6', fileId: '/etc/centos7.row6', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
-                        {fileName: 'centos7.row7', fileId: '/etc/centos7.row7', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0, children: [
-                          {fileName: 'centos7.row8', fileId: '/etc/centos7.row8', codeLevel: 0, isDelete: 1, isFile: true, isVirus: 0, children: []}
-                        ]}
-                      ]}
-                    ]}
-                  ]}
-                ]},
-                {fileName: 'centos7.row22', fileId: '/etc/centos7.row22', codeLevel: 0, isDelete: 1, isFile: false, isVirus: 0}
-              ]}
-            ]}
-          ]}
-        ]}
-      ]},
-      {fileName: '111.doc', fileId: '/111.doc', codeLevel: 0, isDelete: 0, isFile: true, isVirus: 1, children: []},
-      {fileName: 'ma.sh', fileId: '/ma.sh', codeLevel: 0, isDelete: 0, isFile: true, isVirus: 1, children: []},
-      {fileName: 'et', fileId: 'et', codeLevel: 0, isDelete: 0, isFile: true, isVirus: 1, children: []}
-    ];
+    const treeList = dealData(createTreeList());
     return {data: treeList};
   }));
 };

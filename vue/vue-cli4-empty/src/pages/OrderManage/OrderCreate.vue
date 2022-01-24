@@ -19,7 +19,7 @@ export default {
   name: 'OrderCreate',
   data() {
     return {
-      fileList: ['/', '/usr/local/applicaiton.conf', '/usr/local/ffas-web.jar', '/root/winhex.sh', '/opt/index.html', '/etc/centos7.row8', '/ma.sh', '/etc/centos', 'et'],
+      fileList: ['//第1层/第1层/第1层/第5层/第12层', '//第1层/第1层/第1层/第5层/第13层', '//第1层/第1层/第6层', '//第1层/第1层/第5层/第1层/第9层', '//第8层/第6层', '//第5层/第1层/第2层/第12层', '//第9层', '//第10层', '//第1层/第15层'],
       activeItem: ''
     };
   },
@@ -32,7 +32,8 @@ export default {
             // 因为要联动左侧树选中状态，如果在初始化的时候去组装数据，会导致数据更改为初始组装时的数据，从而无法联动，因此在此处调用，保证assemableData只调用一次
             this.$refs.tree.treeList = result.data;
             this.$refs.tree.assemableData();
-            this.$refs.tree.changeFile('/etc/centos7.row8');
+            const first = (result.data[0] || {children: []}).children.find(it => it.isFile).fileId;
+            this.$refs.tree.changeFile(first);
           }
         });
       } else {
