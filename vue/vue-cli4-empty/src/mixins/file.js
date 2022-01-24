@@ -66,12 +66,12 @@ export default {
     },
     /**
      * 上传文件
-     * @param {String} urlFunc - 上传文件的接口路径（apis里定义的方法）
+     * @param {String} requestApi - 上传文件的接口路径（apis里定义的方法）
      * @param {Object|null} [params] - 接口参数（除文件流参数）
      * @param {Object} [config] - 方法配置
      * @example this.uploadFile(this.$apis.login.fileUpload, {userName: 'addd'}, {acceptType: '.zip,.rar', acceptTypeErrMsg: '限.zip,.rar', limitSize: 30000 * 1024})"
      */
-    uploadFile(urlFunc, params, config) {
+    uploadFile(requestApi, params, config) {
       const _config = Object.assign({
         isMultiple: false,                     // 是否多文件上传
         acceptType: '',                        // 文件类型[String] eg: image/*  、'.zip,.rar'
@@ -101,7 +101,7 @@ export default {
           urlPrefix: _config.urlPrefix
         };
         // axios请求
-        const result = await urlFunc(_params, requestConfig);
+        const result = await requestApi(_params, requestConfig);
         notify && notify.close();
         if (result.status === 200) {
           this.$message.success(_config.successMsg);
