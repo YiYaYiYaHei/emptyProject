@@ -497,9 +497,9 @@ const isValidPwd = (pwd, isMustSpecialChar = true) => {
  * @param {string} phone - 电话号码
  * @return {boolean}
  */
-const isPhone = (phone) => {
-  const reg = /^1[3|4|5|8][0-9]\d{8}$/;
-  return reg.test(phone);
+ const isPhone = (phone) => {
+  const reg = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/;
+  return isNaN(phone) ? false : reg.test(Number(phone));
 };
 
 /**
